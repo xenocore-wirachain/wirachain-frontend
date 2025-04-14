@@ -1,0 +1,6 @@
+@layer theme,base,primereact,utilities,icons;
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/theme.css" layer(theme);
+@import "primereact/resources/themes/lara-light-blue/theme.css" layer(primereact);
+@import 'primeicons/primeicons.css' layer(icons);
+@import "tailwindcss/utilities.css" layer(utilities);
