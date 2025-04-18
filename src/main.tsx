@@ -1,7 +1,9 @@
 import { PrimeReactProvider } from "primereact/api"
 import { createRoot } from "react-dom/client"
+import { Provider } from "react-redux"
 import { RouterProvider } from "react-router"
 import "./index.css"
+import { store } from "./redux"
 import { router } from "./routers"
 
 const container = document.getElementById("root")
@@ -10,9 +12,11 @@ if (container) {
   const root = createRoot(container)
 
   root.render(
-    <PrimeReactProvider>
-      <RouterProvider router={router} />
-    </PrimeReactProvider>,
+    <Provider store={store}>
+      <PrimeReactProvider>
+        <RouterProvider router={router} />
+      </PrimeReactProvider>
+    </Provider>,
   )
 } else {
   throw new Error(
