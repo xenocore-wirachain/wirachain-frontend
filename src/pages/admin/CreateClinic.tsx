@@ -1,8 +1,15 @@
 import { Button } from "primereact/button"
 import { Dialog } from "primereact/dialog"
 import { InputText } from "primereact/inputtext"
-import React, { useState } from "react"
-import { modifyCreateDialog, useAppDispatch, useAppSelector } from "../../redux"
+import { classNames } from "primereact/utils"
+import React from "react"
+import { Controller, useForm } from "react-hook-form"
+import {
+  modifyCreateDialog,
+  useAddClinicMutation,
+  useAppDispatch,
+  useAppSelector,
+} from "../../redux"
 import type { ClinicRequest } from "../../types/Clinic"
 
 function CreateClinic() {
@@ -10,20 +17,51 @@ function CreateClinic() {
   const showCreateDialog = useAppSelector(
     state => state.dataTable.showCreateDialog,
   )
-
-  const [clinic, setClinic] = useState<ClinicRequest>({
+  const [addClinic] = useAddClinicMutation()
+  const defaultValues: ClinicRequest = {
     ruc: "",
+    name: "",
     address: "",
-  })
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setClinic(prev => ({ ...prev, [name]: value }))
+  }
+  const {
+    control,
+    formState: { errors },
+    reset,
+    handleSubmit,
+  } = useForm({ defaultValues })
+
+  const onSubmit = (data: ClinicRequest) => {
+    console.log("SUBMITTED DATA", data)
+    void addClinic(data)
+    dispatch(modifyCreateDialog(false))
+    reset()
+  }
+
+  const getFormErrorMessage = (name: keyof ClinicRequest) => {
+    return errors[name] ? (
+      <small className="p-error">{errors[name].message}</small>
+    ) : null
+  }
+
+  const closeDialog = () => {
+    dispatch(modifyCreateDialog(false))
+    reset()
   }
 
   const productDialogFooter = (
     <React.Fragment>
-      <Button label="Cancel" icon="pi pi-times" outlined />
-      <Button label="Save" icon="pi pi-check" />
+      <Button
+        label="Cancelar"
+        icon="pi pi-times"
+        outlined
+        onClick={closeDialog}
+      />
+      <Button
+        type="submit"
+        form="clinicForm"
+        label="Guardar"
+        icon="pi pi-check"
+      />
     </React.Fragment>
   )
 
@@ -32,41 +70,109 @@ function CreateClinic() {
       header="Crear una clinica"
       footer={productDialogFooter}
       visible={showCreateDialog}
-      onHide={() => {
-        if (!showCreateDialog) return
-        dispatch(modifyCreateDialog(false))
-      }}
+      onHide={closeDialog}
       className="w-xl"
       breakpoints={{ "960px": "75vw", "641px": "90vw" }}
     >
-      <div className="p-4">
-        <div className="mb-4">
-          <label htmlFor="ruc" className="block text-sm font-medium mb-2">
-            RUC
-          </label>
-          <InputText
-            id="ruc"
-            name="ruc"
-            value={clinic.ruc}
-            onChange={handleInputChange}
-            className="w-full"
-            placeholder="Enter RUC number"
-          />
+      <form
+        id="clinicForm"
+        onSubmit={e => {
+          void handleSubmit(onSubmit)(e)
+        }}
+        className="p-fluid"
+      >
+        <div className="field mt-4">
+          <span className="p-float-label">
+            <Controller
+              name="ruc"
+              control={control}
+              rules={{
+                required: "RUC es requerido.",
+                maxLength: {
+                  value: 11,
+                  message: "RUC debe tener 11 caracteres",
+                },
+                minLength: {
+                  value: 11,
+                  message: "RUC debe tener 11 caracteres",
+                },
+                pattern: {
+                  value: /^[0-9]+$/,
+                  message: "Solo puede contener numeros",
+                },
+              }}
+              render={({ field, fieldState }) => (
+                <InputText
+                  id={field.name}
+                  {...field}
+                  className={classNames({ "p-invalid": fieldState.invalid })}
+                />
+              )}
+            />
+            <label
+              htmlFor="ruc"
+              className={classNames({ "p-error": errors.ruc })}
+            >
+              RUC*
+            </label>
+          </span>
+          {getFormErrorMessage("ruc")}
         </div>
-        <div className="mb-4">
-          <label htmlFor="address" className="block text-sm font-medium mb-2">
-            Address
-          </label>
-          <InputText
-            id="address"
-            name="address"
-            value={clinic.address}
-            onChange={handleInputChange}
-            className="w-full"
-            placeholder="Enter clinic address"
-          />
+
+        {/* Add name field */}
+        <div className="field mt-4">
+          <span className="p-float-label">
+            <Controller
+              name="name"
+              control={control}
+              rules={{
+                required: "Nombre es requerido.",
+              }}
+              render={({ field, fieldState }) => (
+                <InputText
+                  id={field.name}
+                  {...field}
+                  className={classNames({ "p-invalid": fieldState.invalid })}
+                />
+              )}
+            />
+            <label
+              htmlFor="name"
+              className={classNames({ "p-error": errors.address })}
+            >
+              Nombre*
+            </label>
+          </span>
+          {getFormErrorMessage("name")}
         </div>
-      </div>
+
+        {/* Add address field */}
+        <div className="field mt-4">
+          <span className="p-float-label">
+            <Controller
+              name="address"
+              control={control}
+              rules={{
+                required: "Dirección es requerida.",
+              }}
+              render={({ field, fieldState }) => (
+                <InputText
+                  id={field.name}
+                  {...field}
+                  className={classNames({ "p-invalid": fieldState.invalid })}
+                />
+              )}
+            />
+            <label
+              htmlFor="address"
+              className={classNames({ "p-error": errors.address })}
+            >
+              Dirección*
+            </label>
+          </span>
+          {getFormErrorMessage("address")}
+        </div>
+      </form>
     </Dialog>
   )
 }

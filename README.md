@@ -12,3 +12,4 @@ Refresh Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IkpvYW8i
 # RESOURCES
 
 - https://redux-toolkit.js.org/rtk-query/usage/examples (for jwt auth)
+- https://www.primefaces.org/primereact-v8/reacthookform/ (primereact with react-form-hook)

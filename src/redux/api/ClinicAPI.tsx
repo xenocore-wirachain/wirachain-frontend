@@ -1,21 +1,27 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-import type { ClinicResponse } from "../../types/Clinic"
+import type { ClinicRequest, ClinicResponse } from "../../types/Clinic"
 import type { Pagination } from "../../types/Pagination"
+
+const API_URL = import.meta.env.VITE_API_URL as string
 
 export const ClinicAPI = createApi({
   reducerPath: "ClinicAPI",
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API_URL }),
+  baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
   endpoints: build => ({
     getAllClinics: build.query<Pagination<ClinicResponse>, undefined>({
-      query: () => {
-        return {
-          url: "/clinic",
-          method: "GET",
-        }
-      },
+      query: () => ({
+        url: "/clinic/",
+        method: "GET",
+      }),
+    }),
+    addClinic: build.mutation<ClinicResponse, ClinicRequest>({
+      query: clinic => ({
+        url: "/clinic/",
+        method: "POST",
+        body: clinic,
+      }),
     }),
   }),
 })
 
-export const { useGetAllClinicsQuery } = ClinicAPI
+export const { useGetAllClinicsQuery, useAddClinicMutation } = ClinicAPI
