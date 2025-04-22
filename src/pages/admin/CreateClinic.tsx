@@ -31,7 +31,6 @@ function CreateClinic() {
   } = useForm({ defaultValues })
 
   const onSubmit = (data: ClinicRequest) => {
-    console.log("SUBMITTED DATA", data)
     void addClinic(data)
     dispatch(modifyCreateDialog(false))
     reset()
@@ -58,7 +57,7 @@ function CreateClinic() {
       />
       <Button
         type="submit"
-        form="clinicForm"
+        form="createClinicForm"
         label="Guardar"
         icon="pi pi-check"
       />
@@ -75,7 +74,7 @@ function CreateClinic() {
       breakpoints={{ "960px": "75vw", "641px": "90vw" }}
     >
       <form
-        id="clinicForm"
+        id="createClinicForm"
         onSubmit={e => {
           void handleSubmit(onSubmit)(e)
         }}

@@ -8,11 +8,13 @@ import { InputText } from "primereact/inputtext"
 import React from "react"
 import {
   modifyCreateDialog,
+  modifyIdSelected,
   modifyUpdateDialog,
   useAppDispatch,
   useAppSelector,
   useGetAllClinicsQuery,
 } from "../../redux"
+import type { ClinicResponse } from "../../types/Clinic"
 import CreateClinic from "./CreateClinic"
 import UpdateClinic from "./UpdateClinic"
 
@@ -21,10 +23,7 @@ function ListClinic() {
   const { showCreateDialog, showUpdateDialog } = useAppSelector(
     state => state.dataTable,
   )
-  const { data, error, isLoading } = useGetAllClinicsQuery(undefined)
-
-  console.log("endpoint", import.meta.env.VITE_API_URL)
-  console.log(data, error, isLoading)
+  const { data, isFetching, isError } = useGetAllClinicsQuery(undefined)
 
   const renderHeader = () => {
     return (
@@ -54,16 +53,23 @@ function ListClinic() {
     )
   }
 
+  const accept = () => {
+    console.log("DELETE")
+  }
+
   const renderDeleteDialog = () => {
     confirmDialog({
       message: "¿Deseas eliminar este registro?",
       header: "Confirmar eliminación",
       icon: "pi pi-exclamation-triangle",
       defaultFocus: "accept",
+      accept,
     })
   }
 
-  const actionBodyTemplate = () => {
+  const actionBodyTemplate = (rowData: ClinicResponse) => {
+    console.log("ROWDATA", rowData)
+    dispatch(modifyIdSelected(rowData.id))
     return (
       <React.Fragment>
         <Button
@@ -75,7 +81,9 @@ function ListClinic() {
           className="mr-2"
         />
         <Button
-          onClick={renderDeleteDialog}
+          onClick={() => {
+            renderDeleteDialog()
+          }}
           icon="pi pi-trash"
           severity="danger"
         />

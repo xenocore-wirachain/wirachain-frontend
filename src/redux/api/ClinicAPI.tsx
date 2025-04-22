@@ -14,6 +14,12 @@ export const ClinicAPI = createApi({
         method: "GET",
       }),
     }),
+    getClinic: build.query<ClinicResponse, number>({
+      query: clinic_id => ({
+        url: `/clinic/${String(clinic_id)}`,
+        method: "GET",
+      }),
+    }),
     addClinic: build.mutation<ClinicResponse, ClinicRequest>({
       query: clinic => ({
         url: "/clinic/",
@@ -21,7 +27,19 @@ export const ClinicAPI = createApi({
         body: clinic,
       }),
     }),
+    updateClinic: build.mutation<ClinicResponse, ClinicResponse>({
+      query: clinic => ({
+        url: `/clinic/${String(clinic.id)}/`,
+        method: "PUT",
+        body: clinic,
+      }),
+    }),
   }),
 })
 
-export const { useGetAllClinicsQuery, useAddClinicMutation } = ClinicAPI
+export const {
+  useGetAllClinicsQuery,
+  useAddClinicMutation,
+  useGetClinicQuery,
+  useUpdateClinicMutation,
+} = ClinicAPI
