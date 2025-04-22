@@ -1,6 +1,8 @@
-import type { User } from "./User"
-
-export type Clinic = User & {
-  ruc: number
+export type ClinicRequest = {
+  ruc: string
   address: string
+}
+
+export type ClinicResponse = ClinicRequest & {
+  id: number
 }
