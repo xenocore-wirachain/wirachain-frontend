@@ -1,6 +1,5 @@
 import { Button } from "primereact/button"
 import { Column } from "primereact/column"
-import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog"
 import { DataTable } from "primereact/datatable"
 import { IconField } from "primereact/iconfield"
 import { InputIcon } from "primereact/inputicon"
@@ -8,6 +7,7 @@ import { InputText } from "primereact/inputtext"
 import React from "react"
 import {
   modifyCreateDialog,
+  modifyDeleteDialog,
   modifyIdSelected,
   modifyUpdateDialog,
   useAppDispatch,
@@ -16,14 +16,26 @@ import {
 } from "../../redux"
 import type { ClinicResponse } from "../../types/Clinic"
 import CreateClinic from "./CreateClinic"
+import DeleteClinic from "./DeleteClinic"
 import UpdateClinic from "./UpdateClinic"
 
 function ListClinic() {
   const dispatch = useAppDispatch()
-  const { showCreateDialog, showUpdateDialog } = useAppSelector(
-    state => state.dataTable,
-  )
-  const { data, isFetching, isError } = useGetAllClinicsQuery(undefined)
+  const { page, showCreateDialog, showUpdateDialog, showDeleteDialog } =
+    useAppSelector(state => state.dataTable)
+  const { data } = useGetAllClinicsQuery(undefined)
+
+  const onClickUpdate = (id: number) => {
+    if (showUpdateDialog) return
+    dispatch(modifyUpdateDialog(true))
+    dispatch(modifyIdSelected(id))
+  }
+
+  const onClickDelete = (id: number) => {
+    if (showDeleteDialog) return
+    dispatch(modifyDeleteDialog(true))
+    dispatch(modifyIdSelected(id))
+  }
 
   const renderHeader = () => {
     return (
@@ -53,36 +65,19 @@ function ListClinic() {
     )
   }
 
-  const accept = () => {
-    console.log("DELETE")
-  }
-
-  const renderDeleteDialog = () => {
-    confirmDialog({
-      message: "¿Deseas eliminar este registro?",
-      header: "Confirmar eliminación",
-      icon: "pi pi-exclamation-triangle",
-      defaultFocus: "accept",
-      accept,
-    })
-  }
-
   const actionBodyTemplate = (rowData: ClinicResponse) => {
-    console.log("ROWDATA", rowData)
-    dispatch(modifyIdSelected(rowData.id))
     return (
       <React.Fragment>
         <Button
           onClick={() => {
-            if (showUpdateDialog) return
-            dispatch(modifyUpdateDialog(true))
+            onClickUpdate(rowData.id)
           }}
           icon="pi pi-pencil"
           className="mr-2"
         />
         <Button
           onClick={() => {
-            renderDeleteDialog()
+            onClickDelete(rowData.id)
           }}
           icon="pi pi-trash"
           severity="danger"
@@ -91,14 +86,27 @@ function ListClinic() {
     )
   }
 
+  const onPageChange = (event: { first: number; rows: number }) => {
+    console.log("CHANGE PAGE", event.first, event.rows)
+  }
+
   const header = renderHeader()
 
   return (
     <>
-      <ConfirmDialog />
+      <DeleteClinic />
       <CreateClinic />
       <UpdateClinic />
-      <DataTable value={data?.results} header={header} paginator rows={10}>
+      <DataTable
+        paginator
+        lazy
+        value={data?.results}
+        header={header}
+        first={page}
+        rows={10}
+        totalRecords={100}
+        onPage={onPageChange}
+      >
         <Column field="id" header="ID"></Column>
         <Column field="name" header="Name"></Column>
         <Column field="ruc" header="RUC"></Column>

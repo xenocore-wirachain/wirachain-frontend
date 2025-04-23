@@ -5,6 +5,7 @@ import { AuthReducer } from "./slices/AuthSlice"
 import {
   DataTableReducer,
   modifyCreateDialog,
+  modifyDeleteDialog,
   modifyIdSelected,
   modifyUpdateDialog,
 } from "./slices/DataTableSlice"
@@ -27,8 +28,14 @@ export const useAppSelector = useSelector.withTypes<RootState>()
 
 export {
   useAddClinicMutation,
+  useDeleteClinicMutation,
   useGetAllClinicsQuery,
   useGetClinicQuery,
   useUpdateClinicMutation,
 } from "./api/ClinicAPI"
-export { modifyCreateDialog, modifyIdSelected, modifyUpdateDialog }
+export {
+  modifyCreateDialog,
+  modifyDeleteDialog,
+  modifyIdSelected,
+  modifyUpdateDialog,
+}

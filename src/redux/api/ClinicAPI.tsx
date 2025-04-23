@@ -16,7 +16,7 @@ export const ClinicAPI = createApi({
     }),
     getClinic: build.query<ClinicResponse, number>({
       query: clinic_id => ({
-        url: `/clinic/${String(clinic_id)}`,
+        url: `/clinic/${String(clinic_id)}/`,
         method: "GET",
       }),
     }),
@@ -34,6 +34,12 @@ export const ClinicAPI = createApi({
         body: clinic,
       }),
     }),
+    deleteClinic: build.mutation<undefined, number>({
+      query: clinic_id => ({
+        url: `/clinic/${String(clinic_id)}/`,
+        method: "DELETE",
+      }),
+    }),
   }),
 })
 
@@ -42,4 +48,5 @@ export const {
   useAddClinicMutation,
   useGetClinicQuery,
   useUpdateClinicMutation,
+  useDeleteClinicMutation,
 } = ClinicAPI
