@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit"
 import { useDispatch, useSelector } from "react-redux"
-import { ClinicAPI } from "./api/ClinicAPI"
+import { clinicApi } from "./api/ClinicAPI"
 import { AuthReducer } from "./slices/AuthSlice"
 import {
   DataTableReducer,
@@ -14,10 +14,10 @@ export const store = configureStore({
   reducer: {
     auth: AuthReducer,
     dataTable: DataTableReducer,
-    [ClinicAPI.reducerPath]: ClinicAPI.reducer,
+    [clinicApi.reducerPath]: clinicApi.reducer,
   },
   middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat(ClinicAPI.middleware),
+    getDefaultMiddleware().concat(clinicApi.middleware),
 })
 
 export type RootState = ReturnType<typeof store.getState>

@@ -3,50 +3,76 @@ import type { ClinicRequest, ClinicResponse } from "../../types/Clinic"
 import type { Pagination } from "../../types/Pagination"
 
 const API_URL = import.meta.env.VITE_API_URL as string
+const BASE_PATH = "/clinic/"
 
-export const ClinicAPI = createApi({
-  reducerPath: "ClinicAPI",
+export const clinicApi = createApi({
+  reducerPath: "clinicApi",
   baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
-  endpoints: build => ({
-    getAllClinics: build.query<Pagination<ClinicResponse>, undefined>({
+  tagTypes: ["Clinic"],
+  endpoints: builder => ({
+    getAllClinics: builder.query<Pagination<ClinicResponse>, null>({
       query: () => ({
-        url: "/clinic/",
+        url: BASE_PATH,
         method: "GET",
       }),
+      providesTags: result =>
+        result
+          ? [
+              ...result.results.map(({ id }) => ({
+                type: "Clinic" as const,
+                id,
+              })),
+              { type: "Clinic", id: "LIST" },
+            ]
+          : [{ type: "Clinic", id: "LIST" }],
     }),
-    getClinic: build.query<ClinicResponse, number>({
-      query: clinic_id => ({
-        url: `/clinic/${String(clinic_id)}/`,
+
+    getClinic: builder.query<ClinicResponse, number>({
+      query: clinicId => ({
+        url: `${BASE_PATH}${String(clinicId)}/`,
         method: "GET",
       }),
+      providesTags: (_, __, clinicId) => [{ type: "Clinic", id: clinicId }],
     }),
-    addClinic: build.mutation<ClinicResponse, ClinicRequest>({
+
+    addClinic: builder.mutation<ClinicResponse, ClinicRequest>({
       query: clinic => ({
-        url: "/clinic/",
+        url: BASE_PATH,
         method: "POST",
         body: clinic,
       }),
+      invalidatesTags: [{ type: "Clinic", id: "LIST" }],
     }),
-    updateClinic: build.mutation<ClinicResponse, ClinicResponse>({
+
+    updateClinic: builder.mutation<ClinicResponse, ClinicResponse>({
       query: clinic => ({
-        url: `/clinic/${String(clinic.id)}/`,
+        url: `${BASE_PATH}${String(clinic.id)}/`,
         method: "PUT",
         body: clinic,
       }),
+      invalidatesTags: (_, __, { id }) => [
+        { type: "Clinic", id },
+        { type: "Clinic", id: "LIST" },
+      ],
     }),
-    deleteClinic: build.mutation<undefined, number>({
-      query: clinic_id => ({
-        url: `/clinic/${String(clinic_id)}/`,
+
+    deleteClinic: builder.mutation<null, number>({
+      query: clinicId => ({
+        url: `${BASE_PATH}${String(clinicId)}/`,
         method: "DELETE",
       }),
+      invalidatesTags: (_, __, clinicId) => [
+        { type: "Clinic", id: clinicId },
+        { type: "Clinic", id: "LIST" },
+      ],
     }),
   }),
 })
 
 export const {
   useGetAllClinicsQuery,
-  useAddClinicMutation,
   useGetClinicQuery,
+  useAddClinicMutation,
   useUpdateClinicMutation,
   useDeleteClinicMutation,
-} = ClinicAPI
+} = clinicApi

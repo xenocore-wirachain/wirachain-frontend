@@ -1,5 +1,5 @@
 export type ClinicRequest = {
-  ruc: string
+  ruc: number
   name: string
   address: string
 }

@@ -23,7 +23,7 @@ function ListClinic() {
   const dispatch = useAppDispatch()
   const { page, showCreateDialog, showUpdateDialog, showDeleteDialog } =
     useAppSelector(state => state.dataTable)
-  const { data } = useGetAllClinicsQuery(undefined)
+  const { data } = useGetAllClinicsQuery(null)
 
   const onClickUpdate = (id: number) => {
     if (showUpdateDialog) return
