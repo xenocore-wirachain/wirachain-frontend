@@ -1,9 +1,9 @@
-import ListClinic from "../pages/admin/ListClinic"
+import ListClinicAdmin from "../pages/admin/ClinicAdmin/ListClinicAdmin"
 
 const AdminRouter = [
   {
     path: "",
-    element: <ListClinic />,
+    element: <ListClinicAdmin />,
   },
 ]
 

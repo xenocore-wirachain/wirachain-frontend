@@ -21,3 +21,28 @@ export type ClinicForm<T> = {
   format?: string
   placeholder?: string
 }
+
+type FieldType =
+  | "phone"
+  | "mail"
+  | "date"
+  | "pass"
+  | "simple-text"
+  | "dropdown"
+  | "text-number"
+
+export type DropDownField = {
+  value: string
+  code: string
+}
+
+export type MultiFuntionalForm<T> = {
+  name: keyof T
+  label: string
+  placeholder?: string
+  type: FieldType
+  rules: Record<string, unknown>
+  minDate?: Date
+  maxDate?: Date
+  options?: DropDownField[]
+}

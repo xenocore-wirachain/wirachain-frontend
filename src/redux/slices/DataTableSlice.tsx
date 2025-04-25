@@ -1,5 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createSlice } from "@reduxjs/toolkit"
+import type { UUID } from "crypto"
 import type { DataTable } from "../../types/Datatable"
 
 const initialState: DataTable = {
@@ -7,9 +8,8 @@ const initialState: DataTable = {
   showCreateDialog: false,
   showUpdateDialog: false,
   showDeleteDialog: false,
-  page: 0,
+  page: 1,
   pageSize: 10,
-  searchItem: "",
 }
 
 export const DataTableSlice = createSlice({
@@ -25,7 +25,7 @@ export const DataTableSlice = createSlice({
     modifyDeleteDialog: (state, action: PayloadAction<boolean>) => {
       state.showDeleteDialog = action.payload
     },
-    modifyIdSelected: (state, action: PayloadAction<number>) => {
+    modifyIdSelected: (state, action: PayloadAction<number | UUID>) => {
       state.idSelected = action.payload
     },
   },
