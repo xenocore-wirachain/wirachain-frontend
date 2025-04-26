@@ -4,7 +4,7 @@ import { InputNumber } from "primereact/inputnumber"
 import { InputText } from "primereact/inputtext"
 import { Toast } from "primereact/toast"
 import { classNames } from "primereact/utils"
-import React, { useState } from "react"
+import React from "react"
 import type {
   ControllerFieldState,
   ControllerRenderProps,
@@ -24,8 +24,7 @@ const CreateClinicComponent: React.FC = () => {
   const showCreateDialog = useAppSelector(
     state => state.dataTable.showCreateDialog,
   )
-  const [addClinic] = useAddClinicMutation()
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [addClinic, { isLoading }] = useAddClinicMutation()
   const toastRef = React.useRef<Toast>(null)
 
   const defaultValues: ClinicRequest = {
@@ -47,8 +46,6 @@ const CreateClinicComponent: React.FC = () => {
   }
 
   const onSubmit = (data: ClinicRequest) => {
-    setIsSubmitting(true)
-
     void addClinic(data)
       .unwrap()
       .then(() => {
@@ -68,9 +65,6 @@ const CreateClinicComponent: React.FC = () => {
           summary: "Error",
           detail: `No se pudo crear la clínica: ${errorMessage}`,
         })
-      })
-      .finally(() => {
-        setIsSubmitting(false)
       })
   }
 
@@ -118,7 +112,7 @@ const CreateClinicComponent: React.FC = () => {
     const commonProps = {
       id: formField.name,
       className: classNames({ "p-invalid": fieldState.invalid }),
-      disabled: isSubmitting,
+      disabled: isLoading,
       placeholder: field.placeholder,
     }
 
@@ -206,14 +200,14 @@ const CreateClinicComponent: React.FC = () => {
         icon="pi pi-times"
         outlined
         onClick={handleClose}
-        disabled={isSubmitting}
+        disabled={isLoading}
       />
       <Button
         type="submit"
         form="createClinicForm"
         label="Guardar"
         icon="pi pi-check"
-        loading={isSubmitting}
+        loading={isLoading}
       />
     </>
   )
@@ -233,7 +227,7 @@ const CreateClinicComponent: React.FC = () => {
         onHide={handleClose}
         className="w-xl"
         breakpoints={{ "960px": "75vw", "641px": "90vw" }}
-        closable={!isSubmitting}
+        closable={!isLoading}
       >
         <form
           id="createClinicForm"

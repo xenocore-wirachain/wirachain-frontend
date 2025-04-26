@@ -30,10 +30,11 @@ type FieldType =
   | "simple-text"
   | "dropdown"
   | "text-number"
+  | "gender"
 
 export type DropDownField = {
+  id: string
   value: string
-  code: string
 }
 
 export type MultiFuntionalForm<T> = {

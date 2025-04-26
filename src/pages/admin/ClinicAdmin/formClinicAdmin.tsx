@@ -1,5 +1,6 @@
 import type { ClinicAdminRequest } from "../../../types/ClinicAdmin"
 import type { MultiFuntionalForm } from "../../../types/Form"
+import type { User } from "../../../types/User"
 
 export const formClinicAdmin: MultiFuntionalForm<ClinicAdminRequest>[] = [
   {
@@ -21,14 +22,10 @@ export const formClinicAdmin: MultiFuntionalForm<ClinicAdminRequest>[] = [
   {
     name: "gender",
     label: "Genero",
-    type: "dropdown",
+    type: "gender",
     rules: {
       required: "Genero es requerido.",
     },
-    options: [
-      { value: "Hombre", code: "male" },
-      { value: "Hombre", code: "male" },
-    ],
   },
   {
     name: "dateOfBirth",
@@ -39,6 +36,9 @@ export const formClinicAdmin: MultiFuntionalForm<ClinicAdminRequest>[] = [
     },
     maxDate: new Date(),
   },
+]
+
+export const formUser: MultiFuntionalForm<User>[] = [
   {
     name: "name",
     label: "Usuario",

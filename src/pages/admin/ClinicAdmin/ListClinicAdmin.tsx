@@ -5,7 +5,6 @@ import { DataTable } from "primereact/datatable"
 import { IconField } from "primereact/iconfield"
 import { InputIcon } from "primereact/inputicon"
 import { InputText } from "primereact/inputtext"
-import type React from "react"
 import {
   modifyCreateDialog,
   modifyDeleteDialog,
@@ -16,8 +15,9 @@ import {
   useGetAllClinicAdminsQuery,
 } from "../../../redux"
 import type { ClinicAdminResponse } from "../../../types/ClinicAdmin"
+import CreateClinicAdmin from "./CreateClnicAdmin"
 
-const ListClinicAdmin: React.FC = () => {
+function ListClinicAdmin() {
   const dispatch = useAppDispatch()
   const {
     page,
@@ -26,7 +26,6 @@ const ListClinicAdmin: React.FC = () => {
     showUpdateDialog,
     showDeleteDialog,
   } = useAppSelector(state => state.dataTable)
-
   const { data, isLoading, isFetching } = useGetAllClinicAdminsQuery({
     page: page,
     pageSize: pageSize,
@@ -111,6 +110,7 @@ const ListClinicAdmin: React.FC = () => {
 
   return (
     <div className="card">
+      <CreateClinicAdmin />
       <DataTable
         lazy
         paginator

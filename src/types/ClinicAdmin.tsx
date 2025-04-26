@@ -3,11 +3,12 @@ import type { User } from "./User"
 
 type Gender = "male" | "female"
 
-export type ClinicAdminRequest = User & {
+export type ClinicAdminRequest = {
   firstName: string
   lastName: string
   gender: Gender
-  dateOfBirth: Date
+  dateOfBirth: Date | string
+  user: User
 }
 
 export type ClinicAdminResponse = {

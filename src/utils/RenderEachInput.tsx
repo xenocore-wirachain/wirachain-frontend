@@ -45,7 +45,6 @@ function RenderEachInput<TValue extends FieldValues>(
       return (
         <Calendar
           showButtonBar
-          locale="es"
           dateFormat="mm-dd-yy"
           {...commonProps}
           value={formField.value}
@@ -117,6 +116,26 @@ function RenderEachInput<TValue extends FieldValues>(
           onBlur={formField.onBlur}
           name={formField.name}
           ref={formField.ref}
+        />
+      )
+
+    case "gender":
+      return (
+        <Dropdown
+          {...commonProps}
+          value={() => {
+            const note = formField.value === "male" ? "Hombre" : "Mujer"
+            return note
+          }}
+          onChange={e => {
+            const note = e.value === "Hombre" ? "male" : "female"
+            formField.onChange(note)
+          }}
+          onBlur={formField.onBlur}
+          name={formField.name}
+          ref={formField.ref}
+          options={["Hombre", "Mujer"]}
+          optionLabel="value"
         />
       )
 
