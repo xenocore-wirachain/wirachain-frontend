@@ -11,9 +11,10 @@ import React from "react"
 import { Controller, useForm } from "react-hook-form"
 import {
   modifyCreateDialog,
-  useAddClinicAdminMutation,
   useAppDispatch,
   useAppSelector,
+  useGetClinicAdminQuery,
+  useUpdateClinicAdminMutation,
 } from "../../../redux"
 import type { ClinicAdminRequest } from "../../../types/ClinicAdmin"
 
@@ -27,30 +28,21 @@ const GenderDictionary: Gender[] = [
   { id: 2, value: "Mujer" },
 ]
 
-function CreateClinicAdmin() {
+function UpdateClinicAdmin() {
   const dispatch = useAppDispatch()
-  const showCreateDialog = useAppSelector(
-    state => state.dataTable.showCreateDialog,
+  const { showUpdateDialog, idSelected } = useAppSelector(
+    state => state.dataTable,
   )
-  const [createClinicAdmin, { isLoading }] = useAddClinicAdminMutation()
-  const defaultValues: ClinicAdminRequest = {
-    firstName: "",
-    lastName: "",
-    gender: "",
-    dateOfBirth: null,
-    user: {
-      name: "",
-      phone: "",
-      email: "",
-      password: "",
-    },
-  }
+  const [updateClinicAdmin, { isLoading }] = useUpdateClinicAdminMutation()
+  const [getClinicAdmin] = useGetClinicAdminQuery(idSelected)
   const {
     control,
     formState: { errors },
     reset,
     handleSubmit,
-  } = useForm<ClinicAdminRequest>({ defaultValues })
+  } = useForm<ClinicAdminRequest>({
+    defaultValues: async () => await getClinicAdmin(),
+  })
   const toastRef = React.useRef<Toast>(null)
 
   const handleClose = () => {
@@ -118,7 +110,7 @@ function CreateClinicAdmin() {
       <Dialog
         header="Crear una clínica"
         footer={renderFooter()}
-        visible={showCreateDialog}
+        visible={showUpdateDialog}
         onHide={handleClose}
         className="w-xl"
         breakpoints={{ "960px": "75vw", "641px": "90vw" }}
@@ -410,4 +402,4 @@ function CreateClinicAdmin() {
   )
 }
 
-export default CreateClinicAdmin
+export default UpdateClinicAdmin

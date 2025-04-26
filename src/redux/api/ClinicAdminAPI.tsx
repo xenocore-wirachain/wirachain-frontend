@@ -18,12 +18,13 @@ export const clinicAdminApi = createApi({
       Pagination<ClinicAdminResponse>,
       PaginationParams
     >({
-      query: ({ page, pageSize }) => ({
+      query: ({ page, pageSize, search }) => ({
         url: `${CLINIC_ADMIN_PATH}/page`,
         method: "GET",
         params: {
           pageIndex: page,
           pageSize: pageSize,
+          searchTerm: `%22${search}%22`,
         },
       }),
       providesTags: result =>
@@ -59,12 +60,12 @@ export const clinicAdminApi = createApi({
 
     updateClinicAdmin: builder.mutation<
       ClinicAdminResponse,
-      ClinicAdminResponse
+      { id: UUID; clinic: ClinicAdminRequest }
     >({
-      query: clinicAdmin => ({
-        url: `${CLINIC_ADMIN_PATH}/${clinicAdmin.id}`,
+      query: params => ({
+        url: `${CLINIC_ADMIN_PATH}/${params.id}`,
         method: "PUT",
-        body: clinicAdmin,
+        body: params.clinic,
       }),
       invalidatesTags: (_result, _error, { id }) => [
         { type: "ClinicAdmin" as const, id },

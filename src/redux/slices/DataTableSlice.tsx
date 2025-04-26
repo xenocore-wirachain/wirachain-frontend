@@ -10,6 +10,7 @@ const initialState: DataTable = {
   showDeleteDialog: false,
   page: 1,
   pageSize: 10,
+  search: "",
 }
 
 export const DataTableSlice = createSlice({

@@ -16,20 +16,25 @@ import {
 } from "../../../redux"
 import type { ClinicAdminResponse } from "../../../types/ClinicAdmin"
 import CreateClinicAdmin from "./CreateClnicAdmin"
+import DeleteClinicAdmin from "./DeleteClinicAdmin"
 
 function ListClinicAdmin() {
   const dispatch = useAppDispatch()
   const {
     page,
     pageSize,
+    search,
     showCreateDialog,
     showUpdateDialog,
     showDeleteDialog,
   } = useAppSelector(state => state.dataTable)
-  const { data, isLoading, isFetching } = useGetAllClinicAdminsQuery({
+  const { data, isLoading, isFetching, error } = useGetAllClinicAdminsQuery({
     page: page,
     pageSize: pageSize,
+    search: search,
   })
+
+  console.log("ERROR", error)
 
   const handleUpdate = (id: UUID) => {
     if (showUpdateDialog) return
@@ -111,6 +116,7 @@ function ListClinicAdmin() {
   return (
     <div className="card">
       <CreateClinicAdmin />
+      <DeleteClinicAdmin />
       <DataTable
         lazy
         paginator

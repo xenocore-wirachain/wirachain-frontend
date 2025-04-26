@@ -6,5 +6,5 @@ export type Pagination<T> = {
 export type PaginationParams = {
   page: number
   pageSize: number
-  search?: string
+  search: string
 }
