@@ -1,19 +1,24 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import type { ClinicRequest, ClinicResponse } from "../../types/Clinic"
-import type { Pagination } from "../../types/Pagination"
+import type { Pagination, PaginationParams } from "../../types/Pagination"
+import { API_URL, BASE_PATH } from "../../utils/ApiPath"
 
-const API_URL = import.meta.env.VITE_API_URL as string
-const BASE_PATH = "/clinic/"
+const CLINIC_PATH = BASE_PATH.clinic
 
 export const clinicApi = createApi({
   reducerPath: "clinicApi",
   baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
   tagTypes: ["Clinic"],
   endpoints: builder => ({
-    getAllClinics: builder.query<Pagination<ClinicResponse>, null>({
-      query: () => ({
-        url: BASE_PATH,
+    getAllClinics: builder.query<Pagination<ClinicResponse>, PaginationParams>({
+      query: ({ page, pageSize, search }) => ({
+        url: `${CLINIC_PATH}/page`,
         method: "GET",
+        params: {
+          pageIndex: page,
+          pageSize: pageSize,
+          searchTerm: search,
+        },
       }),
       providesTags: result =>
         result
@@ -29,15 +34,15 @@ export const clinicApi = createApi({
 
     getClinic: builder.query<ClinicResponse, number>({
       query: clinicId => ({
-        url: `${BASE_PATH}${String(clinicId)}/`,
+        url: `${CLINIC_PATH}/${String(clinicId)}/`,
         method: "GET",
       }),
-      providesTags: (_, __, clinicId) => [{ type: "Clinic", id: clinicId }],
+      providesTags: (_result, _error, id) => [{ type: "Clinic" as const, id }],
     }),
 
     addClinic: builder.mutation<ClinicResponse, ClinicRequest>({
       query: clinic => ({
-        url: BASE_PATH,
+        url: CLINIC_PATH,
         method: "POST",
         body: clinic,
       }),
@@ -46,24 +51,24 @@ export const clinicApi = createApi({
 
     updateClinic: builder.mutation<ClinicResponse, ClinicResponse>({
       query: clinic => ({
-        url: `${BASE_PATH}${String(clinic.id)}/`,
+        url: `${CLINIC_PATH}/${String(clinic.id)}/`,
         method: "PUT",
         body: clinic,
       }),
-      invalidatesTags: (_, __, { id }) => [
-        { type: "Clinic", id },
-        { type: "Clinic", id: "LIST" },
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: "Clinic" as const, id },
+        { type: "Clinic" as const, id: "LIST" },
       ],
     }),
 
     deleteClinic: builder.mutation<null, number>({
       query: clinicId => ({
-        url: `${BASE_PATH}${String(clinicId)}/`,
+        url: `${CLINIC_PATH}/${String(clinicId)}/`,
         method: "DELETE",
       }),
-      invalidatesTags: (_, __, clinicId) => [
-        { type: "Clinic", id: clinicId },
-        { type: "Clinic", id: "LIST" },
+      invalidatesTags: (_result, _error, id) => [
+        { type: "Clinic" as const, id },
+        { type: "Clinic" as const, id: "LIST" },
       ],
     }),
   }),

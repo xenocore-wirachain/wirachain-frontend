@@ -13,8 +13,8 @@ import {
   useAppDispatch,
   useAppSelector,
   useGetAllClinicsQuery,
-} from "../../redux"
-import type { ClinicResponse } from "../../types/Clinic"
+} from "../../../redux"
+import type { ClinicResponse } from "../../../types/Clinic"
 import CreateClinic from "./CreateClinic"
 import DeleteClinic from "./DeleteClinic"
 import UpdateClinic from "./UpdateClinic"

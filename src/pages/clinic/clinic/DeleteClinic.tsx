@@ -7,7 +7,7 @@ import {
   useAppDispatch,
   useAppSelector,
   useDeleteClinicMutation,
-} from "../../redux"
+} from "../../../redux"
 
 const DeleteClinic: React.FC = () => {
   const dispatch = useAppDispatch()

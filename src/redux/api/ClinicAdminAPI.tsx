@@ -24,7 +24,7 @@ export const clinicAdminApi = createApi({
         params: {
           pageIndex: page,
           pageSize: pageSize,
-          searchTerm: `%22${search}%22`,
+          searchTerm: search,
         },
       }),
       providesTags: result =>

@@ -15,9 +15,9 @@ import {
   useAddClinicMutation,
   useAppDispatch,
   useAppSelector,
-} from "../../redux"
-import type { ClinicRequest } from "../../types/Clinic"
-import type { ClinicForm } from "../../types/Form"
+} from "../../../redux"
+import type { ClinicRequest } from "../../../types/Clinic"
+import type { ClinicForm } from "../../../types/Form"
 
 const CreateClinicComponent: React.FC = () => {
   const dispatch = useAppDispatch()
