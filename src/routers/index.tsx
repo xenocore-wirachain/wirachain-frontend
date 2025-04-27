@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router"
-import Body from "../layouts/Body"
+import BodyDashboard from "../layouts/BodyDashboard"
 import Login from "../pages/auth/Login"
 import Register from "../pages/auth/Register"
 import ResetPassword from "../pages/auth/ResetPassword"
@@ -22,7 +22,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <Body />,
+    element: <BodyDashboard />,
     children: AdminRouter,
   },
   {
