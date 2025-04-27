@@ -16,16 +16,7 @@ import {
   useAppSelector,
 } from "../../../redux"
 import type { ClinicAdminRequest } from "../../../types/ClinicAdmin"
-
-type Gender = {
-  id: number
-  value: string
-}
-
-const GenderDictionary: Gender[] = [
-  { id: 1, value: "Hombre" },
-  { id: 2, value: "Mujer" },
-]
+import { GenderDictionary } from "../../../utils/StaticVariables"
 
 function CreateClinicAdmin() {
   const dispatch = useAppDispatch()
