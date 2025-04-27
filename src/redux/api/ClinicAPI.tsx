@@ -1,5 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-import type { ClinicRequest, ClinicResponse } from "../../types/Clinic"
+import type {
+  BaseClinic,
+  ClinicRequest,
+  ClinicResponse,
+} from "../../types/Clinic"
 import type { Pagination, PaginationParams } from "../../types/Pagination"
 import { API_URL, BASE_PATH } from "../../utils/ApiPath"
 
@@ -49,11 +53,14 @@ export const clinicApi = createApi({
       invalidatesTags: [{ type: "Clinic", id: "LIST" }],
     }),
 
-    updateClinic: builder.mutation<ClinicResponse, ClinicResponse>({
-      query: clinic => ({
-        url: `${CLINIC_PATH}/${String(clinic.id)}/`,
+    updateClinic: builder.mutation<
+      ClinicResponse,
+      { id: number; clinic: BaseClinic }
+    >({
+      query: params => ({
+        url: `${CLINIC_PATH}/${String(params.id)}/`,
         method: "PUT",
-        body: clinic,
+        body: params.clinic,
       }),
       invalidatesTags: (_result, _error, { id }) => [
         { type: "Clinic" as const, id },

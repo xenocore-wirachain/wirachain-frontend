@@ -1,14 +1,9 @@
 import { Button } from "primereact/button"
 import { Dialog } from "primereact/dialog"
-import { InputNumber } from "primereact/inputnumber"
 import { InputText } from "primereact/inputtext"
 import { Toast } from "primereact/toast"
 import { classNames } from "primereact/utils"
 import React from "react"
-import type {
-  ControllerFieldState,
-  ControllerRenderProps,
-} from "react-hook-form"
 import { Controller, useForm } from "react-hook-form"
 import {
   modifyCreateDialog,
@@ -17,28 +12,26 @@ import {
   useAppSelector,
 } from "../../../redux"
 import type { ClinicRequest } from "../../../types/Clinic"
-import type { ClinicForm } from "../../../types/Form"
 
-const CreateClinicComponent: React.FC = () => {
+function CreateClinic() {
   const dispatch = useAppDispatch()
   const showCreateDialog = useAppSelector(
     state => state.dataTable.showCreateDialog,
   )
-  const [addClinic, { isLoading }] = useAddClinicMutation()
-  const toastRef = React.useRef<Toast>(null)
-
   const defaultValues: ClinicRequest = {
-    ruc: 0,
+    administratorId: "550e8400-e29b-41d4-a716-446655440000",
     name: "",
     address: "",
+    ruc: "",
   }
-
+  const [addClinic, { isLoading }] = useAddClinicMutation()
   const {
     control,
     formState: { errors },
     reset,
     handleSubmit,
   } = useForm<ClinicRequest>({ defaultValues })
+  const toastRef = React.useRef<Toast>(null)
 
   const handleClose = () => {
     dispatch(modifyCreateDialog(false))
@@ -67,131 +60,6 @@ const CreateClinicComponent: React.FC = () => {
         })
       })
   }
-
-  const formFields: ClinicForm<ClinicRequest>[] = [
-    {
-      name: "ruc",
-      label: "RUC*",
-      inputType: "number",
-      rules: {
-        required: "RUC es requerido.",
-        validate: (value: number) => {
-          const rucString = String(value)
-          if (rucString.length !== 11) {
-            return "RUC debe tener 11 caracteres"
-          }
-          return true
-        },
-      },
-      min: 10000000000, // 11 digits minimum
-      max: 99999999999, // 11 digits maximum
-    },
-    {
-      name: "name",
-      label: "Nombre*",
-      inputType: "text-notallow-number",
-      rules: {
-        required: "Nombre es requerido.",
-      },
-    },
-    {
-      name: "address",
-      label: "Dirección*",
-      inputType: "text-allow-number",
-      rules: {
-        required: "Dirección es requerida.",
-      },
-    },
-  ]
-
-  const renderInput = (
-    field: ClinicForm<ClinicRequest>,
-    formField: ControllerRenderProps<ClinicRequest, keyof ClinicRequest>,
-    fieldState: ControllerFieldState,
-  ) => {
-    const commonProps = {
-      id: formField.name,
-      className: classNames({ "p-invalid": fieldState.invalid }),
-      disabled: isLoading,
-      placeholder: field.placeholder,
-    }
-
-    switch (field.inputType) {
-      case "text-allow-number":
-      case "text-notallow-number":
-        return (
-          <InputText
-            {...commonProps}
-            value={String(formField.value)}
-            keyfilter={
-              field.inputType === "text-notallow-number" ? "alpha" : undefined
-            }
-            onChange={e => {
-              formField.onChange(e.target.value)
-            }}
-            onBlur={formField.onBlur}
-            name={formField.name}
-            ref={formField.ref}
-          />
-        )
-
-      case "number":
-        return (
-          <InputNumber
-            {...commonProps}
-            value={
-              typeof formField.value === "number" ? formField.value : undefined
-            }
-            onValueChange={e => {
-              formField.onChange(e.value)
-            }}
-            min={field.min}
-            max={field.max}
-            useGrouping={false}
-          />
-        )
-
-      default:
-        return (
-          <InputText
-            {...commonProps}
-            value={String(formField.value)}
-            onChange={e => {
-              formField.onChange(e.target.value)
-            }}
-            onBlur={formField.onBlur}
-            name={formField.name}
-            ref={formField.ref}
-          />
-        )
-    }
-  }
-
-  const renderFormField = (field: ClinicForm<ClinicRequest>) => (
-    <div className="field mt-4" key={field.name}>
-      <span className="p-float-label">
-        <Controller
-          name={field.name}
-          control={control}
-          rules={field.rules}
-          render={({ field: formField, fieldState }) =>
-            renderInput(field, formField, fieldState)
-          }
-        />
-        <label
-          htmlFor={field.name}
-          className={classNames({ "p-error": errors[field.name] })}
-        >
-          {field.label}
-        </label>
-      </span>
-      {errors[field.name] && (
-        <small className="p-error">
-          {errors[field.name]?.message?.toString()}
-        </small>
-      )}
-    </div>
-  )
 
   const renderFooter = () => (
     <>
@@ -234,11 +102,114 @@ const CreateClinicComponent: React.FC = () => {
           onSubmit={handleFormSubmit}
           className="p-fluid"
         >
-          {formFields.map(renderFormField)}
+          {/* NOMBRE */}
+          <div className="field mt-4" key="name">
+            <span className="p-float-label">
+              <Controller
+                name="name"
+                control={control}
+                rules={{ required: "Se requiere nombre" }}
+                render={({ field: { onChange, onBlur, value, ref } }) => (
+                  <InputText
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    value={value}
+                    ref={ref}
+                    invalid={errors.name ? true : false}
+                    disabled={isLoading}
+                  />
+                )}
+              />
+              <label
+                htmlFor="name"
+                className={classNames({ "p-error": errors.name })}
+              >
+                Nombre*
+              </label>
+            </span>
+            {errors.name && (
+              <small className="p-error">
+                {errors.name.message?.toString()}
+              </small>
+            )}
+          </div>
+
+          {/* RUC */}
+          <div className="field mt-4" key="ruc">
+            <span className="p-float-label">
+              <Controller
+                name="ruc"
+                control={control}
+                rules={{
+                  required: "Se requiere ruc",
+                  validate: (value: string) => {
+                    if (value.length !== 11) {
+                      return "RUC debe tener 11 caracteres"
+                    }
+                    return true
+                  },
+                }}
+                render={({ field: { onChange, onBlur, value, ref } }) => (
+                  <InputText
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    value={value}
+                    ref={ref}
+                    invalid={errors.ruc ? true : false}
+                    disabled={isLoading}
+                    keyfilter="int"
+                  />
+                )}
+              />
+              <label
+                htmlFor="ruc"
+                className={classNames({ "p-error": errors.ruc })}
+              >
+                RUC*
+              </label>
+            </span>
+            {errors.ruc && (
+              <small className="p-error">
+                {errors.ruc.message?.toString()}
+              </small>
+            )}
+          </div>
+
+          {/* ADRRESS */}
+          <div className="field mt-4" key="address">
+            <span className="p-float-label">
+              <Controller
+                name="address"
+                control={control}
+                rules={{ required: "Se requiere direccion" }}
+                render={({ field: { onChange, onBlur, value, ref } }) => (
+                  <InputText
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    value={value}
+                    ref={ref}
+                    invalid={errors.address ? true : false}
+                    disabled={isLoading}
+                  />
+                )}
+              />
+              <label
+                htmlFor="address"
+                className={classNames({ "p-error": errors.address })}
+              >
+                Direccion*
+              </label>
+            </span>
+            {errors.address && (
+              <small className="p-error">
+                {errors.address.message?.toString()}
+              </small>
+            )}
+          </div>
         </form>
       </Dialog>
     </>
   )
 }
 
-export default CreateClinicComponent
+export default CreateClinic

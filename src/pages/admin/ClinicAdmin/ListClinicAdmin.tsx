@@ -28,13 +28,11 @@ function ListClinicAdmin() {
     showUpdateDialog,
     showDeleteDialog,
   } = useAppSelector(state => state.dataTable)
-  const { data, isLoading, isFetching, error } = useGetAllClinicAdminsQuery({
+  const { data, isLoading, isFetching } = useGetAllClinicAdminsQuery({
     page: page,
     pageSize: pageSize,
     search: search,
   })
-
-  console.log("ERROR", error)
 
   const handleUpdate = (id: UUID) => {
     if (showUpdateDialog) return

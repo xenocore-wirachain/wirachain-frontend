@@ -1,0 +1,94 @@
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import type { UUID } from "crypto"
+import type {
+  DoctorDetailedResponse,
+  DoctorRequest,
+  DoctorResponse,
+} from "../../types/Doctor"
+import type { Pagination, PaginationParams } from "../../types/Pagination"
+import { API_URL, BASE_PATH } from "../../utils/ApiPath"
+
+const DOCTOR_PATH = BASE_PATH.doctor
+
+export const doctorApi = createApi({
+  reducerPath: "doctorApi",
+  baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
+  tagTypes: ["Doctor"],
+  endpoints: builder => ({
+    getAllDoctors: builder.query<
+      Pagination<DoctorDetailedResponse>,
+      PaginationParams
+    >({
+      query: ({ page, pageSize, search }) => ({
+        url: `${DOCTOR_PATH}/page`,
+        method: "GET",
+        params: {
+          pageIndex: page,
+          pageSize: pageSize,
+          searchTerm: search,
+        },
+      }),
+      providesTags: result =>
+        result
+          ? [
+              ...result.results.map(({ id }) => ({
+                type: "Doctor" as const,
+                id,
+              })),
+              { type: "Doctor", id: "LIST" },
+            ]
+          : [{ type: "Doctor", id: "LIST" }],
+    }),
+
+    getDoctor: builder.query<DoctorResponse, UUID>({
+      query: clinicAdminId => ({
+        url: `${DOCTOR_PATH}/${clinicAdminId}`,
+        method: "GET",
+      }),
+      providesTags: (_result, _error, id) => [{ type: "Doctor" as const, id }],
+    }),
+
+    addDoctor: builder.mutation<DoctorResponse, DoctorRequest>({
+      query: clinicAdmin => ({
+        url: DOCTOR_PATH,
+        method: "POST",
+        body: clinicAdmin,
+      }),
+      invalidatesTags: [{ type: "Doctor" as const, id: "LIST" }],
+    }),
+
+    updateDoctor: builder.mutation<
+      DoctorResponse,
+      { id: UUID; clinic: DoctorRequest }
+    >({
+      query: params => ({
+        url: `${DOCTOR_PATH}/${params.id}`,
+        method: "PUT",
+        body: params.clinic,
+      }),
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: "Doctor" as const, id },
+        { type: "Doctor" as const, id: "LIST" },
+      ],
+    }),
+
+    deleteDoctor: builder.mutation<null, UUID>({
+      query: clinicAdminId => ({
+        url: `${DOCTOR_PATH}/${clinicAdminId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (_result, _error, id) => [
+        { type: "Doctor" as const, id },
+        { type: "Doctor" as const, id: "LIST" },
+      ],
+    }),
+  }),
+})
+
+export const {
+  useGetAllDoctorsQuery,
+  useGetDoctorQuery,
+  useAddDoctorMutation,
+  useUpdateDoctorMutation,
+  useDeleteDoctorMutation,
+} = doctorApi

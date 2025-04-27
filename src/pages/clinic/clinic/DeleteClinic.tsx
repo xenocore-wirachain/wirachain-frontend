@@ -1,7 +1,7 @@
 import { Button } from "primereact/button"
 import { Dialog } from "primereact/dialog"
 import { Toast } from "primereact/toast"
-import React, { useState } from "react"
+import React from "react"
 import {
   modifyDeleteDialog,
   useAppDispatch,
@@ -9,52 +9,48 @@ import {
   useDeleteClinicMutation,
 } from "../../../redux"
 
-const DeleteClinic: React.FC = () => {
+function DeleteClinic() {
   const dispatch = useAppDispatch()
   const { idSelected, showDeleteDialog } = useAppSelector(
     state => state.dataTable,
   )
-  const [deleteClinic] = useDeleteClinicMutation()
-  const [isDeleting, setIsDeleting] = useState(false)
+  const [deleteClinic, { isLoading }] = useDeleteClinicMutation()
   const toastRef = React.useRef<Toast>(null)
 
   const handleClose = () => {
-    if (!isDeleting) {
+    if (!isLoading) {
       dispatch(modifyDeleteDialog(false))
     }
   }
 
   const handleDelete = () => {
-    if (idSelected) {
-      try {
-        setIsDeleting(true)
-        void deleteClinic(idSelected)
-          .unwrap()
-          .then(() => {
-            toastRef.current?.show({
-              severity: "success",
-              summary: "Éxito",
-              detail: "Registro eliminado correctamente",
-            })
-            dispatch(modifyDeleteDialog(false))
+    if (typeof idSelected === "number") {
+      void deleteClinic(idSelected)
+        .unwrap()
+        .then(() => {
+          toastRef.current?.show({
+            severity: "success",
+            summary: "Éxito",
+            detail: "Clinica eliminado correctamente",
           })
-          .catch((error: unknown) => {
-            const errorMessage =
-              error instanceof Error ? error.message : "Error desconocido"
+          handleClose()
+        })
+        .catch((error: unknown) => {
+          const errorMessage =
+            error instanceof Error ? error.message : "Error desconocido"
 
-            toastRef.current?.show({
-              severity: "error",
-              summary: "Error",
-              detail: `No se pudo eliminar el registro: ${errorMessage}`,
-            })
+          toastRef.current?.show({
+            severity: "error",
+            summary: "Error",
+            detail: `No se pudo eliminar clinica: ${errorMessage}`,
           })
-          .finally(() => {
-            setIsDeleting(false)
-          })
-      } catch (error: unknown) {
-        setIsDeleting(false)
-        console.error("Error initiating delete:", error)
-      }
+        })
+    } else {
+      toastRef.current?.show({
+        severity: "error",
+        summary: "Error",
+        detail: "ID no válido: se requiere un number para eliminar clinica",
+      })
     }
   }
 
@@ -65,14 +61,14 @@ const DeleteClinic: React.FC = () => {
         icon="pi pi-times"
         outlined
         onClick={handleClose}
-        disabled={isDeleting}
+        disabled={isLoading}
       />
       <Button
         label="Sí"
         icon="pi pi-check"
         severity="danger"
         onClick={handleDelete}
-        loading={isDeleting}
+        loading={isLoading}
       />
     </>
   )
@@ -88,7 +84,7 @@ const DeleteClinic: React.FC = () => {
         style={{ width: "32rem" }}
         breakpoints={{ "960px": "75vw", "641px": "90vw" }}
         className="delete-clinic-dialog"
-        closable={!isDeleting}
+        closable={!isLoading}
       >
         <div className="confirmation-content flex align-items-center">
           <i

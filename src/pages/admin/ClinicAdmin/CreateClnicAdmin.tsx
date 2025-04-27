@@ -99,7 +99,7 @@ function CreateClinicAdmin() {
       />
       <Button
         type="submit"
-        form="createClinicForm"
+        form="createAdminClinicForm"
         label="Guardar"
         icon="pi pi-check"
         loading={isLoading}
@@ -125,7 +125,7 @@ function CreateClinicAdmin() {
         closable={!isLoading}
       >
         <form
-          id="createClinicForm"
+          id="createAdminClinicForm"
           onSubmit={handleFormSubmit}
           className="p-fluid"
         >
@@ -152,7 +152,7 @@ function CreateClinicAdmin() {
                 htmlFor="firstNmae"
                 className={classNames({ "p-error": errors.firstName })}
               >
-                Nombre
+                Nombre*
               </label>
             </span>
             {errors.firstName && (
@@ -185,7 +185,7 @@ function CreateClinicAdmin() {
                 htmlFor="lastName"
                 className={classNames({ "p-error": errors.lastName })}
               >
-                Apellido
+                Apellido*
               </label>
             </span>
             {errors.lastName && (
@@ -219,7 +219,7 @@ function CreateClinicAdmin() {
                 htmlFor="gender"
                 className={classNames({ "p-error": errors.gender })}
               >
-                Genero
+                Genero*
               </label>
             </span>
             {errors.gender && (
@@ -255,7 +255,7 @@ function CreateClinicAdmin() {
                 htmlFor="birth"
                 className={classNames({ "p-error": errors.firstName })}
               >
-                Fecha de nacimiento
+                Fecha de nacimiento*
               </label>
             </span>
             {errors.dateOfBirth && (
@@ -288,7 +288,7 @@ function CreateClinicAdmin() {
                 htmlFor="name"
                 className={classNames({ "p-error": errors.user?.name })}
               >
-                Usuario
+                Usuario*
               </label>
             </span>
             {errors.user?.name && (
@@ -322,7 +322,7 @@ function CreateClinicAdmin() {
                 htmlFor="phone"
                 className={classNames({ "p-error": errors.user?.phone })}
               >
-                Telefono
+                Telefono*
               </label>
             </span>
             {errors.user?.phone && (
@@ -361,7 +361,7 @@ function CreateClinicAdmin() {
                 htmlFor="mail"
                 className={classNames({ "p-error": errors.user?.email })}
               >
-                Correo
+                Correo*
               </label>
             </span>
             {errors.user?.email && (
@@ -395,7 +395,7 @@ function CreateClinicAdmin() {
                 htmlFor="password"
                 className={classNames({ "p-error": errors.user?.password })}
               >
-                Contraseña
+                Contraseña*
               </label>
             </span>
             {errors.user?.password && (
