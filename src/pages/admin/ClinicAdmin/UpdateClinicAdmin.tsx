@@ -17,16 +17,7 @@ import {
   useUpdateClinicAdminMutation,
 } from "../../../redux"
 import type { ClinicAdminRequest } from "../../../types/ClinicAdmin"
-
-type Gender = {
-  id: number
-  value: string
-}
-
-const GenderDictionary: Gender[] = [
-  { id: 1, value: "Hombre" },
-  { id: 2, value: "Mujer" },
-]
+import { GenderDictionary } from "../../../utils/StaticVariables"
 
 function UpdateClinicAdmin() {
   const dispatch = useAppDispatch()
@@ -41,7 +32,7 @@ function UpdateClinicAdmin() {
     reset,
     handleSubmit,
   } = useForm<ClinicAdminRequest>({
-    defaultValues: async () => await getClinicAdmin(),
+    defaultValues: async () => await getClinicAdmin,
   })
   const toastRef = React.useRef<Toast>(null)
 
@@ -58,26 +49,35 @@ function UpdateClinicAdmin() {
     }
     data.gender = data.gender === "Hombre" ? "male" : "female"
 
-    void createClinicAdmin(data)
-      .unwrap()
-      .then(() => {
-        toastRef.current?.show({
-          severity: "success",
-          summary: "Éxito",
-          detail: "Administrador de clinica creado correctamente",
+    if (typeof idSelected === "string") {
+      void updateClinicAdmin({ id: idSelected, clinicAdmin: data })
+        .unwrap()
+        .then(() => {
+          toastRef.current?.show({
+            severity: "success",
+            summary: "Éxito",
+            detail: "Administrador de clinica actualizado correctamente",
+          })
+          handleClose()
         })
-        handleClose()
-      })
-      .catch((error: unknown) => {
-        const errorMessage =
-          error instanceof Error ? error.message : "Error desconocido"
+        .catch((error: unknown) => {
+          const errorMessage =
+            error instanceof Error ? error.message : "Error desconocido"
 
-        toastRef.current?.show({
-          severity: "error",
-          summary: "Error",
-          detail: `No se pudo crear la administrador de clinica: ${errorMessage}`,
+          toastRef.current?.show({
+            severity: "error",
+            summary: "Error",
+            detail: `No se pudo actualizar administrador de clinica ${errorMessage}`,
+          })
         })
+    } else {
+      toastRef.current?.show({
+        severity: "error",
+        summary: "Error",
+        detail:
+          "ID no válido: se requiere un UUID para actualizar el administrador de clinica",
       })
+    }
   }
 
   const renderFooter = () => (
@@ -91,7 +91,7 @@ function UpdateClinicAdmin() {
       />
       <Button
         type="submit"
-        form="createClinicForm"
+        form="updateAdminClinicForm"
         label="Guardar"
         icon="pi pi-check"
         loading={isLoading}
@@ -117,7 +117,7 @@ function UpdateClinicAdmin() {
         closable={!isLoading}
       >
         <form
-          id="createClinicForm"
+          id="updateAdminClinicForm"
           onSubmit={handleFormSubmit}
           className="p-fluid"
         >
@@ -144,7 +144,7 @@ function UpdateClinicAdmin() {
                 htmlFor="firstNmae"
                 className={classNames({ "p-error": errors.firstName })}
               >
-                Nombre
+                Nombre*
               </label>
             </span>
             {errors.firstName && (
@@ -177,7 +177,7 @@ function UpdateClinicAdmin() {
                 htmlFor="lastName"
                 className={classNames({ "p-error": errors.lastName })}
               >
-                Apellido
+                Apellido*
               </label>
             </span>
             {errors.lastName && (
@@ -211,7 +211,7 @@ function UpdateClinicAdmin() {
                 htmlFor="gender"
                 className={classNames({ "p-error": errors.gender })}
               >
-                Genero
+                Genero*
               </label>
             </span>
             {errors.gender && (
@@ -247,7 +247,7 @@ function UpdateClinicAdmin() {
                 htmlFor="birth"
                 className={classNames({ "p-error": errors.firstName })}
               >
-                Fecha de nacimiento
+                Fecha de nacimiento*
               </label>
             </span>
             {errors.dateOfBirth && (
@@ -280,7 +280,7 @@ function UpdateClinicAdmin() {
                 htmlFor="name"
                 className={classNames({ "p-error": errors.user?.name })}
               >
-                Usuario
+                Usuario*
               </label>
             </span>
             {errors.user?.name && (
@@ -314,7 +314,7 @@ function UpdateClinicAdmin() {
                 htmlFor="phone"
                 className={classNames({ "p-error": errors.user?.phone })}
               >
-                Telefono
+                Telefono*
               </label>
             </span>
             {errors.user?.phone && (
@@ -353,7 +353,7 @@ function UpdateClinicAdmin() {
                 htmlFor="mail"
                 className={classNames({ "p-error": errors.user?.email })}
               >
-                Correo
+                Correo*
               </label>
             </span>
             {errors.user?.email && (
@@ -387,7 +387,7 @@ function UpdateClinicAdmin() {
                 htmlFor="password"
                 className={classNames({ "p-error": errors.user?.password })}
               >
-                Contraseña
+                Contraseña*
               </label>
             </span>
             {errors.user?.password && (

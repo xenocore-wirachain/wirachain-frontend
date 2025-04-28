@@ -4,8 +4,8 @@ import type { MenuItem } from "primereact/menuitem"
 
 const MenuAdmin: MenuItem[] = [
   {
-    label: "Clinicas",
-    icon: "pi pi-building",
+    label: "Administradores de clinicas",
+    icon: "pi pi-users",
   },
 ]
 
