@@ -23,6 +23,7 @@ function Login() {
   const onSubmit = (data: Credentials) => {
     console.log("CREDENTIALS", data)
     reset()
+    void navigate("dashboard")
   }
 
   const handleFormSubmit = (e: React.FormEvent) => {
@@ -114,7 +115,8 @@ function Login() {
 
           <Button
             label="Iniciar sesión"
-            className="w-full p-button-lg mt-2 bg-blue-600 hover:bg-blue-700"
+            className="w-full mt-2 bg-blue-600 hover:bg-blue-700"
+            size="large"
             type="submit"
             form="register"
           />
@@ -126,7 +128,8 @@ function Login() {
 
         <Button
           label="Registrate"
-          className="w-full p-button-lg p-button-outlined mt-2"
+          className="w-full p-button-outlined mt-2"
+          size="large"
           type="button"
           onClick={handleRedirectRegister}
         />
