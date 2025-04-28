@@ -2,13 +2,13 @@ import type { UUID } from "crypto"
 import { Button } from "primereact/button"
 import { Column } from "primereact/column"
 import { DataTable } from "primereact/datatable"
-import { IconField } from "primereact/iconfield"
-import { InputIcon } from "primereact/inputicon"
 import { InputText } from "primereact/inputtext"
 import {
   modifyCreateDialog,
   modifyDeleteDialog,
   modifyIdSelected,
+  modifyPage,
+  modifySearch,
   modifyUpdateDialog,
   useAppDispatch,
   useAppSelector,
@@ -52,31 +52,20 @@ function ListClinicAdmin() {
   }
 
   const handlePageChange = (event: { first: number; rows: number }) => {
-    // setCurrentPage(Math.floor(event.first / event.rows))
-    // setPageSize(event.rows)
-    console.log("CHANGE PAGE", event.first, event.rows)
+    const newPage = Math.floor(event.first / event.rows)
+    console.log("MODIFY PAGE", newPage)
+    dispatch(modifyPage(newPage + 1))
   }
 
-  //   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //     setSearchTerm(e.target.value)
-  //     setCurrentPage(0) // Reset to first page when searching
-  //     console.log("SEARCH", e)
-  //   }
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(modifySearch(e.target.value))
+  }
 
   const renderHeader = () => (
     <div className="flex flex-wrap justify-between items-center">
       <h2 className="text-2xl font-semibold">Lista de Administradores</h2>
       <div className="flex flex-wrap items-center gap-3">
-        <IconField iconPosition="left">
-          <InputIcon className="pi pi-search" />
-          <InputText
-            className="w-48"
-            type="search"
-            placeholder="Buscar administrador"
-            // value={searchTerm}
-            // onChange={handleSearch}
-          />
-        </IconField>
+        <InputText placeholder="Buscar" onChange={handleSearch} />
         <Button
           onClick={handleCreateNew}
           icon="pi pi-plus"
@@ -119,7 +108,7 @@ function ListClinicAdmin() {
         lazy
         paginator
         value={data?.results}
-        first={page * pageSize}
+        first={page * pageSize - 1}
         rows={pageSize}
         totalRecords={data?.count}
         loading={isLoading || isFetching}

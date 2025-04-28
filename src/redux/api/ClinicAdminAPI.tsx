@@ -60,12 +60,12 @@ export const clinicAdminApi = createApi({
 
     updateClinicAdmin: builder.mutation<
       ClinicAdminResponse,
-      { id: UUID; clinic: ClinicAdminRequest }
+      { id: UUID; clinicAdmin: ClinicAdminRequest }
     >({
       query: params => ({
         url: `${CLINIC_ADMIN_PATH}/${params.id}`,
         method: "PUT",
-        body: params.clinic,
+        body: params.clinicAdmin,
       }),
       invalidatesTags: (_result, _error, { id }) => [
         { type: "ClinicAdmin" as const, id },

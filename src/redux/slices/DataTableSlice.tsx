@@ -29,6 +29,12 @@ export const DataTableSlice = createSlice({
     modifyIdSelected: (state, action: PayloadAction<number | UUID>) => {
       state.idSelected = action.payload
     },
+    modifySearch: (state, action: PayloadAction<string>) => {
+      state.search = action.payload
+    },
+    modifyPage: (state, action: PayloadAction<number>) => {
+      state.page = action.payload
+    },
   },
 })
 
@@ -37,5 +43,7 @@ export const {
   modifyUpdateDialog,
   modifyIdSelected,
   modifyDeleteDialog,
+  modifySearch,
+  modifyPage,
 } = DataTableSlice.actions
 export const DataTableReducer = DataTableSlice.reducer

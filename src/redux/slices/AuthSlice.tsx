@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import type { Tokens } from "../../types/Login"
+import type { Tokens } from "../../types/Credentials"
 
 const initialState: Tokens = {
   accessToken:

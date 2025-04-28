@@ -52,5 +52,7 @@ export {
   modifyCreateDialog,
   modifyDeleteDialog,
   modifyIdSelected,
+  modifyPage,
+  modifySearch,
   modifyUpdateDialog,
 } from "./slices/DataTableSlice"
