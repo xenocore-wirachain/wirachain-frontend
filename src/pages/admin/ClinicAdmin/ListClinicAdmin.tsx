@@ -53,7 +53,6 @@ function ListClinicAdmin() {
 
   const handlePageChange = (event: { first: number; rows: number }) => {
     const newPage = Math.floor(event.first / event.rows)
-    console.log("MODIFY PAGE", newPage)
     dispatch(modifyPage(newPage + 1))
   }
 

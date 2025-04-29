@@ -39,7 +39,6 @@ function DeleteClinicAdmin() {
         .catch((error: unknown) => {
           const errorMessage =
             error instanceof Error ? error.message : "Error desconocido"
-
           toastRef.current?.show({
             severity: "error",
             summary: "Error",
