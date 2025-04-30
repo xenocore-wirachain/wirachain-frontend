@@ -79,6 +79,7 @@ function ListClinicAdmin() {
   const actionBodyTemplate = (rowData: ClinicAdminResponse) => (
     <>
       <Button
+        text
         onClick={() => {
           handleUpdate(rowData.id)
         }}
@@ -86,8 +87,10 @@ function ListClinicAdmin() {
         className="mr-2"
         tooltip="Editar"
         tooltipOptions={{ position: "top" }}
+        size="small"
       />
       <Button
+        text
         onClick={() => {
           handleDelete(rowData.id)
         }}
@@ -95,6 +98,7 @@ function ListClinicAdmin() {
         severity="danger"
         tooltip="Eliminar"
         tooltipOptions={{ position: "top" }}
+        size="small"
       />
     </>
   )
@@ -106,6 +110,7 @@ function ListClinicAdmin() {
       <DataTable
         lazy
         paginator
+        scrollable
         value={data?.results}
         first={page * pageSize - 1}
         rows={pageSize}
@@ -115,13 +120,13 @@ function ListClinicAdmin() {
         onPage={handlePageChange}
         emptyMessage="No se encontraron administradores"
         className="p-datatable-gridlines"
+        // virtualScrollerOptions={{ itemSize: 46 }}
       >
         <Column field="id" header="ID" style={{ width: "30%" }} />
         <Column field="firstName" header="Nombre" style={{ width: "30%" }} />
         <Column field="lastName" header="Apellido" style={{ width: "30%" }} />
         <Column
           body={actionBodyTemplate}
-          header="Acciones"
           style={{ width: "10%", textAlign: "center" }}
           exportable={false}
         />

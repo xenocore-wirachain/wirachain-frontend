@@ -1,3 +1,4 @@
+import { Navigate } from "react-router"
 import ListClinic from "../pages/clinic/clinic/ListClinic"
 import ListDoctor from "../pages/clinic/doctor/ListDoctor"
 import HistoryAppoinment from "../pages/clinic/HistoryAppoinment"
@@ -8,7 +9,10 @@ import ListStudy from "../pages/clinic/study/ListStudy"
 
 const ClinicRouter = [
   {
-    index: true,
+    path: "",
+    element: <Navigate replace to="/dashboard/clinic-list" />,
+  },
+  {
     path: "clinic-list",
     element: <ListClinic />,
   },

@@ -1,8 +1,12 @@
+import { Navigate } from "react-router"
 import ListClinicAdmin from "../pages/admin/ClinicAdmin/ListClinicAdmin"
 
 const AdminRouter = [
   {
-    index: true,
+    path: "",
+    element: <Navigate replace to="/dashboard/list-clinic-admin" />,
+  },
+  {
     path: "list-clinic-admin",
     element: <ListClinicAdmin />,
   },
