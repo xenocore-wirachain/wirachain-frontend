@@ -1,64 +1,27 @@
-import type { UUID } from "crypto"
 import { Button } from "primereact/button"
 import { Column } from "primereact/column"
 import { DataTable } from "primereact/datatable"
 import { InputText } from "primereact/inputtext"
-import {
-  modifyCreateDialog,
-  modifyDeleteDialog,
-  modifyIdSelected,
-  modifyPage,
-  modifySearch,
-  modifyUpdateDialog,
-  useAppDispatch,
-  useAppSelector,
-  useGetAllClinicAdminsQuery,
-} from "../../../redux"
+import { Toast } from "primereact/toast"
+import { useClinicAdminHook } from "../../../hooks/ClinicAdminHook"
 import type { ClinicAdminResponse } from "../../../types/ClinicAdmin"
 import CreateClinicAdmin from "./CreateClnicAdmin"
 import DeleteClinicAdmin from "./DeleteClinicAdmin"
 
 function ListClinicAdmin() {
-  const dispatch = useAppDispatch()
   const {
     page,
     pageSize,
-    search,
-    showCreateDialog,
-    showUpdateDialog,
-    showDeleteDialog,
-  } = useAppSelector(state => state.dataTable)
-  const { data, isLoading, isFetching } = useGetAllClinicAdminsQuery({
-    page: page,
-    pageSize: pageSize,
-    search: search,
-  })
-
-  const handleUpdate = (id: UUID) => {
-    if (showUpdateDialog) return
-    dispatch(modifyIdSelected(id))
-    dispatch(modifyUpdateDialog(true))
-  }
-
-  const handleDelete = (id: UUID) => {
-    if (showDeleteDialog) return
-    dispatch(modifyIdSelected(id))
-    dispatch(modifyDeleteDialog(true))
-  }
-
-  const handleCreateNew = () => {
-    if (showCreateDialog) return
-    dispatch(modifyCreateDialog(true))
-  }
-
-  const handlePageChange = (event: { first: number; rows: number }) => {
-    const newPage = Math.floor(event.first / event.rows)
-    dispatch(modifyPage(newPage + 1))
-  }
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(modifySearch(e.target.value))
-  }
+    data,
+    isLoading,
+    isFetching,
+    toastRef,
+    openUpdateDialog,
+    openDeleteDialog,
+    openCreateDialog,
+    handlePageChange,
+    handleSearch,
+  } = useClinicAdminHook()
 
   const renderHeader = () => (
     <div className="flex flex-wrap justify-between items-center">
@@ -66,7 +29,7 @@ function ListClinicAdmin() {
       <div className="flex flex-wrap items-center gap-3">
         <InputText placeholder="Buscar" onChange={handleSearch} />
         <Button
-          onClick={handleCreateNew}
+          onClick={openCreateDialog}
           icon="pi pi-plus"
           label="Nuevo"
           severity="success"
@@ -76,12 +39,12 @@ function ListClinicAdmin() {
     </div>
   )
 
-  const actionBodyTemplate = (rowData: ClinicAdminResponse) => (
+  const renderActionButtons = (rowData: ClinicAdminResponse) => (
     <>
       <Button
         text
         onClick={() => {
-          handleUpdate(rowData.id)
+          openUpdateDialog(rowData.id)
         }}
         icon="pi pi-pencil"
         className="mr-2"
@@ -92,7 +55,7 @@ function ListClinicAdmin() {
       <Button
         text
         onClick={() => {
-          handleDelete(rowData.id)
+          openDeleteDialog(rowData.id)
         }}
         icon="pi pi-trash"
         severity="danger"
@@ -105,6 +68,7 @@ function ListClinicAdmin() {
 
   return (
     <div className="card">
+      <Toast ref={toastRef} />
       <CreateClinicAdmin />
       <DeleteClinicAdmin />
       <DataTable
@@ -120,13 +84,12 @@ function ListClinicAdmin() {
         onPage={handlePageChange}
         emptyMessage="No se encontraron administradores"
         className="p-datatable-gridlines"
-        // virtualScrollerOptions={{ itemSize: 46 }}
       >
         <Column field="id" header="ID" style={{ width: "30%" }} />
         <Column field="firstName" header="Nombre" style={{ width: "30%" }} />
         <Column field="lastName" header="Apellido" style={{ width: "30%" }} />
         <Column
-          body={actionBodyTemplate}
+          body={renderActionButtons}
           style={{ width: "10%", textAlign: "center" }}
           exportable={false}
         />

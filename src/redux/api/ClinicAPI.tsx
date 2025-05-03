@@ -3,7 +3,7 @@ import type {
   BaseClinic,
   ClinicRequest,
   ClinicResponse,
-} from "../../types/Clinic"
+} from "../../features/clinic/types/Clinic"
 import type { Pagination, PaginationParams } from "../../types/Pagination"
 import { API_URL, BASE_PATH } from "../../utils/ApiPath"
 

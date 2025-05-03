@@ -3,63 +3,20 @@ import { Dialog } from "primereact/dialog"
 import { InputText } from "primereact/inputtext"
 import { Toast } from "primereact/toast"
 import { classNames } from "primereact/utils"
-import React from "react"
-import { Controller, useForm } from "react-hook-form"
-import {
-  modifyCreateDialog,
-  useAddClinicMutation,
-  useAppDispatch,
-  useAppSelector,
-} from "../../../redux"
-import type { ClinicRequest } from "../../../types/Clinic"
+import { Controller } from "react-hook-form"
+import { useClinicHook } from "../../hooks/ClinicHook"
 
-function CreateClinic() {
-  const dispatch = useAppDispatch()
-  const showCreateDialog = useAppSelector(
-    state => state.dataTable.showCreateDialog,
-  )
-  const defaultValues: ClinicRequest = {
-    administratorId: "550e8400-e29b-41d4-a716-446655440000",
-    name: "",
-    address: "",
-    ruc: "",
-  }
-  const [addClinic, { isLoading }] = useAddClinicMutation()
+function UpdateClinic() {
   const {
+    toastRef,
+    closeAllDialogs,
+    isLoadingClinic,
+    showUpdateDialog,
+    handleCloseForm,
+    handleFormSubmitUpdate,
     control,
-    formState: { errors },
-    reset,
-    handleSubmit,
-  } = useForm<ClinicRequest>({ defaultValues })
-  const toastRef = React.useRef<Toast>(null)
-
-  const handleClose = () => {
-    dispatch(modifyCreateDialog(false))
-    reset()
-  }
-
-  const onSubmit = (data: ClinicRequest) => {
-    void addClinic(data)
-      .unwrap()
-      .then(() => {
-        toastRef.current?.show({
-          severity: "success",
-          summary: "Éxito",
-          detail: "Clínica creada correctamente",
-        })
-        handleClose()
-      })
-      .catch((error: unknown) => {
-        const errorMessage =
-          error instanceof Error ? error.message : "Error desconocido"
-
-        toastRef.current?.show({
-          severity: "error",
-          summary: "Error",
-          detail: `No se pudo crear la clínica: ${errorMessage}`,
-        })
-      })
-  }
+    errors,
+  } = useClinicHook()
 
   const renderFooter = () => (
     <>
@@ -67,23 +24,18 @@ function CreateClinic() {
         label="Cancelar"
         icon="pi pi-times"
         outlined
-        onClick={handleClose}
-        disabled={isLoading}
+        onClick={closeAllDialogs}
+        disabled={isLoadingClinic}
       />
       <Button
         type="submit"
-        form="createClinicForm"
+        form="updateClinicForm"
         label="Guardar"
         icon="pi pi-check"
-        loading={isLoading}
+        loading={isLoadingClinic}
       />
     </>
   )
-
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    void handleSubmit(onSubmit)(e as React.BaseSyntheticEvent)
-  }
 
   return (
     <>
@@ -91,15 +43,15 @@ function CreateClinic() {
       <Dialog
         header="Crear una clínica"
         footer={renderFooter()}
-        visible={showCreateDialog}
-        onHide={handleClose}
+        visible={showUpdateDialog}
+        onHide={handleCloseForm}
         className="w-xl"
         breakpoints={{ "960px": "75vw", "641px": "90vw" }}
-        closable={!isLoading}
+        closable={!isLoadingClinic}
       >
         <form
-          id="createClinicForm"
-          onSubmit={handleFormSubmit}
+          id="updateClinicForm"
+          onSubmit={handleFormSubmitUpdate}
           className="p-fluid"
         >
           {/* NOMBRE */}
@@ -116,7 +68,7 @@ function CreateClinic() {
                     value={value}
                     ref={ref}
                     invalid={errors.name ? true : false}
-                    disabled={isLoading}
+                    disabled={isLoadingClinic}
                   />
                 )}
               />
@@ -156,7 +108,7 @@ function CreateClinic() {
                     value={value}
                     ref={ref}
                     invalid={errors.ruc ? true : false}
-                    disabled={isLoading}
+                    disabled={isLoadingClinic}
                     keyfilter="int"
                   />
                 )}
@@ -189,7 +141,7 @@ function CreateClinic() {
                     value={value}
                     ref={ref}
                     invalid={errors.address ? true : false}
-                    disabled={isLoading}
+                    disabled={isLoadingClinic}
                   />
                 )}
               />
@@ -212,4 +164,4 @@ function CreateClinic() {
   )
 }
 
-export default CreateClinic
+export default UpdateClinic

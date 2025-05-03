@@ -1,10 +1,10 @@
 import { createBrowserRouter } from "react-router"
+import Login from "../features/auth/Login"
+import Register from "../features/auth/Register"
+import ResetPassword from "../features/auth/ResetPassword"
 import BodyDashboard from "../layouts/BodyDashboard"
-import Login from "../pages/auth/Login"
-import Register from "../pages/auth/Register"
-import ResetPassword from "../pages/auth/ResetPassword"
 import NotFound from "../pages/NotFound"
-import { AdminRouter } from "./admin"
+import { ClinicRouter } from "./clinic"
 
 // TODO: add a path of resetpassword with is protectect and to unlockit you have to get as valid the token
 const router = createBrowserRouter([
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: <BodyDashboard />,
-    children: AdminRouter,
+    children: ClinicRouter,
   },
   {
     path: "*",

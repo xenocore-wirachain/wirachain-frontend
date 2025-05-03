@@ -7,76 +7,20 @@ import { InputText } from "primereact/inputtext"
 import { Password } from "primereact/password"
 import { Toast } from "primereact/toast"
 import { classNames } from "primereact/utils"
-import React from "react"
-import { Controller, useForm } from "react-hook-form"
-import {
-  modifyCreateDialog,
-  useAddClinicAdminMutation,
-  useAppDispatch,
-  useAppSelector,
-} from "../../../redux"
-import type { ClinicAdminRequest } from "../../../types/ClinicAdmin"
+import { Controller } from "react-hook-form"
+import { useClinicAdminHook } from "../../../hooks/ClinicAdminHook"
 import { GenderDictionary } from "../../../utils/StaticVariables"
 
 function CreateClinicAdmin() {
-  const dispatch = useAppDispatch()
-  const showCreateDialog = useAppSelector(
-    state => state.dataTable.showCreateDialog,
-  )
-  const [createClinicAdmin, { isLoading }] = useAddClinicAdminMutation()
-  const defaultValues: ClinicAdminRequest = {
-    firstName: "",
-    lastName: "",
-    gender: "",
-    dateOfBirth: null,
-    user: {
-      name: "",
-      phone: "",
-      email: "",
-      password: "",
-    },
-  }
   const {
+    toastRef,
     control,
-    formState: { errors },
-    reset,
-    handleSubmit,
-  } = useForm<ClinicAdminRequest>({ defaultValues })
-  const toastRef = React.useRef<Toast>(null)
-
-  const handleClose = () => {
-    dispatch(modifyCreateDialog(false))
-    reset()
-  }
-
-  const onSubmit = (data: ClinicAdminRequest) => {
-    if (data.dateOfBirth instanceof Date) {
-      data.dateOfBirth = data.dateOfBirth.toISOString()
-    } else {
-      throw new Error("dateOfBirth must be a Date object to call toISOString()")
-    }
-    data.gender = data.gender === "Hombre" ? "male" : "female"
-
-    void createClinicAdmin(data)
-      .unwrap()
-      .then(() => {
-        toastRef.current?.show({
-          severity: "success",
-          summary: "Éxito",
-          detail: "Administrador de clinica creado correctamente",
-        })
-        handleClose()
-      })
-      .catch((error: unknown) => {
-        const errorMessage =
-          error instanceof Error ? error.message : "Error desconocido"
-        toastRef.current?.show({
-          severity: "error",
-          summary: "Error",
-          detail: `No se pudo crear la administrador de clinica: ${errorMessage}`,
-        })
-      })
-  }
+    errors,
+    isCreating,
+    handleCloseForm,
+    handleFormSubmit,
+    showCreateDialog,
+  } = useClinicAdminHook()
 
   const renderFooter = () => (
     <>
@@ -84,35 +28,30 @@ function CreateClinicAdmin() {
         label="Cancelar"
         icon="pi pi-times"
         outlined
-        onClick={handleClose}
-        disabled={isLoading}
+        onClick={handleCloseForm}
+        disabled={isCreating}
       />
       <Button
         type="submit"
         form="createAdminClinicForm"
         label="Guardar"
         icon="pi pi-check"
-        loading={isLoading}
+        loading={isCreating}
       />
     </>
   )
-
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    void handleSubmit(onSubmit)(e as React.BaseSyntheticEvent)
-  }
 
   return (
     <>
       <Toast ref={toastRef} />
       <Dialog
-        header="Crear una clínica"
+        header="Crear un administrador clínica"
         footer={renderFooter()}
         visible={showCreateDialog}
-        onHide={handleClose}
+        onHide={handleCloseForm}
         className="w-xl"
         breakpoints={{ "960px": "75vw", "641px": "90vw" }}
-        closable={!isLoading}
+        closable={!isCreating}
       >
         <form
           id="createAdminClinicForm"
@@ -134,7 +73,7 @@ function CreateClinicAdmin() {
                     ref={ref}
                     keyfilter="alpha"
                     invalid={errors.firstName ? true : false}
-                    disabled={isLoading}
+                    disabled={isCreating}
                   />
                 )}
               />
@@ -167,7 +106,7 @@ function CreateClinicAdmin() {
                     ref={ref}
                     keyfilter="alpha"
                     invalid={errors.lastName ? true : false}
-                    disabled={isLoading}
+                    disabled={isCreating}
                   />
                 )}
               />
@@ -200,7 +139,7 @@ function CreateClinicAdmin() {
                     ref={ref}
                     invalid={errors.gender ? true : false}
                     options={GenderDictionary}
-                    disabled={isLoading}
+                    disabled={isCreating}
                     optionLabel="value"
                   />
                 )}
@@ -237,7 +176,7 @@ function CreateClinicAdmin() {
                     ref={ref}
                     invalid={errors.dateOfBirth ? true : false}
                     maxDate={new Date()}
-                    disabled={isLoading}
+                    disabled={isCreating}
                   />
                 )}
               />
@@ -270,7 +209,7 @@ function CreateClinicAdmin() {
                     ref={ref}
                     keyfilter="alpha"
                     invalid={errors.user?.name ? true : false}
-                    disabled={isLoading}
+                    disabled={isCreating}
                   />
                 )}
               />
@@ -304,7 +243,7 @@ function CreateClinicAdmin() {
                     invalid={errors.user?.phone ? true : false}
                     mask="999-999-999"
                     placeholder="000-000-000"
-                    disabled={isLoading}
+                    disabled={isCreating}
                   />
                 )}
               />
@@ -343,7 +282,7 @@ function CreateClinicAdmin() {
                     ref={ref}
                     keyfilter="email"
                     invalid={errors.user?.email ? true : false}
-                    disabled={isLoading}
+                    disabled={isCreating}
                   />
                 )}
               />
@@ -377,7 +316,7 @@ function CreateClinicAdmin() {
                     value={value}
                     ref={ref}
                     invalid={errors.user?.password ? true : false}
-                    disabled={isLoading}
+                    disabled={isCreating}
                   />
                 )}
               />
