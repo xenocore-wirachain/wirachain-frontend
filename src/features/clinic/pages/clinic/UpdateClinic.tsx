@@ -3,20 +3,28 @@ import { Dialog } from "primereact/dialog"
 import { InputText } from "primereact/inputtext"
 import { Toast } from "primereact/toast"
 import { classNames } from "primereact/utils"
+import { useEffect } from "react"
 import { Controller } from "react-hook-form"
 import { useClinicHook } from "../../hooks/ClinicHook"
 
 function UpdateClinic() {
   const {
     toastRef,
-    closeAllDialogs,
     isLoadingClinic,
     showUpdateDialog,
     handleCloseForm,
     handleFormSubmitUpdate,
     control,
     errors,
+    handleReceiveData,
+    clinicData,
   } = useClinicHook()
+
+  useEffect(() => {
+    if (showUpdateDialog && clinicData) {
+      handleReceiveData()
+    }
+  }, [clinicData, handleReceiveData, showUpdateDialog])
 
   const renderFooter = () => (
     <>
@@ -24,7 +32,7 @@ function UpdateClinic() {
         label="Cancelar"
         icon="pi pi-times"
         outlined
-        onClick={closeAllDialogs}
+        onClick={handleCloseForm}
         disabled={isLoadingClinic}
       />
       <Button
@@ -41,7 +49,7 @@ function UpdateClinic() {
     <>
       <Toast ref={toastRef} />
       <Dialog
-        header="Crear una clínica"
+        header="Actualizar una clínica"
         footer={renderFooter()}
         visible={showUpdateDialog}
         onHide={handleCloseForm}

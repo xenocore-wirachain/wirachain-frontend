@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback } from "react"
 import { useForm } from "react-hook-form"
 import { useDataTableHook } from "../../../hooks/DataTableHook"
 import {
@@ -14,12 +14,12 @@ import ConverClinicResponseToClinicRequest from "../utils/ClinicDTO"
 export const useClinicHook = () => {
   const baseHook = useDataTableHook()
 
-  const [defaultValues, setDefaultValues] = useState<ClinicRequest>({
+  const defaultValues: ClinicRequest = {
     administratorId: "550e8400-e29b-41d4-a716-446655440000",
     ruc: "",
     name: "",
     address: "",
-  })
+  }
 
   const { data, isLoading, isFetching } = useGetAllClinicsQuery({
     page: baseHook.page,
@@ -64,7 +64,6 @@ export const useClinicHook = () => {
   }
 
   const handleUpdateSubmit = (data: ClinicRequest) => {
-    console.log("UPDATE")
     if (typeof baseHook.idSelected === "number") {
       void updateClinic({
         id: baseHook.idSelected,
@@ -108,16 +107,25 @@ export const useClinicHook = () => {
     }
   }
 
-  const handleCloseForm = () => {
-    const emptyValues = {
-      administratorId: "550e8400-e29b-41d4-a716-446655440000",
-      ruc: "",
-      name: "",
-      address: "",
+  const handleReceiveData = useCallback(() => {
+    if (baseHook.showUpdateDialog && clinicData) {
+      const transformedData = ConverClinicResponseToClinicRequest(
+        clinicData,
+        defaultValues.administratorId,
+      )
+      console.log("RESET ON UPDATE", transformedData)
+      reset(transformedData)
     }
-    setDefaultValues(emptyValues as ClinicRequest)
-    reset(emptyValues as ClinicRequest)
+  }, [
+    baseHook.showUpdateDialog,
+    clinicData,
+    defaultValues.administratorId,
+    reset,
+  ])
+
+  const handleCloseForm = () => {
     baseHook.closeAllDialogs()
+    reset(defaultValues)
   }
 
   const handleFormSubmitCreate = (e: React.FormEvent) => {
@@ -130,22 +138,6 @@ export const useClinicHook = () => {
     void handleSubmit(handleUpdateSubmit)(e as React.BaseSyntheticEvent)
   }
 
-  useEffect(() => {
-    if (clinicData && baseHook.showUpdateDialog) {
-      const transformedData = ConverClinicResponseToClinicRequest(
-        clinicData,
-        defaultValues.administratorId,
-      )
-      setDefaultValues(transformedData)
-      reset(transformedData)
-    }
-  }, [
-    clinicData,
-    baseHook.showUpdateDialog,
-    reset,
-    defaultValues.administratorId,
-  ])
-
   return {
     ...baseHook,
 
@@ -154,6 +146,7 @@ export const useClinicHook = () => {
     isLoading,
     isFetching,
     isLoadingClinic,
+    clinicData,
 
     // Form handling
     control,
@@ -170,5 +163,6 @@ export const useClinicHook = () => {
     handleCloseForm,
     handleFormSubmitCreate,
     handleFormSubmitUpdate,
+    handleReceiveData,
   }
 }
