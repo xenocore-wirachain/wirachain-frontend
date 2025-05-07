@@ -4,7 +4,7 @@ import type {
   DoctorDetailedResponse,
   DoctorRequest,
   DoctorResponse,
-} from "../../types/Doctor"
+} from "../../features/clinic/types/Doctor"
 import type { Pagination, PaginationParams } from "../../types/Pagination"
 import { API_URL, BASE_PATH } from "../../utils/ApiPath"
 

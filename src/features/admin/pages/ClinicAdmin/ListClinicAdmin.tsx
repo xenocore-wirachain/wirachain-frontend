@@ -27,22 +27,26 @@ function ListClinicAdmin() {
   } = useClinicAdminHook()
 
   const renderHeader = () => (
-    <div className="flex flex-row gap-3">
-      <div className="size-full flex justify-start items-center content-center self-center">
-        <h2 className="text-2xl font-semibold uppercase">
+    <div className="flex flex-col md:flex-row gap-3 w-full">
+      <div className="w-full flex justify-start items-center mb-3 md:mb-0">
+        <h2 className="text-xl md:text-2xl font-semibold uppercase">
           Lista de Administradores
         </h2>
       </div>
-      <div className="size-full flex justify-end items-center content-center gap-8">
-        <IconField iconPosition="left">
-          <InputIcon className="pi pi-search"> </InputIcon>
+      <div className="w-full flex flex-col sm:flex-row justify-start md:justify-end items-center gap-3 md:gap-8">
+        <IconField iconPosition="left" className="w-full sm:w-auto">
+          <InputIcon className="pi pi-search"></InputIcon>
           <InputText
-            className="w-xl"
+            className="w-full"
             placeholder="Buscar administrador"
             onChange={handleSearch}
           />
         </IconField>
-        <Button onClick={openCreateDialog} icon="pi pi-plus" />
+        <Button
+          onClick={openCreateDialog}
+          icon="pi pi-plus"
+          className="w-full sm:w-auto md:px-4 md:min-w-[3rem]"
+        />
       </div>
     </div>
   )
