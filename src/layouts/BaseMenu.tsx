@@ -103,7 +103,7 @@ function BaseMenu() {
     </div>
   )
 
-  return <Menubar model={MenuAdmin} end={end} />
+  return <Menubar model={MenuClinic} end={end} />
 }
 
 export default BaseMenu

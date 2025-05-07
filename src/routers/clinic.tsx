@@ -1,5 +1,12 @@
 import { Navigate } from "react-router"
-import { ListClinic } from "../features/clinic"
+import {
+  HistoryAppoinment,
+  ListClinic,
+  ListSpecialty,
+  ListStudy,
+  Profile,
+  Stadistics,
+} from "../features/clinic"
 
 const ClinicRouter = [
   {
@@ -14,26 +21,26 @@ const ClinicRouter = [
   //   path: "doctor-list",
   //   element: <ListDoctor />,
   // },
-  // {
-  //   path: "speciality-list",
-  //   element: <ListSpecialty />,
-  // },
-  // {
-  //   path: "study-list",
-  //   element: <ListStudy />,
-  // },
-  // {
-  //   path: "history-appointment",
-  //   element: <HistoryAppoinment />,
-  // },
-  // {
-  //   path: "stadistics",
-  //   element: <Stadistics />,
-  // },
-  // {
-  //   path: "profile",
-  //   element: <Profile />,
-  // },
+  {
+    path: "speciality-list",
+    element: <ListSpecialty />,
+  },
+  {
+    path: "study-list",
+    element: <ListStudy />,
+  },
+  {
+    path: "history-appointment",
+    element: <HistoryAppoinment />,
+  },
+  {
+    path: "stadistics",
+    element: <Stadistics />,
+  },
+  {
+    path: "profile",
+    element: <Profile />,
+  },
 ]
 
 export { ClinicRouter }
