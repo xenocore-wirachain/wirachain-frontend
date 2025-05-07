@@ -1,5 +1,5 @@
-import { UUID } from "crypto"
-import { useEffect, useState } from "react"
+import type { UUID } from "crypto"
+import { useCallback } from "react"
 import { useForm } from "react-hook-form"
 import { useDataTableHook } from "../../../hooks/DataTableHook"
 import {
@@ -9,23 +9,23 @@ import {
   useGetClinicAdminQuery,
   useUpdateClinicAdminMutation,
 } from "../../../redux"
-import type { ClinicAdminRequest } from "../../../types/ClinicAdmin"
+import { GenderDictionary } from "../../../utils/StaticVariables"
+import type { ClinicAdminRequest } from "../types/ClinicAdmin"
 
 export const useClinicAdminHook = () => {
   const baseHook = useDataTableHook()
 
-  const [defaultValues, setDefaulValues] = useState<ClinicAdminRequest>({
+  const defaultValues: ClinicAdminRequest = {
     firstName: "",
     lastName: "",
     gender: "",
     dateOfBirth: null,
     user: {
-      name: "",
       phone: "",
       email: "",
       password: "",
     },
-  })
+  }
 
   const { data, isLoading, isFetching } = useGetAllClinicAdminsQuery({
     page: baseHook.page,
@@ -123,21 +123,24 @@ export const useClinicAdminHook = () => {
     }
   }
 
-  const handleCloseForm = () => {
-    const emptyValues = {
-      firstName: "",
-      lastName: "",
-      gender: "",
-      dateOfBirth: null,
-      user: {
-        name: "",
-        phone: "",
-        email: "",
-        password: "",
-      },
+  const handleReceiveData = useCallback(() => {
+    if (baseHook.showUpdateDialog && clinicAdminData) {
+      const updatedClinicAdminData = {
+        ...clinicAdminData,
+        gender:
+          clinicAdminData.gender === "Male"
+            ? GenderDictionary[0].value
+            : GenderDictionary[1].value,
+        dateOfBirth: clinicAdminData.dateOfBirth
+          ? new Date(clinicAdminData.dateOfBirth)
+          : null,
+      }
+      reset(updatedClinicAdminData)
     }
-    setDefaulValues(emptyValues)
-    reset(emptyValues)
+  }, [baseHook.showUpdateDialog, clinicAdminData, reset])
+
+  const handleCloseForm = () => {
+    reset(defaultValues)
     baseHook.closeAllDialogs()
   }
 
@@ -151,12 +154,6 @@ export const useClinicAdminHook = () => {
     void handleSubmit(handleUpdateSubmit)(e as React.BaseSyntheticEvent)
   }
 
-  useEffect(() => {
-    if (clinicAdminData && baseHook.showUpdateDialog) {
-      console.log("LOG")
-    }
-  }, [clinicAdminData, baseHook.showUpdateDialog, reset])
-
   return {
     ...baseHook,
 
@@ -164,6 +161,8 @@ export const useClinicAdminHook = () => {
     data,
     isLoading,
     isFetching,
+    isLoadingAdminCLinic,
+    clinicAdminData,
 
     // Form handling
     control,
@@ -180,5 +179,6 @@ export const useClinicAdminHook = () => {
     handleCloseForm,
     handleFormSubmitCreate,
     handleFormSubmitUpdate,
+    handleReceiveData,
   }
 }

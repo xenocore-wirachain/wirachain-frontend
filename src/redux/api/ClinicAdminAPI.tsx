@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import type { UUID } from "crypto"
 import type {
+  ClinicAdminDetail,
   ClinicAdminRequest,
-  ClinicAdminResponse,
-} from "../../types/ClinicAdmin"
+} from "../../features/admin/types/ClinicAdmin"
 import type { Pagination, PaginationParams } from "../../types/Pagination"
 import { API_URL, BASE_PATH } from "../../utils/ApiPath"
 
@@ -15,7 +15,7 @@ export const clinicAdminApi = createApi({
   tagTypes: ["ClinicAdmin"],
   endpoints: builder => ({
     getAllClinicAdmins: builder.query<
-      Pagination<ClinicAdminResponse>,
+      Pagination<ClinicAdminDetail>,
       PaginationParams
     >({
       query: ({ page, pageSize, search }) => ({
@@ -39,7 +39,7 @@ export const clinicAdminApi = createApi({
           : [{ type: "ClinicAdmin", id: "LIST" }],
     }),
 
-    getClinicAdmin: builder.query<ClinicAdminResponse, UUID>({
+    getClinicAdmin: builder.query<ClinicAdminRequest, UUID>({
       query: clinicAdminId => ({
         url: `${CLINIC_ADMIN_PATH}/${clinicAdminId}`,
         method: "GET",
@@ -49,7 +49,7 @@ export const clinicAdminApi = createApi({
       ],
     }),
 
-    addClinicAdmin: builder.mutation<ClinicAdminResponse, ClinicAdminRequest>({
+    addClinicAdmin: builder.mutation<ClinicAdminRequest, ClinicAdminRequest>({
       query: clinicAdmin => ({
         url: CLINIC_ADMIN_PATH,
         method: "POST",
@@ -59,7 +59,7 @@ export const clinicAdminApi = createApi({
     }),
 
     updateClinicAdmin: builder.mutation<
-      ClinicAdminResponse,
+      ClinicAdminRequest,
       { id: UUID; clinicAdmin: ClinicAdminRequest }
     >({
       query: params => ({

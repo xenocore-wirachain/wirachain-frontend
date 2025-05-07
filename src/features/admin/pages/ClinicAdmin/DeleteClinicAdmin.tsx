@@ -1,7 +1,7 @@
 import { Button } from "primereact/button"
 import { Dialog } from "primereact/dialog"
 import { Toast } from "primereact/toast"
-import { useClinicAdminHook } from "../../../hooks/ClinicAdminHook"
+import { useClinicAdminHook } from "../../hooks/ClinicAdminHook"
 
 function DeleteClinicAdmin() {
   const {

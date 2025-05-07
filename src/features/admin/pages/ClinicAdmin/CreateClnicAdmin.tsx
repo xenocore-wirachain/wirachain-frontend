@@ -8,8 +8,8 @@ import { Password } from "primereact/password"
 import { Toast } from "primereact/toast"
 import { classNames } from "primereact/utils"
 import { Controller } from "react-hook-form"
-import { useClinicAdminHook } from "../../../hooks/ClinicAdminHook"
-import { GenderDictionary } from "../../../utils/StaticVariables"
+import { GenderDictionary } from "../../../../utils/StaticVariables"
+import { useClinicAdminHook } from "../../hooks/ClinicAdminHook"
 
 function CreateClinicAdmin() {
   const {
@@ -18,7 +18,7 @@ function CreateClinicAdmin() {
     errors,
     isCreating,
     handleCloseForm,
-    handleFormSubmit,
+    handleFormSubmitCreate,
     showCreateDialog,
   } = useClinicAdminHook()
 
@@ -55,7 +55,7 @@ function CreateClinicAdmin() {
       >
         <form
           id="createAdminClinicForm"
-          onSubmit={handleFormSubmit}
+          onSubmit={handleFormSubmitCreate}
           className="p-fluid"
         >
           {/* NOMBRE */}
@@ -190,39 +190,6 @@ function CreateClinicAdmin() {
             {errors.dateOfBirth && (
               <small className="p-error">
                 {errors.dateOfBirth.message?.toString()}
-              </small>
-            )}
-          </div>
-
-          {/* NAME */}
-          <div className="field mt-4" key="name">
-            <span className="p-float-label">
-              <Controller
-                name="user.name"
-                control={control}
-                rules={{ required: "Se requiere usuario" }}
-                render={({ field: { onChange, onBlur, value, ref } }) => (
-                  <InputText
-                    onBlur={onBlur}
-                    onChange={onChange}
-                    value={value}
-                    ref={ref}
-                    keyfilter="alpha"
-                    invalid={errors.user?.name ? true : false}
-                    disabled={isCreating}
-                  />
-                )}
-              />
-              <label
-                htmlFor="name"
-                className={classNames({ "p-error": errors.user?.name })}
-              >
-                Usuario*
-              </label>
-            </span>
-            {errors.user?.name && (
-              <small className="p-error">
-                {errors.user.name.message?.toString()}
               </small>
             )}
           </div>

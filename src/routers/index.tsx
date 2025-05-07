@@ -4,7 +4,7 @@ import Register from "../features/auth/Register"
 import ResetPassword from "../features/auth/ResetPassword"
 import BodyDashboard from "../layouts/BodyDashboard"
 import NotFound from "../pages/NotFound"
-import { ClinicRouter } from "./clinic"
+import { AdminRouter } from "./admin"
 
 // TODO: add a path of resetpassword with is protectect and to unlockit you have to get as valid the token
 const router = createBrowserRouter([
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: <BodyDashboard />,
-    children: ClinicRouter,
+    children: AdminRouter,
   },
   {
     path: "*",

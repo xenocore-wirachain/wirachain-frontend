@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import type { UUID } from "crypto"
 import type {
   BaseClinic,
   ClinicRequest,
@@ -14,14 +15,17 @@ export const clinicApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
   tagTypes: ["Clinic"],
   endpoints: builder => ({
-    getAllClinics: builder.query<Pagination<ClinicResponse>, PaginationParams>({
-      query: ({ page, pageSize, search }) => ({
-        url: `${CLINIC_PATH}/page`,
+    getAllClinics: builder.query<
+      Pagination<ClinicResponse>,
+      { pagination: PaginationParams; id: UUID }
+    >({
+      query: params => ({
+        url: `${CLINIC_PATH}/page/admin/${params.id}`,
         method: "GET",
         params: {
-          pageIndex: page,
-          pageSize: pageSize,
-          searchTerm: search,
+          pageIndex: params.pagination.page,
+          pageSize: params.pagination.pageSize,
+          searchTerm: params.pagination.search,
         },
       }),
       providesTags: result =>

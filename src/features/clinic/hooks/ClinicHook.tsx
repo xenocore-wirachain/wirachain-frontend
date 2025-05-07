@@ -1,3 +1,4 @@
+import type { UUID } from "crypto"
 import { useCallback } from "react"
 import { useForm } from "react-hook-form"
 import { useDataTableHook } from "../../../hooks/DataTableHook"
@@ -13,18 +14,22 @@ import ConverClinicResponseToClinicRequest from "../utils/ClinicDTO"
 
 export const useClinicHook = () => {
   const baseHook = useDataTableHook()
+  const idAdminClinic = "550e8400-e29b-41d4-a716-446655440000" as UUID
 
   const defaultValues: ClinicRequest = {
-    administratorId: "550e8400-e29b-41d4-a716-446655440000",
+    administratorId: idAdminClinic,
     ruc: "",
     name: "",
     address: "",
   }
 
   const { data, isLoading, isFetching } = useGetAllClinicsQuery({
-    page: baseHook.page,
-    pageSize: baseHook.pageSize,
-    search: baseHook.search,
+    id: idAdminClinic,
+    pagination: {
+      page: baseHook.page,
+      pageSize: baseHook.pageSize,
+      search: baseHook.search,
+    },
   })
 
   const { data: clinicData, isLoading: isLoadingClinic } = useGetClinicQuery(
@@ -111,17 +116,11 @@ export const useClinicHook = () => {
     if (baseHook.showUpdateDialog && clinicData) {
       const transformedData = ConverClinicResponseToClinicRequest(
         clinicData,
-        defaultValues.administratorId,
+        idAdminClinic,
       )
-      console.log("RESET ON UPDATE", transformedData)
       reset(transformedData)
     }
-  }, [
-    baseHook.showUpdateDialog,
-    clinicData,
-    defaultValues.administratorId,
-    reset,
-  ])
+  }, [baseHook.showUpdateDialog, clinicData, reset])
 
   const handleCloseForm = () => {
     baseHook.closeAllDialogs()

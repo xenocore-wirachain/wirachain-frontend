@@ -10,6 +10,7 @@ export type BaseDoctor = {
 }
 
 export type DoctorRequest = BaseDoctor & {
+  clinicId: number
   user: User
 }
 
@@ -18,9 +19,10 @@ export type DoctorResponse = BaseDoctor & {
 }
 
 export type DoctorDetailedResponse = DoctorResponse & {
-  userId: UUID
-  user: UUID | null
-  identifiers: unknown
   updatedAt: string
   createdAt: string
+  identifiers: unknown
+  userId: UUID
+  user: User
+  doctorClinics: unknown
 }

@@ -1,12 +1,15 @@
 import { Button } from "primereact/button"
 import { Column } from "primereact/column"
 import { DataTable } from "primereact/datatable"
+import { IconField } from "primereact/iconfield"
+import { InputIcon } from "primereact/inputicon"
 import { InputText } from "primereact/inputtext"
 import { Toast } from "primereact/toast"
-import { useClinicAdminHook } from "../../../hooks/ClinicAdminHook"
-import type { ClinicAdminResponse } from "../../../types/ClinicAdmin"
+import { useClinicAdminHook } from "../../hooks/ClinicAdminHook"
+import type { ClinicAdminResponse } from "../../types/ClinicAdmin"
 import CreateClinicAdmin from "./CreateClnicAdmin"
 import DeleteClinicAdmin from "./DeleteClinicAdmin"
+import UpdateClinicAdmin from "./UpdateClinicAdmin"
 
 function ListClinicAdmin() {
   const {
@@ -24,17 +27,22 @@ function ListClinicAdmin() {
   } = useClinicAdminHook()
 
   const renderHeader = () => (
-    <div className="flex flex-wrap justify-between items-center">
-      <h2 className="text-2xl font-semibold">Lista de Administradores</h2>
-      <div className="flex flex-wrap items-center gap-3">
-        <InputText placeholder="Buscar" onChange={handleSearch} />
-        <Button
-          onClick={openCreateDialog}
-          icon="pi pi-plus"
-          label="Nuevo"
-          severity="success"
-          raised
-        />
+    <div className="flex flex-row gap-3">
+      <div className="size-full flex justify-start items-center content-center self-center">
+        <h2 className="text-2xl font-semibold uppercase">
+          Lista de Administradores
+        </h2>
+      </div>
+      <div className="size-full flex justify-end items-center content-center gap-8">
+        <IconField iconPosition="left">
+          <InputIcon className="pi pi-search"> </InputIcon>
+          <InputText
+            className="w-xl"
+            placeholder="Buscar administrador"
+            onChange={handleSearch}
+          />
+        </IconField>
+        <Button onClick={openCreateDialog} icon="pi pi-plus" />
       </div>
     </div>
   )
@@ -70,6 +78,7 @@ function ListClinicAdmin() {
     <div className="card">
       <Toast ref={toastRef} />
       <CreateClinicAdmin />
+      <UpdateClinicAdmin />
       <DeleteClinicAdmin />
       <DataTable
         lazy

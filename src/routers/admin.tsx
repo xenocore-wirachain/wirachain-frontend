@@ -1,5 +1,5 @@
 import { Navigate } from "react-router"
-import ListClinicAdmin from "../features/admin/ClinicAdmin/ListClinicAdmin"
+import { ListClinicAdmin } from "../features/admin"
 
 const AdminRouter = [
   {

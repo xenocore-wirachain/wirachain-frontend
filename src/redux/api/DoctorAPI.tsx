@@ -17,15 +17,15 @@ export const doctorApi = createApi({
   endpoints: builder => ({
     getAllDoctors: builder.query<
       Pagination<DoctorDetailedResponse>,
-      PaginationParams
+      { pagination: PaginationParams; id: UUID }
     >({
-      query: ({ page, pageSize, search }) => ({
-        url: `${DOCTOR_PATH}/page`,
+      query: params => ({
+        url: `${DOCTOR_PATH}/page/admin/${params.id}`,
         method: "GET",
         params: {
-          pageIndex: page,
-          pageSize: pageSize,
-          searchTerm: search,
+          pageIndex: params.pagination.page,
+          pageSize: params.pagination.pageSize,
+          searchTerm: params.pagination.search,
         },
       }),
       providesTags: result =>

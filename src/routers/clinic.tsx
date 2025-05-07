@@ -1,5 +1,5 @@
 import { Navigate } from "react-router"
-import ListClinic from "../features/clinic/pages/clinic/ListClinic"
+import { ListClinic } from "../features/clinic"
 
 const ClinicRouter = [
   {
