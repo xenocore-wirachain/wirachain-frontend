@@ -13,6 +13,7 @@
     "preview": "vite preview",
     "start": "vite",
     "test": "vitest --run",
+    "coverage": "vitest run --coverage",
     "type-check": "tsc -b --noEmit"
   },
   "dependencies": {
