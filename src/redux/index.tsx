@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit"
 import { useDispatch, useSelector } from "react-redux"
+import { authApi } from "./api/AuthAPI"
 import { clinicApi } from "./api/ClinicAPI"
 import { clinicAdminApi } from "./api/ClinicAdminAPI"
 import { doctorApi } from "./api/DoctorAPI"
@@ -13,12 +14,14 @@ export const store = configureStore({
     [clinicApi.reducerPath]: clinicApi.reducer,
     [clinicAdminApi.reducerPath]: clinicAdminApi.reducer,
     [doctorApi.reducerPath]: doctorApi.reducer,
+    [authApi.reducerPath]: authApi.reducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware()
       .concat(clinicApi.middleware)
       .concat(clinicAdminApi.middleware)
-      .concat(doctorApi.middleware),
+      .concat(doctorApi.middleware)
+      .concat(authApi.middleware),
 })
 
 export type RootState = ReturnType<typeof store.getState>
@@ -27,6 +30,7 @@ export type AppDispatch = typeof store.dispatch
 export const useAppDispatch = useDispatch.withTypes<AppDispatch>()
 export const useAppSelector = useSelector.withTypes<RootState>()
 
+export { useLoginMutation, useRefreshTokenMutation } from "./api/AuthAPI"
 export {
   useAddClinicMutation,
   useDeleteClinicMutation,
@@ -48,6 +52,12 @@ export {
   useGetDoctorQuery,
   useUpdateDoctorMutation,
 } from "./api/DoctorAPI"
+export {
+  logout,
+  selectCurrentUser,
+  selectIsAuthenticated,
+  setCredentials,
+} from "./slices/AuthSlice"
 export {
   modifyCreateDialog,
   modifyDeleteDialog,

@@ -1,21 +1,17 @@
-import { Navigate } from "react-router"
+import type { RouteObject } from "react-router"
 import { ListAppointment, ListClinic, Profile } from "../features/patient"
 
-const PatientRouter = [
+const PatientRouter: RouteObject[] = [
   {
-    path: "",
-    element: <Navigate replace to="/dashboard/appointment-list" />,
-  },
-  {
-    path: "appointment-list",
+    path: "patient/appointment-list",
     element: <ListAppointment />,
   },
   {
-    path: "clinic-list",
+    path: "patient/clinic-list",
     element: <ListClinic />,
   },
   {
-    path: "profile",
+    path: "patient/profile",
     element: <Profile />,
   },
 ]

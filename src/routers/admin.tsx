@@ -1,13 +1,9 @@
-import { Navigate } from "react-router"
+import type { RouteObject } from "react-router"
 import { ListClinicAdmin } from "../features/admin"
 
-const AdminRouter = [
+const AdminRouter: RouteObject[] = [
   {
-    path: "",
-    element: <Navigate replace to="/dashboard/list-clinic-admin" />,
-  },
-  {
-    path: "list-clinic-admin",
+    path: "admin/clinic-admin-list",
     element: <ListClinicAdmin />,
   },
 ]

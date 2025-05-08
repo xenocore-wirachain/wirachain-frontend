@@ -1,4 +1,4 @@
-import { Navigate } from "react-router"
+import type { RouteObject } from "react-router"
 import {
   HistoryAppoinment,
   ListClinic,
@@ -8,37 +8,33 @@ import {
   Stadistics,
 } from "../features/clinic"
 
-const ClinicRouter = [
+const ClinicRouter: RouteObject[] = [
   {
-    path: "",
-    element: <Navigate replace to="/dashboard/clinic-list" />,
-  },
-  {
-    path: "clinic-list",
+    path: "clinic/clinic-list",
     element: <ListClinic />,
   },
   // {
-  //   path: "doctor-list",
+  //   path: "clinic/doctor-list",
   //   element: <ListDoctor />,
   // },
   {
-    path: "speciality-list",
+    path: "clinic/speciality-list",
     element: <ListSpecialty />,
   },
   {
-    path: "study-list",
+    path: "clinic/study-list",
     element: <ListStudy />,
   },
   {
-    path: "history-appointment",
+    path: "clinic/history-appointment",
     element: <HistoryAppoinment />,
   },
   {
-    path: "stadistics",
+    path: "clinic/stadistics",
     element: <Stadistics />,
   },
   {
-    path: "profile",
+    path: "clinic/profile",
     element: <Profile />,
   },
 ]

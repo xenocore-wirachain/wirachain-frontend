@@ -4,16 +4,19 @@ import { Menubar } from "primereact/menubar"
 import type { MenuItem } from "primereact/menuitem"
 import { useRef } from "react"
 import { useNavigate } from "react-router"
+import { useAuth } from "../features/auth/hooks/UseAuth"
+import { USER_TYPES } from "../utils/StaticVariables"
 
 function BaseMenu() {
   const navigate = useNavigate()
   const profileMenu = useRef<Menu>(null)
+  const { userType } = useAuth()
 
   const MenuAdmin: MenuItem[] = [
     {
       label: "Administradores de clinicas",
       icon: "pi pi-users",
-      command: () => void navigate("list-clinic-admin"),
+      command: () => void navigate("admin/clinic-admin-list"),
     },
   ]
 
@@ -21,32 +24,32 @@ function BaseMenu() {
     {
       label: "Clinic",
       icon: "pi pi-users",
-      command: () => void navigate("clinic-list"),
+      command: () => void navigate("clinic/clinic-list"),
     },
     {
       label: "Doctores",
       icon: "pi pi-users",
-      command: () => void navigate("doctor-list"),
+      command: () => void navigate("clinic/doctor-list"),
     },
     {
       label: "Estudios",
       icon: "pi pi-file-plus",
-      command: () => void navigate("study-list"),
+      command: () => void navigate("clinic/speciality-list"),
     },
     {
       label: "Especialidades",
       icon: "pi pi-bullseye",
-      command: () => void navigate("speciality-list"),
+      command: () => void navigate("clinic/study-list"),
     },
     {
       label: "Consultas",
       icon: "pi pi-clipboard",
-      command: () => void navigate("history-appointment"),
+      command: () => void navigate("history-clinic/history-appointment"),
     },
     {
       label: "Estadisticas",
       icon: "pi pi-chart-pie",
-      command: () => void navigate("stadistics"),
+      command: () => void navigate("clinic/stadistics"),
     },
   ]
 
@@ -54,10 +57,12 @@ function BaseMenu() {
     {
       label: "Consultas",
       icon: "pi pi-clipboard",
+      command: () => void navigate("doctor/appointment-list"),
     },
     {
       label: "Pacientes",
       icon: "pi pi-users",
+      command: () => void navigate("doctor/patient-list"),
     },
   ]
 
@@ -65,10 +70,12 @@ function BaseMenu() {
     {
       label: "Consultas",
       icon: "pi pi-clipboard",
+      command: () => void navigate("patient/appointment-list"),
     },
     {
       label: "Clinicas",
       icon: "pi pi-building",
+      command: () => void navigate("patient/clinic-list"),
     },
   ]
 
@@ -76,7 +83,24 @@ function BaseMenu() {
     {
       label: "Settings",
       icon: "pi pi-cog",
-      command: () => void navigate("profile"),
+      command: () => {
+        switch (userType) {
+          case USER_TYPES.ADMIN:
+            void navigate("admin/profile")
+            break
+          case USER_TYPES.DOCTOR:
+            void navigate("doctor/profile")
+            break
+          case USER_TYPES.PATIENT:
+            void navigate("patient/profile")
+            break
+          case USER_TYPES.CLINIC:
+            void navigate("clinic/profile")
+            break
+          default:
+            break
+        }
+      },
     },
     {
       label: "Logout",
@@ -103,7 +127,18 @@ function BaseMenu() {
     </div>
   )
 
-  return <Menubar model={MenuClinic} end={end} />
+  switch (userType) {
+    case USER_TYPES.ADMIN:
+      return <Menubar model={MenuAdmin} end={end} />
+    case USER_TYPES.DOCTOR:
+      return <Menubar model={MenuDoctor} end={end} />
+    case USER_TYPES.PATIENT:
+      return <Menubar model={MenuPatient} end={end} />
+    case USER_TYPES.CLINIC:
+      return <Menubar model={MenuClinic} end={end} />
+    default:
+      return <Menubar model={[]} end={end} />
+  }
 }
 
 export default BaseMenu

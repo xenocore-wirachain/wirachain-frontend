@@ -6,7 +6,7 @@ import "primereact/resources/primereact.min.css"
 import "primereact/resources/themes/lara-light-indigo/theme.css"
 import { Controller, useForm } from "react-hook-form"
 import { useNavigate } from "react-router"
-import type { ForgotPassword } from "../../types/Credentials"
+import type { ForgotPassword } from "../types/Credentials"
 
 function ResetPassword() {
   const defaultValues: ForgotPassword = {

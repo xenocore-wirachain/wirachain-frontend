@@ -5,11 +5,11 @@ import { InputText } from "primereact/inputtext"
 import { Password } from "primereact/password"
 import { Controller, useForm } from "react-hook-form"
 import { useNavigate } from "react-router"
-import type { Credentials } from "../../types/Credentials"
+import type { LoginRequest } from "../types/Credentials"
 
 function Login() {
-  const defaultValues: Credentials = {
-    username: "",
+  const defaultValues: LoginRequest = {
+    email: "",
     password: "",
   }
   const {
@@ -17,10 +17,10 @@ function Login() {
     formState: { errors },
     reset,
     handleSubmit,
-  } = useForm<Credentials>({ defaultValues })
+  } = useForm<LoginRequest>({ defaultValues })
   const navigate = useNavigate()
 
-  const onSubmit = (data: Credentials) => {
+  const onSubmit = (data: LoginRequest) => {
     console.log("CREDENTIALS", data)
     reset()
     void navigate("dashboard")
@@ -54,7 +54,7 @@ function Login() {
             </label>
             <Controller
               control={control}
-              name="username"
+              name="email"
               rules={{
                 required: "Se requiere correo",
                 pattern: {
@@ -69,16 +69,16 @@ function Login() {
                   value={value}
                   ref={ref}
                   keyfilter="email"
-                  invalid={errors.username ? true : false}
+                  invalid={errors.email ? true : false}
                   // disabled={isLoading}
                   placeholder="Ingrese su correo"
                   className="w-full p-inputtext-lg"
                 />
               )}
             />
-            {errors.username && (
+            {errors.email && (
               <small className="text-red-500">
-                {errors.username.message?.toString()}
+                {errors.email.message?.toString()}
               </small>
             )}
           </div>

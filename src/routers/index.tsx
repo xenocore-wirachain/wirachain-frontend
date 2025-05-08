@@ -1,12 +1,37 @@
-import { createBrowserRouter } from "react-router"
-import Login from "../features/auth/Login"
-import Register from "../features/auth/Register"
-import ResetPassword from "../features/auth/ResetPassword"
+import { createBrowserRouter, Navigate, Outlet } from "react-router"
+import { Login, NotFound, Register, ResetPassword } from "../features/auth"
+import { useAuth } from "../features/auth/hooks/UseAuth"
 import BodyDashboard from "../layouts/BodyDashboard"
-import NotFound from "../pages/NotFound"
+import { USER_TYPES } from "../utils/StaticVariables"
+import { AdminRouter } from "./admin"
 import { ClinicRouter } from "./clinic"
+import { DoctorRouter } from "./doctor"
+import { PatientRouter } from "./patient"
 
-// TODO: add a path of resetpassword with is protectect and to unlockit you have to get as valid the token
+const RoleGuard = ({ allowedRoles }: { allowedRoles: number[] }) => {
+  const { isAuthenticated, userType } = useAuth()
+
+  if (!isAuthenticated) {
+    return <Navigate to="/" replace />
+  }
+
+  if (!userType || !allowedRoles.includes(userType)) {
+    return <Navigate to="/dashboard" replace />
+  }
+
+  return <Outlet />
+}
+
+const DashboardWrapper = () => {
+  const { isAuthenticated } = useAuth()
+
+  if (!isAuthenticated) {
+    return <Navigate to="/" replace />
+  }
+
+  return <BodyDashboard />
+}
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -22,13 +47,51 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <BodyDashboard />,
-    children: ClinicRouter,
+    element: <DashboardWrapper />,
+    children: [
+      {
+        path: "",
+        element: <DashboardRouter />,
+      },
+      {
+        element: <RoleGuard allowedRoles={[USER_TYPES.ADMIN]} />,
+        children: AdminRouter,
+      },
+      {
+        element: <RoleGuard allowedRoles={[USER_TYPES.DOCTOR]} />,
+        children: DoctorRouter,
+      },
+      {
+        element: <RoleGuard allowedRoles={[USER_TYPES.PATIENT]} />,
+        children: PatientRouter,
+      },
+      {
+        element: <RoleGuard allowedRoles={[USER_TYPES.CLINIC]} />,
+        children: ClinicRouter,
+      },
+    ],
   },
   {
     path: "*",
     element: <NotFound />,
   },
 ])
+
+function DashboardRouter() {
+  const { userType } = useAuth()
+
+  switch (userType) {
+    case USER_TYPES.ADMIN:
+      return <Navigate to="/dashboard/admin/clinic-admin-list" replace />
+    case USER_TYPES.DOCTOR:
+      return <Navigate to="/dashboard/doctor/appointment-list" replace />
+    case USER_TYPES.PATIENT:
+      return <Navigate to="/dashboard/patient/appointment-list" replace />
+    case USER_TYPES.CLINIC:
+      return <Navigate to="/dashboard/clinic/clinic-list" replace />
+    default:
+      return <Navigate to="/" replace />
+  }
+}
 
 export { router }
