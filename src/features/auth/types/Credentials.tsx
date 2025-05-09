@@ -17,8 +17,6 @@ export type TokenPayload = {
   id: number
   name: string
   user_type: number
-  exp: number
-  type: string
 }
 
 export type RefreshTokenRequest = {

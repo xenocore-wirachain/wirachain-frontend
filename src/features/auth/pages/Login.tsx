@@ -5,6 +5,11 @@ import { InputText } from "primereact/inputtext"
 import { Password } from "primereact/password"
 import { Controller, useForm } from "react-hook-form"
 import { useNavigate } from "react-router"
+import {
+  setCredentials,
+  useAppDispatch,
+  useLoginMutation,
+} from "../../../redux"
 import type { LoginRequest } from "../types/Credentials"
 
 function Login() {
@@ -19,9 +24,20 @@ function Login() {
     handleSubmit,
   } = useForm<LoginRequest>({ defaultValues })
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const [login, { isLoading }] = useLoginMutation()
 
   const onSubmit = (data: LoginRequest) => {
     console.log("CREDENTIALS", data)
+    // ADMIN CREDENTIALS
+    dispatch(
+      setCredentials({
+        accessToken:
+          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkpvYW8iLCJ1c2VyX3R5cGUiOjEsImV4cCI6MTc0Njc5NTgxNywidHlwZSI6ImFjY2VzcyJ9.LU1EGlj8KeciYEMHgu7GFk-kiJ_c7HJCb5utgRORrW0",
+        refreshToken:
+          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkpvYW8iLCJ1c2VyX3R5cGUiOjEsImV4cCI6MTc0NzM5OTcxNywidHlwZSI6InJlZnJlc2gifQ.Oa97wxEEMe4JDYfVcYikFQWWV1hAlr-7eCKCafsa7a4",
+      }),
+    )
     reset()
     void navigate("dashboard")
   }
@@ -70,7 +86,7 @@ function Login() {
                   ref={ref}
                   keyfilter="email"
                   invalid={errors.email ? true : false}
-                  // disabled={isLoading}
+                  disabled={isLoading}
                   placeholder="Ingrese su correo"
                   className="w-full p-inputtext-lg"
                 />
@@ -102,7 +118,7 @@ function Login() {
                   invalid={errors.password ? true : false}
                   placeholder="Ingrese su contraseña"
                   inputClassName="w-full p-inputtext-lg"
-                  // disabled={isLoading}
+                  disabled={isLoading}
                 />
               )}
             />
@@ -119,6 +135,7 @@ function Login() {
             size="large"
             type="submit"
             form="register"
+            disabled={isLoading}
           />
         </form>
 

@@ -5,11 +5,13 @@ import type { MenuItem } from "primereact/menuitem"
 import { useRef } from "react"
 import { useNavigate } from "react-router"
 import { useAuth } from "../features/auth/hooks/UseAuth"
+import { logout, useAppDispatch } from "../redux"
 import { USER_TYPES } from "../utils/StaticVariables"
 
 function BaseMenu() {
   const navigate = useNavigate()
   const profileMenu = useRef<Menu>(null)
+  const dispatch = useAppDispatch()
   const { userType } = useAuth()
 
   const MenuAdmin: MenuItem[] = [
@@ -17,6 +19,16 @@ function BaseMenu() {
       label: "Administradores de clinicas",
       icon: "pi pi-users",
       command: () => void navigate("admin/clinic-admin-list"),
+    },
+    {
+      label: "Estudios",
+      icon: "pi pi-file-plus",
+      command: () => void navigate("admin/speciality-list"),
+    },
+    {
+      label: "Especialidades",
+      icon: "pi pi-bullseye",
+      command: () => void navigate("admin/study-list"),
     },
   ]
 
@@ -30,16 +42,6 @@ function BaseMenu() {
       label: "Doctores",
       icon: "pi pi-users",
       command: () => void navigate("clinic/doctor-list"),
-    },
-    {
-      label: "Estudios",
-      icon: "pi pi-file-plus",
-      command: () => void navigate("clinic/speciality-list"),
-    },
-    {
-      label: "Especialidades",
-      icon: "pi pi-bullseye",
-      command: () => void navigate("clinic/study-list"),
     },
     {
       label: "Consultas",
@@ -106,7 +108,7 @@ function BaseMenu() {
       label: "Logout",
       icon: "pi pi-sign-out",
       command: () => {
-        console.log("Logging out")
+        dispatch(logout())
       },
     },
   ]

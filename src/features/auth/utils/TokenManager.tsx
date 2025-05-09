@@ -11,7 +11,7 @@ export const parseJwt = (token: string): TokenPayload | null => {
         .map(c => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`)
         .join(""),
     )
-
+    console.log("PARSE PAYLOAD", JSON.parse(jsonPayload))
     return JSON.parse(jsonPayload) as TokenPayload
   } catch (error: unknown) {
     console.log(error)
@@ -39,14 +39,6 @@ export const saveTokensToStorage = (
 export const removeTokensFromStorage = (): void => {
   localStorage.removeItem("accessToken")
   localStorage.removeItem("refreshToken")
-}
-
-export const isTokenExpired = (token: string): boolean => {
-  const payload = parseJwt(token)
-  if (!payload) return true
-
-  const currentTime = Math.floor(Date.now() / 1000)
-  return payload.exp < currentTime
 }
 
 export const getTokenPayload = (token: string): TokenPayload | null => {
