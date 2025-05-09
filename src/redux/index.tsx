@@ -6,11 +6,13 @@ import { clinicAdminApi } from "./api/ClinicAdminAPI"
 import { doctorApi } from "./api/DoctorAPI"
 import { AuthReducer } from "./slices/AuthSlice"
 import { DataTableReducer } from "./slices/DataTableSlice"
+import { ToastReducer } from "./slices/ToastSlice"
 
 export const store = configureStore({
   reducer: {
     auth: AuthReducer,
     dataTable: DataTableReducer,
+    toast: ToastReducer,
     [clinicApi.reducerPath]: clinicApi.reducer,
     [clinicAdminApi.reducerPath]: clinicAdminApi.reducer,
     [doctorApi.reducerPath]: doctorApi.reducer,
@@ -66,3 +68,12 @@ export {
   modifySearch,
   modifyUpdateDialog,
 } from "./slices/DataTableSlice"
+export {
+  clearToasts,
+  showErrorToast,
+  showInfoToast,
+  showMultipleToasts,
+  showSuccessToast,
+  showToast,
+  showWarnToast,
+} from "./slices/ToastSlice"

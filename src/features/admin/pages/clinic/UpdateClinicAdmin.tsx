@@ -4,7 +4,6 @@ import { Dialog } from "primereact/dialog"
 import { Dropdown } from "primereact/dropdown"
 import { InputMask } from "primereact/inputmask"
 import { InputText } from "primereact/inputtext"
-import { Toast } from "primereact/toast"
 import { classNames } from "primereact/utils"
 import { useEffect } from "react"
 import { Controller } from "react-hook-form"
@@ -13,7 +12,6 @@ import { useClinicAdminHook } from "../../hooks/ClinicAdminHook"
 
 function UpdateClinicAdmin() {
   const {
-    toastRef,
     isLoadingAdminCLinic,
     showUpdateDialog,
     handleCloseForm,
@@ -52,7 +50,6 @@ function UpdateClinicAdmin() {
 
   return (
     <>
-      <Toast ref={toastRef} />
       <Dialog
         header="Crear una clínica"
         footer={renderFooter()}

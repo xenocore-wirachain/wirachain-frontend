@@ -63,12 +63,10 @@ export const useClinicAdminHook = () => {
     void createClinicAdmin(data)
       .unwrap()
       .then(() => {
-        baseHook.toastRef.current?.show({
-          severity: "success",
-          summary: "Éxito",
-          detail: "Administrador de clínica creado correctamente",
-          life: 3000,
-        })
+        baseHook.toast.showSuccess(
+          "Éxito",
+          "Administrador de clínica creado correctamente",
+        )
         handleCloseForm()
       })
       .catch((error: unknown) => {
@@ -87,12 +85,10 @@ export const useClinicAdminHook = () => {
       void updateClinicAdmin({ id: baseHook.idSelected, clinicAdmin: data })
         .unwrap()
         .then(() => {
-          baseHook.toastRef.current?.show({
-            severity: "success",
-            summary: "Éxito",
-            detail: "Administrador de clínica actualizado correctamente",
-            life: 3000,
-          })
+          baseHook.toast.showSuccess(
+            "Éxito",
+            "Administrador de clínica actualizado correctamente",
+          )
           handleCloseForm()
         })
         .catch((error: unknown) => {
@@ -108,11 +104,10 @@ export const useClinicAdminHook = () => {
       void deleteClinicAdmin(baseHook.idSelected)
         .unwrap()
         .then(() => {
-          baseHook.toastRef.current?.show({
-            severity: "success",
-            summary: "Éxito",
-            detail: "Administrador de clinica eliminado correctamente",
-          })
+          baseHook.toast.showSuccess(
+            "Éxito",
+            "Administrador de clinica eliminado correctamente",
+          )
           baseHook.closeAllDialogs()
         })
         .catch((error: unknown) => {

@@ -5,7 +5,6 @@ import { Dropdown } from "primereact/dropdown"
 import { InputMask } from "primereact/inputmask"
 import { InputText } from "primereact/inputtext"
 import { Password } from "primereact/password"
-import { Toast } from "primereact/toast"
 import { classNames } from "primereact/utils"
 import { Controller } from "react-hook-form"
 import { GenderDictionary } from "../../../../utils/StaticVariables"
@@ -13,7 +12,6 @@ import { useClinicAdminHook } from "../../hooks/ClinicAdminHook"
 
 function CreateClinicAdmin() {
   const {
-    toastRef,
     control,
     errors,
     isCreating,
@@ -43,7 +41,6 @@ function CreateClinicAdmin() {
 
   return (
     <>
-      <Toast ref={toastRef} />
       <Dialog
         header="Crear un administrador clínica"
         footer={renderFooter()}

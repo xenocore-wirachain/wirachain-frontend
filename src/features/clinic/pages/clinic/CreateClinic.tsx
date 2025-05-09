@@ -1,14 +1,12 @@
 import { Button } from "primereact/button"
 import { Dialog } from "primereact/dialog"
 import { InputText } from "primereact/inputtext"
-import { Toast } from "primereact/toast"
 import { classNames } from "primereact/utils"
 import { Controller } from "react-hook-form"
 import { useClinicHook } from "../../hooks/ClinicHook"
 
 function CreateClinic() {
   const {
-    toastRef,
     control,
     errors,
     isCreating,
@@ -38,7 +36,6 @@ function CreateClinic() {
 
   return (
     <>
-      <Toast ref={toastRef} />
       <Dialog
         header="Crear una clínica"
         footer={renderFooter()}

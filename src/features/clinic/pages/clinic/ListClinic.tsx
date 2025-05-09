@@ -4,7 +4,6 @@ import { DataTable } from "primereact/datatable"
 import { IconField } from "primereact/iconfield"
 import { InputIcon } from "primereact/inputicon"
 import { InputText } from "primereact/inputtext"
-import { Toast } from "primereact/toast"
 import { useClinicHook } from "../../hooks/ClinicHook"
 import type { ClinicResponse } from "../../types/Clinic"
 import CreateClinic from "./CreateClinic"
@@ -18,7 +17,6 @@ function ListClinic() {
     data,
     isLoading,
     isFetching,
-    toastRef,
     openUpdateDialog,
     openDeleteDialog,
     openCreateDialog,
@@ -80,7 +78,6 @@ function ListClinic() {
 
   return (
     <div className="card">
-      <Toast ref={toastRef} />
       <CreateClinic />
       <UpdateClinic />
       <DeleteClinic />

@@ -1,16 +1,10 @@
 import { Button } from "primereact/button"
 import { Dialog } from "primereact/dialog"
-import { Toast } from "primereact/toast"
 import { useClinicAdminHook } from "../../hooks/ClinicAdminHook"
 
 function DeleteClinicAdmin() {
-  const {
-    showDeleteDialog,
-    toastRef,
-    isDeleting,
-    closeAllDialogs,
-    handleDeleteSubmit,
-  } = useClinicAdminHook()
+  const { showDeleteDialog, isDeleting, closeAllDialogs, handleDeleteSubmit } =
+    useClinicAdminHook()
 
   const renderFooter = () => (
     <>
@@ -33,7 +27,6 @@ function DeleteClinicAdmin() {
 
   return (
     <>
-      <Toast ref={toastRef} />
       <Dialog
         visible={showDeleteDialog}
         onHide={closeAllDialogs}

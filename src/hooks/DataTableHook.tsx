@@ -1,6 +1,4 @@
 import type { UUID } from "crypto"
-import type { Toast } from "primereact/toast"
-import { useRef } from "react"
 import {
   modifyCreateDialog,
   modifyDeleteDialog,
@@ -11,6 +9,7 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../redux"
+import { useToast } from "./ToastHook"
 
 export const useDataTableHook = () => {
   const dispatch = useAppDispatch()
@@ -23,7 +22,7 @@ export const useDataTableHook = () => {
     showUpdateDialog,
     showDeleteDialog,
   } = useAppSelector(state => state.dataTable)
-  const toastRef = useRef<Toast>(null)
+  const toast = useToast()
 
   const openUpdateDialog = (id: UUID | number) => {
     dispatch(modifyIdSelected(id))
@@ -57,30 +56,18 @@ export const useDataTableHook = () => {
   const handleApiError = (error: unknown) => {
     const errorMessage =
       error instanceof Error ? error.message : "Error desconocido"
-    toastRef.current?.show({
-      severity: "error",
-      summary: "Error",
-      detail: errorMessage,
-      life: 5000,
-    })
+    toast.showError("Error", errorMessage)
   }
 
   const handleError = (error: unknown) => {
-    toastRef.current?.show({
-      severity: "error",
-      summary: "Error",
-      detail: error instanceof Error ? error.message : "Error desconocido",
-      life: 5000,
-    })
+    toast.showError(
+      "Error",
+      error instanceof Error ? error.message : "Error desconocido",
+    )
   }
 
   const handleIdError = () => {
-    toastRef.current?.show({
-      severity: "error",
-      summary: "Error",
-      detail: "ID no válido",
-      life: 5000,
-    })
+    toast.showError("Error", "ID no válido")
   }
 
   return {
@@ -94,7 +81,7 @@ export const useDataTableHook = () => {
     showDeleteDialog,
 
     // Toast Reference
-    toastRef,
+    toast,
 
     //Methods
     openCreateDialog,

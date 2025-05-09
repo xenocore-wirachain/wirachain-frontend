@@ -55,12 +55,7 @@ export const useClinicHook = () => {
     void createClinic(data)
       .unwrap()
       .then(() => {
-        baseHook.toastRef.current?.show({
-          severity: "success",
-          summary: "Éxito",
-          detail: "Clinica creado correctamente",
-          life: 3000,
-        })
+        baseHook.toast.showSuccess("Éxito", "Clinica creado correctamente")
         handleCloseForm()
       })
       .catch((error: unknown) => {
@@ -76,12 +71,10 @@ export const useClinicHook = () => {
       })
         .unwrap()
         .then(() => {
-          baseHook.toastRef.current?.show({
-            severity: "success",
-            summary: "Éxito",
-            detail: "Clinica actualizada correctamente",
-            life: 3000,
-          })
+          baseHook.toast.showSuccess(
+            "Éxito",
+            "Clinica actualizada correctamente",
+          )
           handleCloseForm()
         })
         .catch((error: unknown) => {
@@ -97,11 +90,7 @@ export const useClinicHook = () => {
       void deleteClinic(baseHook.idSelected)
         .unwrap()
         .then(() => {
-          baseHook.toastRef.current?.show({
-            severity: "success",
-            summary: "Éxito",
-            detail: "Clinica eliminada correctamente",
-          })
+          baseHook.toast.showSuccess("Éxito", "Clinica eliminada correctamente")
           baseHook.closeAllDialogs()
         })
         .catch((error: unknown) => {
