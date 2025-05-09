@@ -51,7 +51,7 @@ function UpdateClinicAdmin() {
   return (
     <>
       <Dialog
-        header="Crear una clínica"
+        header="Actualizar un administrador de clínica"
         footer={renderFooter()}
         visible={showUpdateDialog}
         onHide={handleCloseForm}

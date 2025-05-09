@@ -23,12 +23,12 @@ function BaseMenu() {
     {
       label: "Estudios",
       icon: "pi pi-file-plus",
-      command: () => void navigate("admin/speciality-list"),
+      command: () => void navigate("admin/study-list"),
     },
     {
       label: "Especialidades",
       icon: "pi pi-bullseye",
-      command: () => void navigate("admin/study-list"),
+      command: () => void navigate("admin/speciality-list"),
     },
   ]
 

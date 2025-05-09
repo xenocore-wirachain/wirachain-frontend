@@ -42,7 +42,7 @@ function CreateClinicAdmin() {
   return (
     <>
       <Dialog
-        header="Crear un administrador clínica"
+        header="Crear un administrador de clínica"
         footer={renderFooter()}
         visible={showCreateDialog}
         onHide={handleCloseForm}

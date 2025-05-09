@@ -4,4 +4,6 @@ export enum BASE_PATH {
   clinic = "clinics",
   clinicAdministration = "clinicadministrators",
   doctor = "doctors",
+  study = "medicaltests",
+  speciality = "medicalspecialties",
 }

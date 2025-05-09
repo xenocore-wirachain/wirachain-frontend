@@ -11,7 +11,6 @@ export const parseJwt = (token: string): TokenPayload | null => {
         .map(c => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`)
         .join(""),
     )
-    console.log("PARSE PAYLOAD", JSON.parse(jsonPayload))
     return JSON.parse(jsonPayload) as TokenPayload
   } catch (error: unknown) {
     console.log(error)
