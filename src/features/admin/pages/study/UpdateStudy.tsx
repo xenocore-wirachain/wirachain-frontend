@@ -36,7 +36,7 @@ function UpdateStudy() {
       />
       <Button
         type="submit"
-        form="updateSpecialityForm"
+        form="updateStudyForm"
         label="Guardar"
         icon="pi pi-check"
         loading={isLoadingStudy || isUpdating}
@@ -47,7 +47,7 @@ function UpdateStudy() {
   return (
     <>
       <Dialog
-        header="Actualizar una especialidad"
+        header="Actualizar un estudio"
         footer={renderFooter()}
         visible={showUpdateDialog}
         onHide={handleCloseForm}
@@ -56,7 +56,7 @@ function UpdateStudy() {
         closable={!(isLoadingStudy || isUpdating)}
       >
         <form
-          id="updateSpecialityForm"
+          id="updateStudyForm"
           onSubmit={handleFormSubmitUpdate}
           className="p-fluid"
         >

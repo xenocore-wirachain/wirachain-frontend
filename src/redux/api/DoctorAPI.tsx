@@ -3,7 +3,6 @@ import type { UUID } from "crypto"
 import type {
   DoctorDetailedResponse,
   DoctorRequest,
-  DoctorResponse,
 } from "../../features/clinic/types/Doctor"
 import type { Pagination, PaginationParams } from "../../types/Pagination"
 import { API_URL, BASE_PATH } from "../../utils/ApiPath"
@@ -40,7 +39,7 @@ export const doctorApi = createApi({
           : [{ type: "Doctor", id: "LIST" }],
     }),
 
-    getDoctor: builder.query<DoctorResponse, UUID>({
+    getDoctor: builder.query<DoctorDetailedResponse, UUID>({
       query: clinicAdminId => ({
         url: `${DOCTOR_PATH}/${clinicAdminId}`,
         method: "GET",
@@ -48,7 +47,7 @@ export const doctorApi = createApi({
       providesTags: (_result, _error, id) => [{ type: "Doctor" as const, id }],
     }),
 
-    addDoctor: builder.mutation<DoctorResponse, DoctorRequest>({
+    addDoctor: builder.mutation<DoctorDetailedResponse, DoctorRequest>({
       query: clinicAdmin => ({
         url: DOCTOR_PATH,
         method: "POST",
@@ -58,7 +57,7 @@ export const doctorApi = createApi({
     }),
 
     updateDoctor: builder.mutation<
-      DoctorResponse,
+      DoctorDetailedResponse,
       { id: UUID; clinic: DoctorRequest }
     >({
       query: params => ({

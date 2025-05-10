@@ -9,8 +9,7 @@ import {
   useGetDoctorQuery,
   useUpdateDoctorMutation,
 } from "../../../redux"
-import type { DoctorRequest } from "../../../types/Doctor"
-import ConverClinicResponseToClinicRequest from "../utils/ClinicDTO"
+import type { DoctorRequest } from "../types/Doctor"
 
 export const useDoctorHook = () => {
   const baseHook = useDataTableHook()
@@ -21,8 +20,9 @@ export const useDoctorHook = () => {
     lastName: "",
     gender: "",
     dateOfBirth: null,
+    clinicIds: [],
+    medicalSpecialtyIds: [],
     user: {
-      name: "",
       phone: "",
       email: "",
       password: "",
@@ -61,12 +61,7 @@ export const useDoctorHook = () => {
     void createDoctor(data)
       .unwrap()
       .then(() => {
-        baseHook.toastRef.current?.show({
-          severity: "success",
-          summary: "Éxito",
-          detail: "Doctor creado correctamente",
-          life: 3000,
-        })
+        baseHook.toast.showSuccess("Éxito", "Doctor creado correctamente")
         handleCloseForm()
       })
       .catch((error: unknown) => {
@@ -82,12 +77,10 @@ export const useDoctorHook = () => {
       })
         .unwrap()
         .then(() => {
-          baseHook.toastRef.current?.show({
-            severity: "success",
-            summary: "Éxito",
-            detail: "Doctor actualizado correctamente",
-            life: 3000,
-          })
+          baseHook.toast.showSuccess(
+            "Éxito",
+            "Doctor actualizado correctamente",
+          )
           handleCloseForm()
         })
         .catch((error: unknown) => {
@@ -103,11 +96,7 @@ export const useDoctorHook = () => {
       void deleteDoctor(baseHook.idSelected)
         .unwrap()
         .then(() => {
-          baseHook.toastRef.current?.show({
-            severity: "success",
-            summary: "Éxito",
-            detail: "Doctor eliminado correctamente",
-          })
+          baseHook.toast.showSuccess("Éxito", "Doctro eliminado correctamente")
           baseHook.closeAllDialogs()
         })
         .catch((error: unknown) => {
@@ -120,16 +109,50 @@ export const useDoctorHook = () => {
 
   const handleReceiveData = useCallback(() => {
     if (baseHook.showUpdateDialog && doctorData) {
-      const transformedData = ConverClinicResponseToClinicRequest(
-        doctorData,
-        idAdminClinic,
-      )
-      reset(transformedData)
+      reset(doctorData)
     }
   }, [baseHook.showUpdateDialog, doctorData, reset])
 
   const handleCloseForm = () => {
     baseHook.closeAllDialogs()
     reset(defaultValues)
+  }
+
+  const handleFormSubmitCreate = (e: React.FormEvent) => {
+    e.preventDefault()
+    void handleSubmit(handleCreateSubmit)(e as React.BaseSyntheticEvent)
+  }
+
+  const handleFormSubmitUpdate = (e: React.FormEvent) => {
+    e.preventDefault()
+    void handleSubmit(handleUpdateSubmit)(e as React.BaseSyntheticEvent)
+  }
+
+  return {
+    ...baseHook,
+
+    // Data fetching
+    data,
+    isLoading,
+    isFetching,
+    isLoadingDoctor,
+    doctorData,
+
+    // Form handling
+    control,
+    errors,
+    isCreating,
+    isDeleting,
+    isUpdating,
+    defaultValues,
+
+    // Methods
+    handleCreateSubmit,
+    handleUpdateSubmit,
+    handleDeleteSubmit,
+    handleCloseForm,
+    handleFormSubmitCreate,
+    handleFormSubmitUpdate,
+    handleReceiveData,
   }
 }

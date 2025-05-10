@@ -2,6 +2,7 @@ import type { RouteObject } from "react-router"
 import {
   HistoryAppoinment,
   ListClinic,
+  ListDoctor,
   Profile,
   Stadistics,
 } from "../features/clinic"
@@ -11,10 +12,10 @@ const ClinicRouter: RouteObject[] = [
     path: "clinic/clinic-list",
     element: <ListClinic />,
   },
-  // {
-  //   path: "clinic/doctor-list",
-  //   element: <ListDoctor />,
-  // },
+  {
+    path: "clinic/doctor-list",
+    element: <ListDoctor />,
+  },
   {
     path: "clinic/history-appointment",
     element: <HistoryAppoinment />,

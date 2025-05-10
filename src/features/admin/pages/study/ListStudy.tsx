@@ -5,7 +5,7 @@ import { IconField } from "primereact/iconfield"
 import { InputIcon } from "primereact/inputicon"
 import { InputText } from "primereact/inputtext"
 import { useStudyHook } from "../../hooks/StudyHook"
-import type { SpecialityResponse } from "../../types/Speciality"
+import type { StudyResponse } from "../../types/Study"
 import CreateStudy from "./CreateStudy"
 import DeleteStudy from "./DeleteStudy"
 import UpdateStudy from "./UpdateStudy"
@@ -49,7 +49,7 @@ function ListStudy() {
     </div>
   )
 
-  const renderActionButtons = (rowData: SpecialityResponse) => (
+  const renderActionButtons = (rowData: StudyResponse) => (
     <>
       <Button
         text

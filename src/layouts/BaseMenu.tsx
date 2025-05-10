@@ -46,7 +46,7 @@ function BaseMenu() {
     {
       label: "Consultas",
       icon: "pi pi-clipboard",
-      command: () => void navigate("history-clinic/history-appointment"),
+      command: () => void navigate("clinic/history-appointment"),
     },
     {
       label: "Estadisticas",
