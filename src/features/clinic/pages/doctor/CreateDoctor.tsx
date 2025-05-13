@@ -5,79 +5,21 @@ import { Dropdown } from "primereact/dropdown"
 import { InputMask } from "primereact/inputmask"
 import { InputText } from "primereact/inputtext"
 import { Password } from "primereact/password"
-import { Toast } from "primereact/toast"
 import { classNames } from "primereact/utils"
-import React from "react"
-import { Controller, useForm } from "react-hook-form"
-import {
-  modifyCreateDialog,
-  useAddDoctorMutation,
-  useAppDispatch,
-  useAppSelector,
-} from "../../../redux"
-import type { DoctorRequest } from "../../../types/Doctor"
-import { GenderDictionary } from "../../../utils/StaticVariables"
+import { Controller } from "react-hook-form"
+import MultiSelectClinic from "../../../../components/MultiSelectClinic"
+import { GenderDictionary } from "../../../../utils/StaticVariables"
+import { useDoctorHook } from "../../hooks/DoctorHook"
 
 function CreateDoctor() {
-  const dispatch = useAppDispatch()
-  const showCreateDialog = useAppSelector(
-    state => state.dataTable.showCreateDialog,
-  )
-  const [CreateDoctor, { isLoading }] = useAddDoctorMutation()
-  const defaultValues: DoctorRequest = {
-    firstName: "",
-    lastName: "",
-    gender: "",
-    dateOfBirth: null,
-    user: {
-      name: "",
-      phone: "",
-      email: "",
-      password: "",
-    },
-  }
   const {
     control,
-    formState: { errors },
-    reset,
-    handleSubmit,
-  } = useForm<DoctorRequest>({ defaultValues })
-  const toastRef = React.useRef<Toast>(null)
-
-  const handleClose = () => {
-    dispatch(modifyCreateDialog(false))
-    reset()
-  }
-
-  const onSubmit = (data: DoctorRequest) => {
-    if (data.dateOfBirth instanceof Date) {
-      data.dateOfBirth = data.dateOfBirth.toISOString()
-    } else {
-      throw new Error("dateOfBirth must be a Date object to call toISOString()")
-    }
-    data.gender = data.gender === "Hombre" ? "male" : "female"
-
-    void CreateDoctor(data)
-      .unwrap()
-      .then(() => {
-        toastRef.current?.show({
-          severity: "success",
-          summary: "Éxito",
-          detail: "Administrador de clinica creado correctamente",
-        })
-        handleClose()
-      })
-      .catch((error: unknown) => {
-        const errorMessage =
-          error instanceof Error ? error.message : "Error desconocido"
-
-        toastRef.current?.show({
-          severity: "error",
-          summary: "Error",
-          detail: `No se pudo crear la administrador de clinica: ${errorMessage}`,
-        })
-      })
-  }
+    errors,
+    isCreating,
+    handleCloseForm,
+    handleFormSubmitCreate,
+    showCreateDialog,
+  } = useDoctorHook()
 
   const renderFooter = () => (
     <>
@@ -85,39 +27,33 @@ function CreateDoctor() {
         label="Cancelar"
         icon="pi pi-times"
         outlined
-        onClick={handleClose}
-        disabled={isLoading}
+        onClick={handleCloseForm}
+        disabled={isCreating}
       />
       <Button
         type="submit"
-        form="createDoctorForm"
+        form="createClinicForm"
         label="Guardar"
         icon="pi pi-check"
-        loading={isLoading}
+        loading={isCreating}
       />
     </>
   )
 
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    void handleSubmit(onSubmit)(e as React.BaseSyntheticEvent)
-  }
-
   return (
     <>
-      <Toast ref={toastRef} />
       <Dialog
-        header="Crear una doctor"
+        header="Crear un doctor"
         footer={renderFooter()}
         visible={showCreateDialog}
-        onHide={handleClose}
+        onHide={handleCloseForm}
         className="w-xl"
         breakpoints={{ "960px": "75vw", "641px": "90vw" }}
-        closable={!isLoading}
+        closable={!isCreating}
       >
         <form
-          id="createDoctorForm"
-          onSubmit={handleFormSubmit}
+          id="createClinicForm"
+          onSubmit={handleFormSubmitCreate}
           className="p-fluid"
         >
           {/* NOMBRE */}
@@ -133,14 +69,13 @@ function CreateDoctor() {
                     onChange={onChange}
                     value={value}
                     ref={ref}
-                    keyfilter="alpha"
                     invalid={errors.firstName ? true : false}
-                    disabled={isLoading}
+                    disabled={isCreating}
                   />
                 )}
               />
               <label
-                htmlFor="firstNmae"
+                htmlFor="name"
                 className={classNames({ "p-error": errors.firstName })}
               >
                 Nombre*
@@ -168,7 +103,7 @@ function CreateDoctor() {
                     ref={ref}
                     keyfilter="alpha"
                     invalid={errors.lastName ? true : false}
-                    disabled={isLoading}
+                    disabled={isCreating}
                   />
                 )}
               />
@@ -201,7 +136,7 @@ function CreateDoctor() {
                     ref={ref}
                     invalid={errors.gender ? true : false}
                     options={GenderDictionary}
-                    disabled={isLoading}
+                    disabled={isCreating}
                     optionLabel="value"
                   />
                 )}
@@ -238,7 +173,7 @@ function CreateDoctor() {
                     ref={ref}
                     invalid={errors.dateOfBirth ? true : false}
                     maxDate={new Date()}
-                    disabled={isLoading}
+                    disabled={isCreating}
                   />
                 )}
               />
@@ -252,39 +187,6 @@ function CreateDoctor() {
             {errors.dateOfBirth && (
               <small className="p-error">
                 {errors.dateOfBirth.message?.toString()}
-              </small>
-            )}
-          </div>
-
-          {/* NAME */}
-          <div className="field mt-4" key="name">
-            <span className="p-float-label">
-              <Controller
-                name="user.name"
-                control={control}
-                rules={{ required: "Se requiere usuario" }}
-                render={({ field: { onChange, onBlur, value, ref } }) => (
-                  <InputText
-                    onBlur={onBlur}
-                    onChange={onChange}
-                    value={value}
-                    ref={ref}
-                    keyfilter="alpha"
-                    invalid={errors.user?.name ? true : false}
-                    disabled={isLoading}
-                  />
-                )}
-              />
-              <label
-                htmlFor="name"
-                className={classNames({ "p-error": errors.user?.name })}
-              >
-                Usuario*
-              </label>
-            </span>
-            {errors.user?.name && (
-              <small className="p-error">
-                {errors.user.name.message?.toString()}
               </small>
             )}
           </div>
@@ -305,7 +207,7 @@ function CreateDoctor() {
                     invalid={errors.user?.phone ? true : false}
                     mask="999-999-999"
                     placeholder="000-000-000"
-                    disabled={isLoading}
+                    disabled={isCreating}
                   />
                 )}
               />
@@ -319,6 +221,42 @@ function CreateDoctor() {
             {errors.user?.phone && (
               <small className="p-error">
                 {errors.user.phone.message?.toString()}
+              </small>
+            )}
+          </div>
+
+          {/* CLINICS */}
+          <div className="field mt-4" key="clinicIds">
+            <span className="p-float-label">
+              <Controller
+                name="clinicIds"
+                control={control}
+                rules={{
+                  required: "Se requiere clinicas",
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <MultiSelectClinic
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    value={value}
+                    invalid={errors.clinicIds ? true : false}
+                    disabled={isCreating}
+                    display="chip"
+                    maxSelectedLabels={3}
+                    showSelectAll={false}
+                  />
+                )}
+              />
+              <label
+                htmlFor="clinicIds"
+                className={classNames({ "p-error": errors.clinicIds })}
+              >
+                Clinicas*
+              </label>
+            </span>
+            {errors.clinicIds && (
+              <small className="p-error">
+                {errors.clinicIds.message?.toString()}
               </small>
             )}
           </div>
@@ -344,7 +282,7 @@ function CreateDoctor() {
                     ref={ref}
                     keyfilter="email"
                     invalid={errors.user?.email ? true : false}
-                    disabled={isLoading}
+                    disabled={isCreating}
                   />
                 )}
               />
@@ -378,7 +316,7 @@ function CreateDoctor() {
                     value={value}
                     ref={ref}
                     invalid={errors.user?.password ? true : false}
-                    disabled={isLoading}
+                    disabled={isCreating}
                   />
                 )}
               />

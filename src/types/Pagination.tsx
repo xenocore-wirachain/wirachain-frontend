@@ -1,4 +1,5 @@
 export type Pagination<T> = {
+  items: any
   count: number
   results: T[]
 }

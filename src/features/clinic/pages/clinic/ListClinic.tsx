@@ -85,7 +85,7 @@ function ListClinic() {
         lazy
         paginator
         value={data?.results}
-        first={page * pageSize}
+        first={page * pageSize - 1}
         rows={pageSize}
         totalRecords={data?.count}
         loading={isLoading || isFetching}

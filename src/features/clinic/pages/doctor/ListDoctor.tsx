@@ -6,6 +6,7 @@ import { InputIcon } from "primereact/inputicon"
 import { InputText } from "primereact/inputtext"
 import { useDoctorHook } from "../../hooks/DoctorHook"
 import type { ClinicResponse } from "../../types/Clinic"
+import CreateDoctor from "./CreateDoctor"
 import DeleteClinic from "./DeleteDoctor"
 
 function ListDoctor() {
@@ -76,12 +77,13 @@ function ListDoctor() {
 
   return (
     <div className="card">
+      <CreateDoctor />
       <DeleteClinic />
       <DataTable
         lazy
         paginator
         value={data?.results}
-        first={page * pageSize}
+        first={page * pageSize - 1}
         rows={pageSize}
         totalRecords={data?.count}
         loading={isLoading || isFetching}
