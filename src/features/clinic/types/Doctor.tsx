@@ -1,7 +1,7 @@
 import type { UUID } from "crypto"
 import type { Nullable } from "primereact/ts-helpers"
 import type { User } from "../../../types/User"
-import type { SpecialityRequest } from "../../admin/types/Speciality"
+import type { SpecialityResponse } from "../../admin/types/Speciality"
 
 export type BaseDoctor = {
   firstName: string
@@ -28,6 +28,6 @@ type ClinicData = {
 }
 
 export type DoctorDetailedResponse = DoctorResponse & {
-  medicalSpecialties: SpecialityRequest[]
+  medicalSpecialties: SpecialityResponse[]
   clinics: ClinicData[]
 }

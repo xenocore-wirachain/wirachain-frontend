@@ -179,7 +179,7 @@ function CreateClinicAdmin() {
               />
               <label
                 htmlFor="birth"
-                className={classNames({ "p-error": errors.firstName })}
+                className={classNames({ "p-error": errors.dateOfBirth })}
               >
                 Fecha de nacimiento*
               </label>

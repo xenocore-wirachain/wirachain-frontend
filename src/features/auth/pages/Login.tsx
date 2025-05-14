@@ -29,24 +29,27 @@ function Login() {
 
   const onSubmit = (data: LoginRequest) => {
     console.log("CREDENTIALS", data)
-    // ADMIN CREDENTIALS
-    // dispatch(
-    //   setCredentials({
-    //     accessToken:
-    //       "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkpvYW8iLCJ1c2VyX3R5cGUiOjEsImV4cCI6MTc0Njc5NTgxNywidHlwZSI6ImFjY2VzcyJ9.LU1EGlj8KeciYEMHgu7GFk-kiJ_c7HJCb5utgRORrW0",
-    //     refreshToken:
-    //       "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkpvYW8iLCJ1c2VyX3R5cGUiOjEsImV4cCI6MTc0NzM5OTcxNywidHlwZSI6InJlZnJlc2gifQ.Oa97wxEEMe4JDYfVcYikFQWWV1hAlr-7eCKCafsa7a4",
-    //   }),
-    // )
-    // CLINIC CREDENTIALS
-    dispatch(
-      setCredentials({
-        accessToken:
-          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkpvYW8iLCJ1c2VyX3R5cGUiOjQsImV4cCI6MTc0NjkwNTQyOCwidHlwZSI6ImFjY2VzcyJ9.lpAWbsIYddVg6wvRGM9o2djIAzp1bWcqTtfronEbTcc",
-        refreshToken:
-          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkpvYW8iLCJ1c2VyX3R5cGUiOjQsImV4cCI6MTc0NzUwOTMyOCwidHlwZSI6InJlZnJlc2gifQ.dUGWBgvuxVSW3cdz-Ks4DPfRiyHhdnZe8KprpGOGk3w",
-      }),
-    )
+    if (data.email === "admin@gmail.com") {
+      // ADMIN CREDENTIALS
+      dispatch(
+        setCredentials({
+          accessToken:
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkpvYW8iLCJ1c2VyX3R5cGUiOjEsImV4cCI6MTc0Njc5NTgxNywidHlwZSI6ImFjY2VzcyJ9.LU1EGlj8KeciYEMHgu7GFk-kiJ_c7HJCb5utgRORrW0",
+          refreshToken:
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkpvYW8iLCJ1c2VyX3R5cGUiOjEsImV4cCI6MTc0NzM5OTcxNywidHlwZSI6InJlZnJlc2gifQ.Oa97wxEEMe4JDYfVcYikFQWWV1hAlr-7eCKCafsa7a4",
+        }),
+      )
+    } else if (data.email === "clinic@gmail.com") {
+      // CLINIC CREDENTIALS
+      dispatch(
+        setCredentials({
+          accessToken:
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkpvYW8iLCJ1c2VyX3R5cGUiOjQsImV4cCI6MTc0NjkwNTQyOCwidHlwZSI6ImFjY2VzcyJ9.lpAWbsIYddVg6wvRGM9o2djIAzp1bWcqTtfronEbTcc",
+          refreshToken:
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkpvYW8iLCJ1c2VyX3R5cGUiOjQsImV4cCI6MTc0NzUwOTMyOCwidHlwZSI6InJlZnJlc2gifQ.dUGWBgvuxVSW3cdz-Ks4DPfRiyHhdnZe8KprpGOGk3w",
+        }),
+      )
+    }
     reset()
     void navigate("dashboard")
   }

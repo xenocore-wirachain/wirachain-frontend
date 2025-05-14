@@ -8,6 +8,7 @@ import { useDoctorHook } from "../../hooks/DoctorHook"
 import type { ClinicResponse } from "../../types/Clinic"
 import CreateDoctor from "./CreateDoctor"
 import DeleteClinic from "./DeleteDoctor"
+import UpdateDoctor from "./UpdateDoctor"
 
 function ListDoctor() {
   const {
@@ -78,6 +79,7 @@ function ListDoctor() {
   return (
     <div className="card">
       <CreateDoctor />
+      <UpdateDoctor />
       <DeleteClinic />
       <DataTable
         lazy

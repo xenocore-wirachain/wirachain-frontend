@@ -8,6 +8,7 @@ import { Password } from "primereact/password"
 import { classNames } from "primereact/utils"
 import { Controller } from "react-hook-form"
 import MultiSelectClinic from "../../../../components/MultiSelectClinic"
+import MultiSelectSpeciality from "../../../../components/MultiSelectSpeciality"
 import { GenderDictionary } from "../../../../utils/StaticVariables"
 import { useDoctorHook } from "../../hooks/DoctorHook"
 
@@ -257,6 +258,44 @@ function CreateDoctor() {
             {errors.clinicIds && (
               <small className="p-error">
                 {errors.clinicIds.message?.toString()}
+              </small>
+            )}
+          </div>
+
+          {/* ESPECIALIDAD */}
+          <div className="field mt-4" key="medicalSpecialtyIds">
+            <span className="p-float-label">
+              <Controller
+                name="medicalSpecialtyIds"
+                control={control}
+                rules={{
+                  required: "Se requiere especialidades",
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <MultiSelectSpeciality
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    value={value}
+                    invalid={errors.medicalSpecialtyIds ? true : false}
+                    disabled={isCreating}
+                    display="chip"
+                    maxSelectedLabels={3}
+                    showSelectAll={false}
+                  />
+                )}
+              />
+              <label
+                htmlFor="medicalSpecialtyIds"
+                className={classNames({
+                  "p-error": errors.medicalSpecialtyIds,
+                })}
+              >
+                Especialidades*
+              </label>
+            </span>
+            {errors.medicalSpecialtyIds && (
+              <small className="p-error">
+                {errors.medicalSpecialtyIds.message?.toString()}
               </small>
             )}
           </div>

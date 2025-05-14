@@ -10,6 +10,7 @@ import {
   useUpdateDoctorMutation,
 } from "../../../redux"
 import type { DoctorRequest } from "../types/Doctor"
+import ConvertDoctorResponseToDoctorRequest from "../utils/DoctorDTO"
 
 export const useDoctorHook = () => {
   const baseHook = useDataTableHook()
@@ -58,6 +59,12 @@ export const useDoctorHook = () => {
   } = useForm<DoctorRequest>({ defaultValues })
 
   const handleCreateSubmit = (data: DoctorRequest) => {
+    if (data.dateOfBirth instanceof Date) {
+      data.dateOfBirth = data.dateOfBirth.toISOString()
+    } else {
+      throw new Error("La fecha de nacimiento debe ser válida")
+    }
+    data.gender = data.gender === "Hombre" ? "male" : "female"
     void createDoctor(data)
       .unwrap()
       .then(() => {
@@ -70,6 +77,12 @@ export const useDoctorHook = () => {
   }
 
   const handleUpdateSubmit = (data: DoctorRequest) => {
+    if (data.dateOfBirth instanceof Date) {
+      data.dateOfBirth = data.dateOfBirth.toISOString()
+    } else {
+      throw new Error("La fecha de nacimiento debe ser válida")
+    }
+    data.gender = data.gender === "Hombre" ? "male" : "female"
     if (typeof baseHook.idSelected === "string") {
       void updateDoctor({
         id: baseHook.idSelected,
@@ -109,7 +122,8 @@ export const useDoctorHook = () => {
 
   const handleReceiveData = useCallback(() => {
     if (baseHook.showUpdateDialog && doctorData) {
-      reset(doctorData)
+      const updateDoctorData = ConvertDoctorResponseToDoctorRequest(doctorData)
+      reset(updateDoctorData)
     }
   }, [baseHook.showUpdateDialog, doctorData, reset])
 
