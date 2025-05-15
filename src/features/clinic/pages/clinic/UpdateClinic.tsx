@@ -5,6 +5,7 @@ import { classNames } from "primereact/utils"
 import { useEffect } from "react"
 import { Controller } from "react-hook-form"
 import { useClinicHook } from "../../hooks/ClinicHook"
+import MultiSelectStudy from "../../../../components/MultiSelectStudy"
 
 function UpdateClinic() {
   const {
@@ -160,6 +161,42 @@ function UpdateClinic() {
             {errors.address && (
               <small className="p-error">
                 {errors.address.message?.toString()}
+              </small>
+            )}
+          </div>
+
+          {/* ESTUDIOS */}
+          <div className="field mt-4" key="medicalTestIds">
+            <span className="p-float-label">
+              <Controller
+                name="medicalTestIds"
+                control={control}
+                rules={{
+                  required: "Se requieren estudios",
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <MultiSelectStudy
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    value={value}
+                    invalid={errors.medicalTestIds ? true : false}
+                    disabled={isLoadingClinic}
+                    display="chip"
+                    maxSelectedLabels={3}
+                    showSelectAll={false}
+                  />
+                )}
+              />
+              <label
+                htmlFor="clinicIds"
+                className={classNames({ "p-error": errors.medicalTestIds })}
+              >
+                Estudios*
+              </label>
+            </span>
+            {errors.medicalTestIds && (
+              <small className="p-error">
+                {errors.medicalTestIds.message?.toString()}
               </small>
             )}
           </div>

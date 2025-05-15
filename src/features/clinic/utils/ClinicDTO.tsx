@@ -5,7 +5,7 @@ function ConverClinicResponseToClinicRequest(
   data: ClinicResponse,
   id: UUID,
 ): ClinicRequest {
-  const { ruc, name, address } = data
+  const { ruc, name, address, medicalTests } = data
   const administratorId = id
 
   return {
@@ -13,6 +13,7 @@ function ConverClinicResponseToClinicRequest(
     name,
     address,
     administratorId,
+    medicalTestIds: medicalTests.map(test => test.id),
   }
 }
 

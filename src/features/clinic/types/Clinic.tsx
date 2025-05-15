@@ -1,6 +1,7 @@
 import type { UUID } from "crypto"
 import type { Nullable } from "primereact/ts-helpers"
 import type { User } from "../../../types/User"
+import type { StudyResponse } from "../../admin/types/Study"
 
 export type BaseClinic = {
   ruc: string
@@ -13,15 +14,16 @@ export type Administator = {
   lastName: string
   gender: string
   dateOfBirth: Nullable<Date> | string
-  user: User
+  user: User | null
 }
 
 export type ClinicRequest = BaseClinic & {
   administratorId: UUID
+  medicalTestIds: number[]
 }
 
 export type ClinicResponse = BaseClinic & {
   id: number
   administration: Administator
-  medicalTests: unknown
+  medicalTests: StudyResponse[]
 }

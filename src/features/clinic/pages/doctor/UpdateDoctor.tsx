@@ -7,10 +7,10 @@ import { InputText } from "primereact/inputtext"
 import { classNames } from "primereact/utils"
 import { useEffect } from "react"
 import { Controller } from "react-hook-form"
-import { GenderDictionary } from "../../../../utils/StaticVariables"
-import { useDoctorHook } from "../../hooks/DoctorHook"
 import MultiSelectClinic from "../../../../components/MultiSelectClinic"
 import MultiSelectSpeciality from "../../../../components/MultiSelectSpeciality"
+import { GenderDictionary } from "../../../../utils/StaticVariables"
+import { useDoctorHook } from "../../hooks/DoctorHook"
 
 function UpdateDoctor() {
   const {
@@ -215,7 +215,6 @@ function UpdateDoctor() {
                     ref={ref}
                     invalid={errors.user?.phone ? true : false}
                     mask="999-999-999"
-                    placeholder="000-000-000"
                     disabled={isLoadingDoctor}
                   />
                 )}

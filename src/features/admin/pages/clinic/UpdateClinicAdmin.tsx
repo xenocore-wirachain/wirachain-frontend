@@ -215,7 +215,6 @@ function UpdateClinicAdmin() {
                     ref={ref}
                     invalid={errors.user?.phone ? true : false}
                     mask="999-999-999"
-                    placeholder="000-000-000"
                     disabled={isLoadingAdminCLinic || isUpdating}
                   />
                 )}

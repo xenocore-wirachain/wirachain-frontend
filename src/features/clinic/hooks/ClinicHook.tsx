@@ -21,6 +21,7 @@ export const useClinicHook = () => {
     ruc: "",
     name: "",
     address: "",
+    medicalTestIds: [],
   }
 
   const { data, isLoading, isFetching } = useGetAllClinicsQuery({

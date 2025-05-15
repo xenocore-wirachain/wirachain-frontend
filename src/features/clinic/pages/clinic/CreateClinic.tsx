@@ -3,6 +3,7 @@ import { Dialog } from "primereact/dialog"
 import { InputText } from "primereact/inputtext"
 import { classNames } from "primereact/utils"
 import { Controller } from "react-hook-form"
+import MultiSelectStudy from "../../../../components/MultiSelectStudy"
 import { useClinicHook } from "../../hooks/ClinicHook"
 
 function CreateClinic() {
@@ -151,6 +152,42 @@ function CreateClinic() {
             {errors.address && (
               <small className="p-error">
                 {errors.address.message?.toString()}
+              </small>
+            )}
+          </div>
+
+          {/* ESTUDIOS */}
+          <div className="field mt-4" key="medicalTestIds">
+            <span className="p-float-label">
+              <Controller
+                name="medicalTestIds"
+                control={control}
+                rules={{
+                  required: "Se requieren estudios",
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <MultiSelectStudy
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    value={value}
+                    invalid={errors.medicalTestIds ? true : false}
+                    disabled={isCreating}
+                    display="chip"
+                    maxSelectedLabels={3}
+                    showSelectAll={false}
+                  />
+                )}
+              />
+              <label
+                htmlFor="clinicIds"
+                className={classNames({ "p-error": errors.medicalTestIds })}
+              >
+                Estudios*
+              </label>
+            </span>
+            {errors.medicalTestIds && (
+              <small className="p-error">
+                {errors.medicalTestIds.message?.toString()}
               </small>
             )}
           </div>
