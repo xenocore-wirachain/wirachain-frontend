@@ -70,7 +70,11 @@ export {
   useGetDoctorQuery,
   useUpdateDoctorMutation,
 } from "./api/DoctorAPI"
-export { useAddPatientMutation } from "./api/PatientAPI"
+export {
+  useAddPatientMutation,
+  useGetPatientQuery,
+  useUpdatePatientMutation,
+} from "./api/PatientAPI"
 export {
   useAddSpecialityMutation,
   useDeleteSpecialityMutation,
