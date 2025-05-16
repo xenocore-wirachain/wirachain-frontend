@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { authApi } from "./api/AuthAPI"
 import { clinicApi } from "./api/ClinicAPI"
 import { clinicAdminApi } from "./api/ClinicAdminAPI"
+import { clinicPatientApi } from "./api/ClinicPatientAPI"
 import { doctorApi } from "./api/DoctorAPI"
 import { patientApi } from "./api/PatientAPI"
 import { specialityApi } from "./api/SpecialityAPI"
@@ -22,6 +23,7 @@ export const store = configureStore({
     [specialityApi.reducerPath]: specialityApi.reducer,
     [studyApi.reducerPath]: studyApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
+    [clinicPatientApi.reducerPath]: clinicPatientApi.reducer,
     [patientApi.reducerPath]: patientApi.reducer,
   },
   middleware: getDefaultMiddleware =>
@@ -32,6 +34,7 @@ export const store = configureStore({
       .concat(specialityApi.middleware)
       .concat(studyApi.middleware)
       .concat(patientApi.middleware)
+      .concat(clinicPatientApi.middleware)
       .concat(authApi.middleware),
 })
 
@@ -56,6 +59,10 @@ export {
   useGetClinicAdminQuery,
   useUpdateClinicAdminMutation,
 } from "./api/ClinicAdminAPI"
+export {
+  useAddClinicPatientMutation,
+  useGetAllClinicsPerPatientQuery,
+} from "./api/ClinicPatientAPI"
 export {
   useAddDoctorMutation,
   useDeleteDoctorMutation,

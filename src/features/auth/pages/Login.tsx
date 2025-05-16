@@ -49,6 +49,16 @@ function Login() {
             "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkpvYW8iLCJ1c2VyX3R5cGUiOjQsImV4cCI6MTc0NzUwOTMyOCwidHlwZSI6InJlZnJlc2gifQ.dUGWBgvuxVSW3cdz-Ks4DPfRiyHhdnZe8KprpGOGk3w",
         }),
       )
+    } else if (data.email === "patient@gmail.com") {
+      // PATIENT CREDENTIALS
+      dispatch(
+        setCredentials({
+          accessToken:
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkpvYW8iLCJ1c2VyX3R5cGUiOjMsImV4cCI6MTc0NzQxMjU3OSwidHlwZSI6ImFjY2VzcyJ9.DR8rqzc95vjiVOIw9VF5WJZcyxB8ltIosXWEMySU-e4",
+          refreshToken:
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkpvYW8iLCJ1c2VyX3R5cGUiOjMsImV4cCI6MTc0ODAxNjQ3OSwidHlwZSI6InJlZnJlc2gifQ.3L6k0LdqOKcETcmUF6fjnfwlPV8E2yg8iSS7I4WvVMo",
+        }),
+      )
     }
     reset()
     void navigate("dashboard")
