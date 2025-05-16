@@ -4,6 +4,7 @@ import { authApi } from "./api/AuthAPI"
 import { clinicApi } from "./api/ClinicAPI"
 import { clinicAdminApi } from "./api/ClinicAdminAPI"
 import { doctorApi } from "./api/DoctorAPI"
+import { patientApi } from "./api/PatientAPI"
 import { specialityApi } from "./api/SpecialityAPI"
 import { studyApi } from "./api/StudyAPI"
 import { AuthReducer } from "./slices/AuthSlice"
@@ -21,6 +22,7 @@ export const store = configureStore({
     [specialityApi.reducerPath]: specialityApi.reducer,
     [studyApi.reducerPath]: studyApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
+    [patientApi.reducerPath]: patientApi.reducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware()
@@ -29,6 +31,7 @@ export const store = configureStore({
       .concat(doctorApi.middleware)
       .concat(specialityApi.middleware)
       .concat(studyApi.middleware)
+      .concat(patientApi.middleware)
       .concat(authApi.middleware),
 })
 
@@ -60,6 +63,7 @@ export {
   useGetDoctorQuery,
   useUpdateDoctorMutation,
 } from "./api/DoctorAPI"
+export { useAddPatientMutation } from "./api/PatientAPI"
 export {
   useAddSpecialityMutation,
   useDeleteSpecialityMutation,
