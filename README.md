@@ -9,3 +9,5 @@
 
 - https://redux-toolkit.js.org/rtk-query/usage/examples (for jwt auth)
 - https://www.primefaces.org/primereact-v8/reacthookform/ (primereact with react-form-hook)
+
+// "build": "tsc -b && vite build",
