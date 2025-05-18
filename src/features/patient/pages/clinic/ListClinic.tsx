@@ -19,6 +19,7 @@ function ListClinic() {
     handlePageChange,
     handleSearch,
     handleCreateSubmit,
+    handleRemoveSubmit,
   } = useClinicPatientHook()
 
   const renderHeader = () => (
@@ -65,7 +66,7 @@ function ListClinic() {
             text
             icon="pi pi-lock-open"
             onClick={() => {
-              console.log("eliminar")
+              handleRemoveSubmit(rowData.id)
             }}
             className="mr-2"
             tooltipOptions={{ position: "top" }}

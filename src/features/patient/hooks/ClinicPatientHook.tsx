@@ -3,6 +3,7 @@ import { useDataTableHook } from "../../../hooks/DataTableHook"
 import {
   useAddClinicPatientMutation,
   useGetAllClinicsPerPatientQuery,
+  useRemoveClinicPatientMutation,
 } from "../../../redux"
 
 export const useClinicPatientHook = () => {
@@ -20,6 +21,8 @@ export const useClinicPatientHook = () => {
 
   const [createClinicPatient, { isLoading: isCreating }] =
     useAddClinicPatientMutation()
+  const [deleteClinicPatient, { isLoading: isDeleting }] =
+    useRemoveClinicPatientMutation()
 
   const handleCreateSubmit = (idClinic: number) => {
     void createClinicPatient({
@@ -35,6 +38,20 @@ export const useClinicPatientHook = () => {
       })
   }
 
+  const handleRemoveSubmit = (idClinic: number) => {
+    void deleteClinicPatient({
+      clinicId: idClinic,
+      patientId: idPatient,
+    })
+      .unwrap()
+      .then(() => {
+        baseHook.toast.showSuccess("Éxito", "Desvinculado con exito")
+      })
+      .catch((error: unknown) => {
+        baseHook.handleApiError(error)
+      })
+  }
+
   return {
     ...baseHook,
 
@@ -42,7 +59,9 @@ export const useClinicPatientHook = () => {
     isLoading,
     isFetching,
     isCreating,
+    isDeleting,
 
     handleCreateSubmit,
+    handleRemoveSubmit,
   }
 }

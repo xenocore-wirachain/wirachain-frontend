@@ -54,8 +54,19 @@ export const clinicPatientApi = createApi({
       }),
       invalidatesTags: [{ type: "ClinicPatient", id: "LIST" }],
     }),
+
+    removeClinicPatient: builder.mutation<null, AddClinicPatientRequest>({
+      query: clinicPatient => ({
+        url: `${PATIENT_PATH}/${clinicPatient.patientId}/clinic/${clinicPatient.clinicId.toString()}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [{ type: "ClinicPatient", id: "LIST" }],
+    }),
   }),
 })
 
-export const { useGetAllClinicsPerPatientQuery, useAddClinicPatientMutation } =
-  clinicPatientApi
+export const {
+  useGetAllClinicsPerPatientQuery,
+  useAddClinicPatientMutation,
+  useRemoveClinicPatientMutation,
+} = clinicPatientApi

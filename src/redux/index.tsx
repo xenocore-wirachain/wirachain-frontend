@@ -62,6 +62,7 @@ export {
 export {
   useAddClinicPatientMutation,
   useGetAllClinicsPerPatientQuery,
+  useRemoveClinicPatientMutation,
 } from "./api/ClinicPatientAPI"
 export {
   useAddDoctorMutation,
