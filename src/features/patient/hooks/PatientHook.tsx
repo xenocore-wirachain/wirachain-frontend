@@ -8,7 +8,7 @@ import type { PatientRequest } from "../types/Patient"
 
 export const usePatientHook = () => {
   const baseHook = useDataTableHook()
-  const idPatient = "550e8400-e29b-41d4-a716-446655440000" as UUID
+  const idPatient = "dcf5afba-0960-449f-b967-9972af646ce2" as UUID
 
   const defaultValues: PatientRequest = {
     firstName: "",
@@ -56,7 +56,7 @@ export const usePatientHook = () => {
 
   const handleReceiveData = useCallback(() => {
     if (patientData) {
-      const updatedClinicAdminData = {
+      const updatedPatientData = {
         ...patientData,
         gender:
           patientData.gender === "Male"
@@ -66,7 +66,7 @@ export const usePatientHook = () => {
           ? new Date(patientData.dateOfBirth)
           : null,
       }
-      reset(updatedClinicAdminData)
+      reset(updatedPatientData)
     }
   }, [patientData, reset])
 
