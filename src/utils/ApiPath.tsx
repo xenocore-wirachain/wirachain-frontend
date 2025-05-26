@@ -7,4 +7,5 @@ export enum BASE_PATH {
   study = "medicaltests",
   speciality = "medicalspecialties",
   patient = "patients",
+  medicalConsultation = "medicalconsultations",
 }
