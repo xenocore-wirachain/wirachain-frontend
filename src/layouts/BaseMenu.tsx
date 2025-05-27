@@ -12,7 +12,7 @@ function BaseMenu() {
   const navigate = useNavigate()
   const profileMenu = useRef<Menu>(null)
   const dispatch = useAppDispatch()
-  const { userType } = useAuth()
+  const { userType, userName } = useAuth()
 
   const MenuAdmin: MenuItem[] = [
     {
@@ -83,8 +83,8 @@ function BaseMenu() {
 
   const profileItems: MenuItem[] = [
     {
-      label: "Settings",
-      icon: "pi pi-cog",
+      label: "Perfil",
+      icon: "pi pi-user",
       command: () => {
         switch (userType) {
           case USER_TYPES.ADMIN:
@@ -117,9 +117,8 @@ function BaseMenu() {
     <div className="flex flex-wrap align-items-center">
       <Menu model={profileItems} popup ref={profileMenu} />
       <Button
-        icon="pi pi-user"
-        // className="m-1 p-1 text-gray-700 hover:bg-gray-200 border-gray"
-        className="m-1 p-1"
+        label={(userName ?? "P")[0]}
+        className="m-1 py-1 px-3"
         severity="secondary"
         text
         onClick={event => profileMenu.current?.toggle(event)}
