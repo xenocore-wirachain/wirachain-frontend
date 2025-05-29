@@ -1,8 +1,8 @@
-import type { UUID } from "crypto"
 import type { MultiSelectProps } from "primereact/multiselect"
 import { MultiSelect } from "primereact/multiselect"
 import type { VirtualScrollerLazyEvent } from "primereact/virtualscroller"
 import { useEffect, useState } from "react"
+import { useAuth } from "../features/auth/hooks/UseAuth"
 import type { ClinicResponse } from "../features/clinic/types/Clinic"
 import { useGetAllClinicsQuery } from "../redux"
 
@@ -12,7 +12,12 @@ function MultiSelectClinic(props: MultiSelectProps) {
   const [loadingClinic, setLoadingClinic] = useState<boolean>(false)
   const [search, setSearch] = useState<string>("")
   const [hasMoreData, setHasMoreData] = useState<boolean>(true)
-  const idAdminClinic = "550e8400-e29b-41d4-a716-446655440000" as UUID
+  const { userId } = useAuth()
+
+  if (!userId) {
+    throw new Error("User ID is required for clinic admin operations")
+  }
+  const idAdminClinic = userId
 
   const { data, isFetching } = useGetAllClinicsQuery({
     id: idAdminClinic,

@@ -1,14 +1,19 @@
-import type { UUID } from "crypto"
 import { useCallback } from "react"
 import { useForm } from "react-hook-form"
 import { useDataTableHook } from "../../../hooks/DataTableHook"
 import { useGetPatientQuery, useUpdatePatientMutation } from "../../../redux"
 import { GenderDictionary } from "../../../utils/StaticVariables"
+import { useAuth } from "../../auth/hooks/UseAuth"
 import type { PatientRequest } from "../types/Patient"
 
 export const usePatientHook = () => {
   const baseHook = useDataTableHook()
-  const idPatient = "dcf5afba-0960-449f-b967-9972af646ce2" as UUID
+  const { userId } = useAuth()
+
+  if (!userId) {
+    throw new Error("User ID is required")
+  }
+  const idPatient = userId
 
   const defaultValues: PatientRequest = {
     firstName: "",

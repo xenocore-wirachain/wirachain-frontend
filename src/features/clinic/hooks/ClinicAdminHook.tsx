@@ -1,4 +1,3 @@
-import type { UUID } from "crypto"
 import { useCallback } from "react"
 import { useForm } from "react-hook-form"
 import { useDataTableHook } from "../../../hooks/DataTableHook"
@@ -8,10 +7,16 @@ import {
 } from "../../../redux"
 import { GenderDictionary } from "../../../utils/StaticVariables"
 import type { ClinicAdminRequest } from "../../admin/types/ClinicAdmin"
+import { useAuth } from "../../auth/hooks/UseAuth"
 
 export const useClinicAdminHook = () => {
   const baseHook = useDataTableHook()
-  const idAdminClinic = "550e8400-e29b-41d4-a716-446655440000" as UUID
+  const { userId } = useAuth()
+
+  if (!userId) {
+    throw new Error("User ID is required for clinic admin operations")
+  }
+  const idAdminClinic = userId
 
   const defaultValues: ClinicAdminRequest = {
     firstName: "",

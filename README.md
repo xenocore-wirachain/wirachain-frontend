@@ -2,8 +2,9 @@
 
 [] install redux persitant
 [] add field phone and email in GET of doctor
-[] fix phone showing after second fetch (BUF???)
+[] fix phone showing after second fetch (BUG???)
 [] fix selector options on doctor update (clinics && tests)
+[] list doctors per clinic administration
 
 # RESOURCES
 

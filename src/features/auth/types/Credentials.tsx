@@ -1,3 +1,5 @@
+import type { UUID } from "crypto"
+
 export type Tokens = {
   accessToken: string
   refreshToken: string
@@ -14,7 +16,7 @@ export type LoginResponse = {
 }
 
 export type TokenPayload = {
-  id: number
+  id: UUID
   name: string
   user_type: number
 }

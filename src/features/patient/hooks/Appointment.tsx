@@ -1,10 +1,15 @@
-import type { UUID } from "crypto"
 import { useDataTableHook } from "../../../hooks/DataTableHook"
 import { useGetAllMedicalConsultationOfPatientQuery } from "../../../redux"
+import { useAuth } from "../../auth/hooks/UseAuth"
 
 export const useAppointmentHook = () => {
   const baseHook = useDataTableHook()
-  const idPatient = "550e8400-e29b-41d4-a716-446655440000" as UUID
+  const { userId } = useAuth()
+
+  if (!userId) {
+    throw new Error("User ID is required")
+  }
+  const idPatient = userId
 
   const { data, isLoading } = useGetAllMedicalConsultationOfPatientQuery({
     idPatient: idPatient,

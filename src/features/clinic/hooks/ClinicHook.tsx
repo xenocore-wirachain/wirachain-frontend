@@ -1,4 +1,3 @@
-import type { UUID } from "crypto"
 import { useCallback } from "react"
 import { useForm } from "react-hook-form"
 import { useDataTableHook } from "../../../hooks/DataTableHook"
@@ -9,12 +8,18 @@ import {
   useGetClinicQuery,
   useUpdateClinicMutation,
 } from "../../../redux"
+import { useAuth } from "../../auth/hooks/UseAuth"
 import type { ClinicRequest } from "../types/Clinic"
 import ConverClinicResponseToClinicRequest from "../utils/ClinicDTO"
 
 export const useClinicHook = () => {
   const baseHook = useDataTableHook()
-  const idAdminClinic = "550e8400-e29b-41d4-a716-446655440000" as UUID
+  const { userId } = useAuth()
+
+  if (!userId) {
+    throw new Error("User ID is required for clinic admin operations")
+  }
+  const idAdminClinic = userId
 
   const defaultValues: ClinicRequest = {
     administratorId: idAdminClinic,
@@ -110,7 +115,7 @@ export const useClinicHook = () => {
       )
       reset(transformedData)
     }
-  }, [baseHook.showUpdateDialog, clinicData, reset])
+  }, [baseHook.showUpdateDialog, clinicData, idAdminClinic, reset])
 
   const handleCloseForm = () => {
     baseHook.closeAllDialogs()
