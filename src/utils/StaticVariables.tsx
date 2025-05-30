@@ -13,5 +13,5 @@ export const USER_TYPES = {
   ADMIN: 1,
   DOCTOR: 2,
   PATIENT: 3,
-  CLINIC: 4, // Assuming clinic admin is type 4
+  CLINIC: 4,
 }

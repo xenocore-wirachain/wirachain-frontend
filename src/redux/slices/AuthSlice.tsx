@@ -41,6 +41,8 @@ export const AuthSlice = createSlice({
       state.userInfo = null
 
       removeTokensFromStorage()
+      localStorage.removeItem("available_clinic")
+      localStorage.removeItem("choosen_clinic")
     },
   },
 })

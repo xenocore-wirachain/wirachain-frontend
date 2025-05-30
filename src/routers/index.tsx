@@ -1,4 +1,5 @@
 import { createBrowserRouter, Navigate, Outlet } from "react-router"
+import DoctorDataLoader from "../components/DoctorDataLoader"
 import { Login, NotFound, Register, ResetPassword } from "../features/auth"
 import { useAuth } from "../features/auth/hooks/UseAuth"
 import BodyDashboard from "../layouts/BodyDashboard"
@@ -23,13 +24,18 @@ const RoleGuard = ({ allowedRoles }: { allowedRoles: number[] }) => {
 }
 
 const DashboardWrapper = () => {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, userType } = useAuth()
 
   if (!isAuthenticated) {
     return <Navigate to="/" replace />
   }
 
-  return <BodyDashboard />
+  return (
+    <>
+      {userType === USER_TYPES.DOCTOR && <DoctorDataLoader />}
+      <BodyDashboard />
+    </>
+  )
 }
 
 const router = createBrowserRouter([

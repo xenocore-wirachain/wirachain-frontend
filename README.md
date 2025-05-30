@@ -5,6 +5,7 @@
 [] fix phone showing after second fetch (BUG???)
 [] fix selector options on doctor update (clinics && tests)
 [] list doctors per clinic administration
+[] pagination position after change menu option
 
 # RESOURCES
 
