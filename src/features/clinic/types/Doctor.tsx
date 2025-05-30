@@ -20,7 +20,7 @@ export type DoctorResponse = BaseDoctor & {
   id: UUID
 }
 
-type ClinicData = {
+export type ClinicData = {
   id: number
   name: string
   ruc: string

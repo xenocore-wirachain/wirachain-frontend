@@ -1,10 +1,12 @@
 import { Button } from "primereact/button"
+import { Dropdown, type DropdownChangeEvent } from "primereact/dropdown"
 import { Menu } from "primereact/menu"
 import { Menubar } from "primereact/menubar"
 import type { MenuItem } from "primereact/menuitem"
-import { useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router"
 import { useAuth } from "../features/auth/hooks/UseAuth"
+import type { ClinicData } from "../features/clinic/types/Doctor"
 import { logout, useAppDispatch } from "../redux"
 import { USER_TYPES } from "../utils/StaticVariables"
 
@@ -13,6 +15,39 @@ function BaseMenu() {
   const profileMenu = useRef<Menu>(null)
   const dispatch = useAppDispatch()
   const { userType, userName } = useAuth()
+  const [clinicOptions, setClinicOptions] = useState<ClinicData[]>([])
+  const [clinicSelected, setClinicSelected] = useState<number>(0)
+
+  useEffect(() => {
+    if (userType === USER_TYPES.DOCTOR) {
+      try {
+        const storeClinicData = localStorage.getItem("available_clinic")
+        const storeOption = localStorage.getItem("choosen_clinic")
+        if (storeClinicData) {
+          const clinics = JSON.parse(storeClinicData) as ClinicData[]
+          setClinicOptions(clinics)
+          if (storeOption) {
+            const selectedId = JSON.parse(storeOption) as number
+            setClinicSelected(selectedId)
+          }
+        }
+      } catch (error) {
+        console.error("Error retrieving doctor data from localStorage", error)
+      }
+    }
+  }, [userType])
+
+  const handleClinicChange = (e: DropdownChangeEvent) => {
+    const optionChoosen = e.value as ClinicData
+    setClinicSelected(optionChoosen.id)
+    try {
+      if (e.value) {
+        localStorage.setItem("choosen_clinic", JSON.stringify(optionChoosen.id))
+      }
+    } catch (error) {
+      console.error("Error storing selected clinic in localStorage", error)
+    }
+  }
 
   const MenuAdmin: MenuItem[] = [
     {
@@ -113,8 +148,17 @@ function BaseMenu() {
     },
   ]
 
-  const end = (
+  const renderDoctorEnd = () => (
     <div className="flex flex-wrap align-items-center">
+      <Dropdown
+        value={clinicSelected}
+        onChange={handleClinicChange}
+        options={clinicOptions}
+        optionLabel="name"
+        placeholder="Select a Clinic"
+        className="m-1 mr-2 w-14rem"
+      />
+
       <Menu model={profileItems} popup ref={profileMenu} />
       <Button
         label={(userName ?? "P")[0]}
@@ -127,6 +171,24 @@ function BaseMenu() {
       />
     </div>
   )
+
+  const end =
+    userType === USER_TYPES.DOCTOR ? (
+      renderDoctorEnd()
+    ) : (
+      <div className="flex flex-wrap align-items-center">
+        <Menu model={profileItems} popup ref={profileMenu} />
+        <Button
+          label={(userName ?? "P")[0]}
+          className="m-1 py-1 px-3"
+          severity="secondary"
+          text
+          onClick={event => profileMenu.current?.toggle(event)}
+          aria-controls="profile-menu"
+          aria-haspopup
+        />
+      </div>
+    )
 
   switch (userType) {
     case USER_TYPES.ADMIN:
