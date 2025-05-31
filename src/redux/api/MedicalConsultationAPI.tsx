@@ -1,6 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import type { UUID } from "crypto"
-import type { MedicalConsultationResponseDoctorAndClinic } from "../../types/MedicalConsultation"
+import type {
+  MedicalConsultationRequest,
+  MedicalConsultationResponseDoctorAndClinic,
+} from "../../types/MedicalConsultation"
 import type { Pagination, PaginationParams } from "../../types/Pagination"
 import { API_URL, BASE_PATH } from "../../utils/ApiPath"
 
@@ -13,10 +16,10 @@ export const medicalConsultationApi = createApi({
   endpoints: builder => ({
     getAllMedicalConsultationPerDoctorAndClinic: builder.query<
       Pagination<MedicalConsultationResponseDoctorAndClinic>,
-      { pagination: PaginationParams; idClinic: UUID; idDoctor: UUID }
+      { pagination: PaginationParams; idClinic: number; idDoctor: UUID }
     >({
       query: params => ({
-        url: `${MEDICAL_CONSULTATION}/doctor/${params.idDoctor}/clinic/${params.idClinic}`,
+        url: `${MEDICAL_CONSULTATION}/doctor/${params.idDoctor}/clinic/${params.idClinic.toString()}`,
         method: "GET",
         params: {
           pageIndex: params.pagination.page,
@@ -40,10 +43,27 @@ export const medicalConsultationApi = createApi({
         },
       }),
     }),
+
+    addMedicalConsultation: builder.mutation<
+      unknown,
+      {
+        consultation: MedicalConsultationRequest
+        idPatient: UUID
+        idDoctor: UUID
+        idClinic: number
+      }
+    >({
+      query: params => ({
+        url: `${MEDICAL_CONSULTATION}/patient/${params.idPatient}/doctor/${params.idDoctor}/clinic/${params.idClinic.toString()}`,
+        method: "POST",
+        body: params.consultation,
+      }),
+    }),
   }),
 })
 
 export const {
   useGetAllMedicalConsultationOfPatientQuery,
   useGetAllMedicalConsultationPerDoctorAndClinicQuery,
+  useAddMedicalConsultationMutation,
 } = medicalConsultationApi

@@ -75,6 +75,7 @@ export {
   useUpdateDoctorMutation,
 } from "./api/DoctorAPI"
 export {
+  useAddMedicalConsultationMutation,
   useGetAllMedicalConsultationOfPatientQuery,
   useGetAllMedicalConsultationPerDoctorAndClinicQuery,
 } from "./api/MedicalConsultationAPI"

@@ -1,10 +1,29 @@
 import type { RouteObject } from "react-router"
-import { ListAppointment, ListPatient, Profile } from "../features/doctor"
+import {
+  CreateAppointment,
+  DetailAppointment,
+  ListAppointment,
+  ListPatient,
+  Profile,
+} from "../features/doctor"
 
 const DoctorRouter: RouteObject[] = [
   {
     path: "doctor/appointment-list",
-    element: <ListAppointment />,
+    children: [
+      {
+        index: true,
+        element: <ListAppointment />,
+      },
+      {
+        path: ":idAppointment",
+        element: <DetailAppointment />,
+      },
+      {
+        path: "/crear",
+        element: <CreateAppointment />,
+      },
+    ],
   },
   {
     path: "doctor/patient-list",
