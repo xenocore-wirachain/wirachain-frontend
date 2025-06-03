@@ -13,6 +13,6 @@ export type MedicalConsultationRequest = {
   dateOfBirth: Nullable<Date> | string
   consultationDate: Nullable<Date> | string
   notes: string
-  checkInTime: string
-  checkOutTime: string
+  checkInTime: Nullable<Date> | string
+  checkOutTime: Nullable<Date> | string
 }

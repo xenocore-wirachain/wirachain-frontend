@@ -20,7 +20,7 @@ const DoctorRouter: RouteObject[] = [
         element: <DetailAppointment />,
       },
       {
-        path: "/crear",
+        path: "create",
         element: <CreateAppointment />,
       },
     ],

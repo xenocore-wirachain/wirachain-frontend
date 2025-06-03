@@ -4,6 +4,7 @@ import { DataTable } from "primereact/datatable"
 import { IconField } from "primereact/iconfield"
 import { InputIcon } from "primereact/inputicon"
 import { InputText } from "primereact/inputtext"
+import { useNavigate } from "react-router"
 import type { MedicalConsultationResponseDoctorAndClinic } from "../../../../types/MedicalConsultation"
 import { useConsultationHook } from "../../hooks/ConsultationHook"
 
@@ -16,6 +17,7 @@ function ListAppointment() {
     consultationData,
     isLoadingConsultation,
   } = useConsultationHook()
+  const navigate = useNavigate()
 
   const renderHeader = () => (
     <div className="flex flex-col md:flex-row gap-3 w-full">
@@ -35,7 +37,7 @@ function ListAppointment() {
         </IconField>
         <Button
           onClick={() => {
-            console.log("CREATE CONSULTATION")
+            void navigate("/dashboard/doctor/appointment-list/create")
           }}
           icon="pi pi-plus"
           className="w-full sm:w-auto md:px-4 md:min-w-[3rem]"
