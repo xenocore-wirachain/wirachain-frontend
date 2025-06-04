@@ -28,50 +28,21 @@ function Login() {
   const [login, { isLoading }] = useLoginMutation()
 
   const onSubmit = (data: LoginRequest) => {
-    console.log("CREDENTIALS", data)
-    if (data.email === "admin@gmail.com") {
-      // ADMIN CREDENTIALS
-      dispatch(
-        setCredentials({
-          accessToken:
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkpvYW8iLCJ1c2VyX3R5cGUiOjEsImV4cCI6MTc0Njc5NTgxNywidHlwZSI6ImFjY2VzcyJ9.LU1EGlj8KeciYEMHgu7GFk-kiJ_c7HJCb5utgRORrW0",
-          refreshToken:
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkpvYW8iLCJ1c2VyX3R5cGUiOjEsImV4cCI6MTc0NzM5OTcxNywidHlwZSI6InJlZnJlc2gifQ.Oa97wxEEMe4JDYfVcYikFQWWV1hAlr-7eCKCafsa7a4",
-        }),
-      )
-    } else if (data.email === "clinic@gmail.com") {
-      // CLINIC CREDENTIALS
-      dispatch(
-        setCredentials({
-          accessToken:
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjI5MjBmZjU1LWNhMTQtNGRmMC1iZGQzLTYyMmQ4NGY0NGUyOSIsIm5hbWUiOiJKb2FvIiwidXNlcl90eXBlIjo0LCJleHAiOjE3NDg0NjMxMjksInR5cGUiOiJhY2Nlc3MifQ.anF6AN81zoymDFGlp33JR4rPnKcpM3BRw7LSvjLnNwM",
-          refreshToken:
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjI5MjBmZjU1LWNhMTQtNGRmMC1iZGQzLTYyMmQ4NGY0NGUyOSIsIm5hbWUiOiJKb2FvIiwidXNlcl90eXBlIjo0LCJleHAiOjE3NDkwNjcwMjksInR5cGUiOiJyZWZyZXNoIn0.HEp09QeX3NH8FQz853EXBuQ4XfpePDgx39aq0L4dPrA",
-        }),
-      )
-    } else if (data.email === "patient@gmail.com") {
-      // PATIENT CREDENTIALS
-      dispatch(
-        setCredentials({
-          accessToken:
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImRjZjVhZmJhLTA5NjAtNDQ5Zi1iOTY3LTk5NzJhZjY0NmNlMiIsIm5hbWUiOiJKb2FvIiwidXNlcl90eXBlIjozLCJleHAiOjE3NDgzOTAwODIsInR5cGUiOiJhY2Nlc3MifQ.C38eHR2bTl0sRXCdFPwPPFlgXVxRlngcaSv676zYNOQ",
-          refreshToken:
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImRjZjVhZmJhLTA5NjAtNDQ5Zi1iOTY3LTk5NzJhZjY0NmNlMiIsIm5hbWUiOiJKb2FvIiwidXNlcl90eXBlIjozLCJleHAiOjE3NDg5OTM5ODIsInR5cGUiOiJyZWZyZXNoIn0.6oBwaX-CKJPTY7T_ps9RVKLS1meVR50H41DJmVHOo1I",
-        }),
-      )
-    } else if (data.email === "doctor@gmail.com") {
-      // DOCTOR CREDENTIALS
-      dispatch(
-        setCredentials({
-          accessToken:
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjUxZGRmZDMwLWQ4ZTMtNGRmNy05MDVlLTA3MDY1ZjJiZDQ0MCIsIm5hbWUiOiJKb2FvIiwidXNlcl90eXBlIjoyLCJleHAiOjE3NDgzOTAwMTAsInR5cGUiOiJhY2Nlc3MifQ.7dshF-Bvp0iRuC_K_Dk2MJx5qv4RdwPGjdvTjvipQqQ",
-          refreshToken:
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjUxZGRmZDMwLWQ4ZTMtNGRmNy05MDVlLTA3MDY1ZjJiZDQ0MCIsIm5hbWUiOiJKb2FvIiwidXNlcl90eXBlIjoyLCJleHAiOjE3NDg5OTM5MTAsInR5cGUiOiJyZWZyZXNoIn0.lLo--Qddf02ks_YB9e9VezTSGeuF_IF8VuLytVE2L44",
-        }),
-      )
-    }
-    reset()
-    void navigate("dashboard")
+    void login(data)
+      .unwrap()
+      .then(result => {
+        dispatch(
+          setCredentials({
+            accessToken: result.data.accessToken,
+            refreshToken: result.data.refreshToken,
+          }),
+        )
+        reset()
+        void navigate("dashboard")
+      })
+      .catch((error: unknown) => {
+        console.log("ERROR", error)
+      })
   }
 
   const handleFormSubmit = (e: React.FormEvent) => {

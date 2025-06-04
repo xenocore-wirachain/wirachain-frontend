@@ -1,4 +1,4 @@
-import type { TokenPayload } from "../types/Credentials"
+import type { OriginalPayload, TokenPayload } from "../types/Credentials"
 
 export const parseJwt = (token: string): TokenPayload | null => {
   try {
@@ -11,7 +11,15 @@ export const parseJwt = (token: string): TokenPayload | null => {
         .map(c => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`)
         .join(""),
     )
-    return JSON.parse(jsonPayload) as TokenPayload
+    const data = JSON.parse(jsonPayload) as OriginalPayload
+
+    return {
+      id: data[
+        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+      ],
+      name: data["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
+      user_type: Number(data.userType),
+    }
   } catch (error: unknown) {
     console.log(error)
     return null

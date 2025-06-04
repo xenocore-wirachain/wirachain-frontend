@@ -88,6 +88,7 @@ function DashboardRouter() {
 
   switch (userType) {
     case USER_TYPES.ADMIN:
+      console.log("IS ADMIN TYPE")
       return <Navigate to="/dashboard/admin/clinic-admin-list" replace />
     case USER_TYPES.DOCTOR:
       return <Navigate to="/dashboard/doctor/appointment-list" replace />

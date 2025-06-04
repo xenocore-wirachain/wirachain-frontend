@@ -10,9 +10,27 @@ export type LoginRequest = {
   password: string
 }
 
-export type LoginResponse = {
+export type LoginBase = {
   accessToken: string
   refreshToken: string
+  email: string
+  userId: string
+  firstName: string
+  lastName: string
+}
+
+export type LoginResponse = {
+  data: LoginBase
+  success: boolean
+  message: string
+}
+
+export type OriginalPayload = {
+  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier": UUID
+  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress": string
+  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name": string
+  userType: string
+  "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": string[]
 }
 
 export type TokenPayload = {
