@@ -5,6 +5,7 @@ import { InputTextarea } from "primereact/inputtextarea"
 import { classNames } from "primereact/utils"
 import { Controller } from "react-hook-form"
 import DropdownPatientPerClinic from "../../../../components/DropdownPatientPerClinic"
+import MultiSelectTestPerClinic from "../../../../components/MultiSelectTestPerClinic"
 import { useConsultationHook } from "../../hooks/ConsultationHook"
 
 function CreateAppointment() {
@@ -50,13 +51,12 @@ function CreateAppointment() {
             )}
           </div>
 
-          {/* DATE OF BIRTH */}
-          <div className="field" key="dateOfBirth">
+          {/* NEXT APPOINTMENT */}
+          <div className="field" key="nextAppointmentDate">
             <span className="p-float-label">
               <Controller
-                name="dateOfBirth"
+                name="nextAppointmentDate"
                 control={control}
-                rules={{ required: "Se requiere fecha de nacimiento" }}
                 render={({ field: { onChange, onBlur, value, ref } }) => (
                   <Calendar
                     readOnlyInput
@@ -66,22 +66,24 @@ function CreateAppointment() {
                       value instanceof Date || value === null ? value : null
                     }
                     ref={ref}
-                    invalid={errors.dateOfBirth ? true : false}
-                    maxDate={new Date()}
+                    invalid={errors.nextAppointmentDate ? true : false}
+                    minDate={new Date()}
                     disabled={isCreating}
                   />
                 )}
               />
               <label
-                htmlFor="dateOfBirth"
-                className={classNames({ "p-error": errors.dateOfBirth })}
+                htmlFor="nextAppointmentDate"
+                className={classNames({
+                  "p-error": errors.nextAppointmentDate,
+                })}
               >
-                Fecha de nacimiento*
+                Fecha de la proxima visita
               </label>
             </span>
-            {errors.dateOfBirth && (
+            {errors.nextAppointmentDate && (
               <small className="p-error">
-                {errors.dateOfBirth.message?.toString()}
+                {errors.nextAppointmentDate.message?.toString()}
               </small>
             )}
           </div>
@@ -156,37 +158,35 @@ function CreateAppointment() {
             )}
           </div>
 
-          {/* CONSULTATION DATE */}
-          <div className="field md:col-span-2" key="consultationDate">
+          {/* MEDICAL TESTS */}
+          <div className="field md:col-span-2" key="medicalTestIds">
             <span className="p-float-label">
               <Controller
-                name="consultationDate"
+                name="medicalTestIds"
                 control={control}
-                render={({ field: { onChange, onBlur, value, ref } }) => (
-                  <Calendar
-                    readOnlyInput
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <MultiSelectTestPerClinic
                     onBlur={onBlur}
                     onChange={onChange}
-                    value={
-                      value instanceof Date || value === null ? value : null
-                    }
-                    ref={ref}
-                    invalid={errors.consultationDate ? true : false}
-                    minDate={new Date()}
+                    value={value}
+                    invalid={errors.medicalTestIds ? true : false}
                     disabled={isCreating}
+                    display="chip"
+                    maxSelectedLabels={3}
+                    showSelectAll={false}
                   />
                 )}
               />
               <label
-                htmlFor="consultationDate"
-                className={classNames({ "p-error": errors.consultationDate })}
+                htmlFor="medicalTestIds"
+                className={classNames({ "p-error": errors.medicalTestIds })}
               >
-                Fecha de proxima consulta (Opcional)
+                Estudios medicos
               </label>
             </span>
-            {errors.consultationDate && (
+            {errors.medicalTestIds && (
               <small className="p-error">
-                {errors.consultationDate.message?.toString()}
+                {errors.medicalTestIds.message?.toString()}
               </small>
             )}
           </div>

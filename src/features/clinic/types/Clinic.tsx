@@ -24,6 +24,6 @@ export type ClinicRequest = BaseClinic & {
 
 export type ClinicResponse = BaseClinic & {
   id: number
-  administration: Administator
+  administrator: Administator
   medicalTests: StudyResponse[]
 }

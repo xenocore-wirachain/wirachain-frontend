@@ -23,11 +23,11 @@ export const useConsultationHook = () => {
   const defaultValues: MedicalConsultationRequest = {
     idPatient: null,
     visitReason: "",
-    dateOfBirth: null,
-    consultationDate: null,
+    nextAppointmentDate: null,
     notes: "",
-    checkInTime: "",
-    checkOutTime: "",
+    checkInTime: Date(),
+    checkOutTime: Date(),
+    medicalTestIds: [],
   }
 
   const { data: consultationData, isLoading: isLoadingConsultation } =
@@ -55,29 +55,24 @@ export const useConsultationHook = () => {
     if (!data.idPatient) {
       throw new Error("Patient ID not in form")
     }
-    if (data.dateOfBirth instanceof Date) {
-      data.dateOfBirth = data.dateOfBirth.toISOString()
+    if (data.nextAppointmentDate instanceof Date) {
+      data.nextAppointmentDate = data.nextAppointmentDate.toISOString()
     } else {
-      throw new Error("La fecha de nacimiento debe ser válida")
-    }
-    if (data.consultationDate instanceof Date) {
-      data.consultationDate = data.consultationDate.toISOString()
-    } else {
-      throw new Error("La fecha de consulta debe ser valida")
+      throw new Error("La hora de la proxima fecha no es valida")
     }
     if (data.checkInTime instanceof Date) {
-      // data.checkInTime = data.checkInTime.toISOString()
-      data.checkInTime = "05:00"
+      data.checkInTime = data.checkInTime.toISOString()
+      // data.checkInTime = "05:00"
     } else {
       throw new Error("La hora de llegada no es valida")
     }
     if (data.checkOutTime instanceof Date) {
-      // data.checkOutTime = data.checkOutTime.toISOString()
-      data.checkOutTime = "05:00"
+      data.checkOutTime = data.checkOutTime.toISOString()
+      // data.checkOutTime = "05:00"
     } else {
       throw new Error("La hora de salida no es valida")
     }
-    console.log("CONSULTA MEDICA CREADAT", data)
+    console.log("CONSULTA MEDICA CREADA", data)
 
     void createConsultation({
       consultation: data,

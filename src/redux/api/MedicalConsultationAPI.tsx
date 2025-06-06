@@ -27,6 +27,16 @@ export const medicalConsultationApi = createApi({
           searchTerm: params.pagination.search,
         },
       }),
+      providesTags: result =>
+        result
+          ? [
+              ...result.results.map(({ id }) => ({
+                type: "MedicalConsultation" as const,
+                id,
+              })),
+              { type: "MedicalConsultation", id: "LIST" },
+            ]
+          : [{ type: "MedicalConsultation", id: "LIST" }],
     }),
 
     getAllMedicalConsultationOfPatient: builder.query<
@@ -42,6 +52,16 @@ export const medicalConsultationApi = createApi({
           searchTerm: params.pagination.search,
         },
       }),
+      providesTags: result =>
+        result
+          ? [
+              ...result.results.map(({ id }) => ({
+                type: "MedicalConsultation" as const,
+                id,
+              })),
+              { type: "MedicalConsultation", id: "LIST" },
+            ]
+          : [{ type: "MedicalConsultation", id: "LIST" }],
     }),
 
     addMedicalConsultation: builder.mutation<
@@ -58,6 +78,7 @@ export const medicalConsultationApi = createApi({
         method: "POST",
         body: params.consultation,
       }),
+      invalidatesTags: [{ type: "MedicalConsultation" as const, id: "LIST" }],
     }),
   }),
 })

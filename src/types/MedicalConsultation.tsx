@@ -10,9 +10,9 @@ export type MedicalConsultationResponseDoctorAndClinic = {
 export type MedicalConsultationRequest = {
   idPatient: UUID | null
   visitReason: string
-  dateOfBirth: Nullable<Date> | string
-  consultationDate: Nullable<Date> | string
+  nextAppointmentDate: Nullable<Date> | string
   notes: string
   checkInTime: Nullable<Date> | string
   checkOutTime: Nullable<Date> | string
+  medicalTestIds: number[]
 }

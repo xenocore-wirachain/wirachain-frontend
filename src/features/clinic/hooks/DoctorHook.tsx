@@ -78,6 +78,7 @@ export const useDoctorHook = () => {
         handleCloseForm()
       })
       .catch((error: unknown) => {
+        console.log(error)
         baseHook.handleApiError(error)
       })
   }
