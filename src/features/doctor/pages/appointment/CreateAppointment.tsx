@@ -89,10 +89,10 @@ function CreateAppointment() {
           </div>
 
           {/* CHECKIN */}
-          <div className="field" key="checkInTime">
+          <div className="field" key="checkInDateTime">
             <span className="p-float-label">
               <Controller
-                name="checkInTime"
+                name="checkInDateTime"
                 control={control}
                 rules={{ required: "Se requiere hora de entrada" }}
                 render={({ field: { onChange, onBlur, value, ref } }) => (
@@ -103,31 +103,31 @@ function CreateAppointment() {
                       value instanceof Date || value === null ? value : null
                     }
                     ref={ref}
-                    invalid={errors.checkInTime ? true : false}
+                    invalid={errors.checkInDateTime ? true : false}
                     disabled={isCreating}
                     timeOnly
                   />
                 )}
               />
               <label
-                htmlFor="checkInTime"
-                className={classNames({ "p-error": errors.checkInTime })}
+                htmlFor="checkInDateTime"
+                className={classNames({ "p-error": errors.checkInDateTime })}
               >
                 Hora de entrada*
               </label>
             </span>
-            {errors.checkInTime && (
+            {errors.checkInDateTime && (
               <small className="p-error">
-                {errors.checkInTime.message?.toString()}
+                {errors.checkInDateTime.message?.toString()}
               </small>
             )}
           </div>
 
           {/* CHECKOUT */}
-          <div className="field" key="checkOutTime">
+          <div className="field" key="checkOutDateTime">
             <span className="p-float-label">
               <Controller
-                name="checkOutTime"
+                name="checkOutDateTime"
                 control={control}
                 rules={{ required: "Se requiere hora de salida" }}
                 render={({ field: { onChange, onBlur, value, ref } }) => (
@@ -138,22 +138,22 @@ function CreateAppointment() {
                       value instanceof Date || value === null ? value : null
                     }
                     ref={ref}
-                    invalid={errors.checkOutTime ? true : false}
+                    invalid={errors.checkOutDateTime ? true : false}
                     disabled={isCreating}
                     timeOnly
                   />
                 )}
               />
               <label
-                htmlFor="checkOutTime"
-                className={classNames({ "p-error": errors.checkOutTime })}
+                htmlFor="checkOutDateTime"
+                className={classNames({ "p-error": errors.checkOutDateTime })}
               >
                 Hora de salida*
               </label>
             </span>
-            {errors.checkOutTime && (
+            {errors.checkOutDateTime && (
               <small className="p-error">
-                {errors.checkOutTime.message?.toString()}
+                {errors.checkOutDateTime.message?.toString()}
               </small>
             )}
           </div>

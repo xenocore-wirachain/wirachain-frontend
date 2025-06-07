@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import type { UUID } from "crypto"
 import type {
   MedicalConsultationRequest,
+  MedicalConsultationResponse,
   MedicalConsultationResponseDoctorAndClinic,
 } from "../../types/MedicalConsultation"
 import type { Pagination, PaginationParams } from "../../types/Pagination"
@@ -80,6 +81,16 @@ export const medicalConsultationApi = createApi({
       }),
       invalidatesTags: [{ type: "MedicalConsultation" as const, id: "LIST" }],
     }),
+
+    getMedicalConsultation: builder.query<MedicalConsultationResponse, UUID>({
+      query: idMedicalConsultation => ({
+        url: `${MEDICAL_CONSULTATION}/${idMedicalConsultation}`,
+        method: "GET",
+      }),
+      providesTags: (_result, _error, id) => [
+        { type: "MedicalConsultation" as const, id },
+      ],
+    }),
   }),
 })
 
@@ -87,4 +98,5 @@ export const {
   useGetAllMedicalConsultationOfPatientQuery,
   useGetAllMedicalConsultationPerDoctorAndClinicQuery,
   useAddMedicalConsultationMutation,
+  useGetMedicalConsultationQuery,
 } = medicalConsultationApi

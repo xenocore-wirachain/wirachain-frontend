@@ -53,11 +53,11 @@ function ListAppointment() {
       <Button
         text
         onClick={() => {
-          console.log("OPEN DETAIL", rowData.id)
+          void navigate(`/dashboard/doctor/appointment-list/${rowData.id}`)
         }}
-        icon="pi pi-pencil"
+        icon="pi pi-chevron-circle-right"
         className="mr-2"
-        tooltip="Editar"
+        tooltip="Detalle"
         tooltipOptions={{ position: "top" }}
         size="small"
       />

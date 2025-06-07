@@ -25,8 +25,8 @@ export const useConsultationHook = () => {
     visitReason: "",
     nextAppointmentDate: null,
     notes: "",
-    checkInTime: Date(),
-    checkOutTime: Date(),
+    checkInDateTime: Date(),
+    checkOutDateTime: Date(),
     medicalTestIds: [],
   }
 
@@ -60,20 +60,18 @@ export const useConsultationHook = () => {
     } else {
       throw new Error("La hora de la proxima fecha no es valida")
     }
-    if (data.checkInTime instanceof Date) {
-      data.checkInTime = data.checkInTime.toISOString()
-      // data.checkInTime = "05:00"
+    if (data.checkInDateTime instanceof Date) {
+      data.checkInDateTime = data.checkInDateTime.toISOString()
     } else {
       throw new Error("La hora de llegada no es valida")
     }
-    if (data.checkOutTime instanceof Date) {
-      data.checkOutTime = data.checkOutTime.toISOString()
-      // data.checkOutTime = "05:00"
+    if (data.checkOutDateTime instanceof Date) {
+      data.checkOutDateTime = data.checkOutDateTime.toISOString()
     } else {
       throw new Error("La hora de salida no es valida")
     }
-    console.log("CONSULTA MEDICA CREADA", data)
 
+    console.log("CREATION DATA", data)
     void createConsultation({
       consultation: data,
       idDoctor: idDoctor,
@@ -84,7 +82,7 @@ export const useConsultationHook = () => {
       .then(() => {
         baseHook.toast.showSuccess("Éxito", "Consulta creado correctamente")
         reset(defaultValues)
-        // void navigate("/register")
+        void navigate("/dashboard/doctor/appointment-list")
       })
       .catch((error: unknown) => {
         console.log("ERROR", error)
