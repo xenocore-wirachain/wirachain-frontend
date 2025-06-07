@@ -1,10 +1,14 @@
+import { Button } from "primereact/button"
 import { Column } from "primereact/column"
 import { DataTable } from "primereact/datatable"
+import { useNavigate } from "react-router"
+import type { MedicalConsultationResponseDoctorAndClinic } from "../../../../types/MedicalConsultation"
 import { useAppointmentHook } from "../../hooks/Appointment"
 
 function ListAppointment() {
   const { page, pageSize, data, isLoading, handlePageChange } =
     useAppointmentHook()
+  const navigate = useNavigate()
 
   const renderHeader = () => (
     <div className="flex flex-col md:flex-row gap-3 w-full">
@@ -14,6 +18,24 @@ function ListAppointment() {
         </h2>
       </div>
     </div>
+  )
+
+  const renderActionButtons = (
+    rowData: MedicalConsultationResponseDoctorAndClinic,
+  ) => (
+    <>
+      <Button
+        text
+        onClick={() => {
+          void navigate(`/dashboard/patient/appointment-list/${rowData.id}`)
+        }}
+        icon="pi pi-chevron-circle-right"
+        className="mr-2"
+        tooltip="Detalle"
+        tooltipOptions={{ position: "top" }}
+        size="small"
+      />
+    </>
   )
 
   return (
@@ -31,12 +53,21 @@ function ListAppointment() {
         emptyMessage="No se encontraron consultas medicas"
         className="p-datatable-gridlines"
       >
-        <Column field="id" header="ID" style={{ width: "30%" }} />
-        <Column field="description" header="Detalle" style={{ width: "40%" }} />
+        <Column
+          field="description"
+          header="Descripcion"
+          style={{ width: "70%" }}
+        />
         <Column
           field="consultationDate"
           header="Fecha"
-          style={{ width: "30%" }}
+          style={{ width: "20%" }}
+        />
+        <Column
+          body={renderActionButtons}
+          header="Acciones"
+          style={{ width: "10%", textAlign: "center" }}
+          exportable={false}
         />
       </DataTable>
     </div>
