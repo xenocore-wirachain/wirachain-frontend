@@ -65,6 +65,31 @@ export const medicalConsultationApi = createApi({
           : [{ type: "MedicalConsultation", id: "LIST" }],
     }),
 
+    getAllMedicalConsultationOfClinic: builder.query<
+      Pagination<MedicalConsultationResponseDoctorAndClinic>,
+      { pagination: PaginationParams; id: UUID }
+    >({
+      query: params => ({
+        url: `${MEDICAL_CONSULTATION}/clinic_administrator/${params.id}`,
+        method: "GET",
+        params: {
+          pageIndex: params.pagination.page,
+          pageSize: params.pagination.pageSize,
+          searchTerm: params.pagination.search,
+        },
+      }),
+      providesTags: result =>
+        result
+          ? [
+              ...result.results.map(({ id }) => ({
+                type: "MedicalConsultation" as const,
+                id,
+              })),
+              { type: "MedicalConsultation", id: "LIST" },
+            ]
+          : [{ type: "MedicalConsultation", id: "LIST" }],
+    }),
+
     addMedicalConsultation: builder.mutation<
       unknown,
       {
@@ -99,4 +124,5 @@ export const {
   useGetAllMedicalConsultationPerDoctorAndClinicQuery,
   useAddMedicalConsultationMutation,
   useGetMedicalConsultationQuery,
+  useGetAllMedicalConsultationOfClinicQuery,
 } = medicalConsultationApi
