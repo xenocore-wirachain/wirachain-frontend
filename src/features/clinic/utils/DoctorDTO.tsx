@@ -1,4 +1,3 @@
-import { GenderDictionary } from "../../../utils/StaticVariables"
 import type { DoctorDetailedResponse, DoctorRequest } from "../types/Doctor"
 
 function ConvertDoctorResponseToDoctorRequest(
@@ -8,6 +7,8 @@ function ConvertDoctorResponseToDoctorRequest(
     firstName,
     lastName,
     gender,
+    phone,
+    email,
     dateOfBirth,
     medicalSpecialties,
     clinics,
@@ -16,12 +17,11 @@ function ConvertDoctorResponseToDoctorRequest(
   return {
     firstName,
     lastName,
-    gender:
-      gender === "Male" ? GenderDictionary[0].value : GenderDictionary[1].value,
+    gender: gender === "Hombre" ? "male" : "female",
     dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
     user: {
-      phone: "987-654-321",
-      email: "example@gmail.com",
+      phone: phone,
+      email: email,
     },
     clinicIds: clinics.map(clinic => clinic.id),
     medicalSpecialtyIds: medicalSpecialties.map(specialty => specialty.id),

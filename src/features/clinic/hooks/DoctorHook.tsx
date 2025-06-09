@@ -93,7 +93,7 @@ export const useDoctorHook = () => {
     if (typeof baseHook.idSelected === "string") {
       void updateDoctor({
         id: baseHook.idSelected,
-        clinic: data,
+        doctor: data,
       })
         .unwrap()
         .then(() => {

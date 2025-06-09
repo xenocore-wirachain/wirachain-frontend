@@ -2,6 +2,7 @@ import type { RouteObject } from "react-router"
 import {
   CreateAppointment,
   DetailAppointment,
+  DetailPatient,
   ListAppointment,
   ListPatient,
   Profile,
@@ -27,7 +28,16 @@ const DoctorRouter: RouteObject[] = [
   },
   {
     path: "doctor/patient-list",
-    element: <ListPatient />,
+    children: [
+      {
+        index: true,
+        element: <ListPatient />,
+      },
+      {
+        path: ":idPatient",
+        element: <DetailPatient />,
+      },
+    ],
   },
   {
     path: "doctor/profile",

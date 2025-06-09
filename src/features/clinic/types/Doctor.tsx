@@ -28,6 +28,8 @@ export type ClinicData = {
 }
 
 export type DoctorDetailedResponse = DoctorResponse & {
+  phone: string
+  email: string
   medicalSpecialties: SpecialityResponse[]
   clinics: ClinicData[]
 }

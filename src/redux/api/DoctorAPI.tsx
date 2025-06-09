@@ -58,12 +58,12 @@ export const doctorApi = createApi({
 
     updateDoctor: builder.mutation<
       DoctorDetailedResponse,
-      { id: UUID; clinic: DoctorRequest }
+      { id: UUID; doctor: DoctorRequest }
     >({
       query: params => ({
         url: `${DOCTOR_PATH}/${params.id}`,
         method: "PUT",
-        body: params.clinic,
+        body: params.doctor,
       }),
       invalidatesTags: (_result, _error, { id }) => [
         { type: "Doctor" as const, id },
