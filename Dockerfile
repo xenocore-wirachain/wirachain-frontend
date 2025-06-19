@@ -1,4 +1,4 @@
-# Build stage
+# 🔧 Build stage
 FROM node:20-alpine AS build
 
 # Set working directory
@@ -10,22 +10,25 @@ COPY package.json package-lock.json* ./
 # Install dependencies
 RUN npm ci
 
-# Copy all files
+# Copy the rest of the app
 COPY . .
 
-# Build the application
-RUN npm run build
+# Allow passing VITE_* variables
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
 
-# Production stage
+# Build using production mode (so it uses .env.production)
+RUN npm run build --mode production
+
+# 🧊 Production stage
 FROM nginx:alpine AS production
 
 # Copy built assets from build stage
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Copy nginx configuration if you have one
+# Optional: Custom nginx config
 # COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expose port
 EXPOSE 80
 
 # Start Nginx server
