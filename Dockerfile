@@ -18,7 +18,7 @@ ARG VITE_API_URL
 ENV VITE_API_URL=$VITE_API_URL
 
 # Build using production mode (so it uses .env.production)
-RUN npm run build --mode production
+RUN npm run build
 
 # 🧊 Production stage
 FROM nginx:alpine AS production
