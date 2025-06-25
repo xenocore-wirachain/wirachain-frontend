@@ -22,7 +22,7 @@ vi.mock("./routers", () => ({
 const runMainModule = async (): Promise<void> => {
   try {
     vi.resetModules()
-    await import("./main")
+    await import("../src/main")
   } catch (error) {
     if (error instanceof Error) {
       throw error

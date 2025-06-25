@@ -3,10 +3,13 @@
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2020",
     "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "module": "ESNext",
     "skipLibCheck": true,
-
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
@@ -15,14 +18,25 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "resolveJsonModule": true,
-
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "types": ["vitest/globals"]
+    "types": [
+      "vitest/globals"
+    ]
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "test/main.test.tsx",
+    "test/utils/StaticVariables.test.tsx",
+    "test/utils/DoctorAccess.test.tsx",
+    "test/utils/ApiPath.test.tsx",
+    "test/routers/admin.test.tsx",
+    "test/routers/clinic.test.tsx",
+    "test/routers/doctor.test.tsx",
+    "test/routers/index.test.tsx"
+  ]
 }

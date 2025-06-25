@@ -25,5 +25,8 @@ export default defineConfig({
     globals: true,
     watch: false,
     setupFiles: ["./src/setupTests.ts"],
+    deps: {
+      inline: ["msw"],
+    },
   },
 })
