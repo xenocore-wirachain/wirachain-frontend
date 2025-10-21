@@ -240,7 +240,7 @@ function UpdateDoctor() {
                 name="clinicIds"
                 control={control}
                 rules={{
-                  required: "Se requiere clinicas",
+                  required: "Se requiere clinica",
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <MultiSelectClinic
@@ -276,7 +276,7 @@ function UpdateDoctor() {
                 name="medicalSpecialtyIds"
                 control={control}
                 rules={{
-                  required: "Se requiere especialidades",
+                  required: "Se requiere especialidad",
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <MultiSelectSpeciality

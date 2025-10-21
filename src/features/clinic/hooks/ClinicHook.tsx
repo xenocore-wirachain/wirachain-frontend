@@ -61,7 +61,7 @@ export const useClinicHook = () => {
     void createClinic(data)
       .unwrap()
       .then(() => {
-        baseHook.toast.showSuccess("Éxito", "Clinica creado correctamente")
+        baseHook.toast.showSuccess("Éxito", "Clinica creada correctamente")
         handleCloseForm()
       })
       .catch((error: unknown) => {

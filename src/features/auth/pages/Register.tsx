@@ -1,4 +1,5 @@
 import "primeicons/primeicons.css"
+import { Button } from "primereact/button"
 import { Calendar } from "primereact/calendar"
 import { Card } from "primereact/card"
 import { Divider } from "primereact/divider"
@@ -13,7 +14,6 @@ import { Controller } from "react-hook-form"
 import { useNavigate } from "react-router"
 import { GenderDictionary } from "../../../utils/StaticVariables"
 import { usePatientHook } from "../hooks/PatientHook"
-import { Button } from "primereact/button"
 
 function Register() {
   const navigate = useNavigate()
@@ -282,7 +282,7 @@ function Register() {
             )}
           </div>
           <Button
-            label="Register"
+            label="Registrarse"
             size="small"
             className="w-full  mt-2 bg-blue-600 hover:bg-blue-700"
             type="submit"

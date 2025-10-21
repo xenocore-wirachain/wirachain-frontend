@@ -116,7 +116,7 @@ export const useDoctorHook = () => {
       void deleteDoctor(baseHook.idSelected)
         .unwrap()
         .then(() => {
-          baseHook.toast.showSuccess("Éxito", "Doctro eliminado correctamente")
+          baseHook.toast.showSuccess("Éxito", "Doctor eliminado correctamente")
           baseHook.closeAllDialogs()
         })
         .catch((error: unknown) => {
