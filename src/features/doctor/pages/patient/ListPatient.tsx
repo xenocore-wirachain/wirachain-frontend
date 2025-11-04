@@ -74,7 +74,7 @@ function ListPatient() {
         loading={isLoadingPatient}
         header={renderHeader()}
         onPage={handlePageChange}
-        emptyMessage="No se encontraron clinicas"
+        emptyMessage="No se encontraron pacientes"
         className="p-datatable-gridlines"
       >
         <Column field="firstName" header="Nombre" style={{ width: "45%" }} />
