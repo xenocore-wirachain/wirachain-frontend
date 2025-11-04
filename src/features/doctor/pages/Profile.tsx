@@ -242,9 +242,9 @@ function Profile() {
                 Correo*
               </label>
             </span>
-            {errors.phone && (
+            {errors.email && (
               <small className="p-error block">
-                {errors.phone.message?.toString()}
+                {errors.email.message?.toString()}
               </small>
             )}
           </div>
